@@ -6,10 +6,15 @@ import ProductsSection from '../components/sections/ProductsSection'
 import BrandStory from '../components/sections/BrandStory'
 import TrustIndicators from '../components/TrustIndicators'
 import CTASection from '../components/sections/CTASection'
+import SchemaMarkup from '../components/SchemaMarkup'
 
 const HomePage = () => {
   return (
     <>
+      {/* Schema Markup for SEO */}
+      <SchemaMarkup type="organization" />
+      <SchemaMarkup type="website" />
+      
       <HeroSection />
       <CapabilitiesSection />
       <SolutionsSection />

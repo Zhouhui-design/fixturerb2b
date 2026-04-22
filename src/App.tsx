@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { HelmetProvider } from 'react-helmet-async'
 import { LanguageProvider } from './contexts/LanguageContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -64,11 +65,13 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
-      <LanguageProvider>
-        <AppContent />
-      </LanguageProvider>
-    </Router>
+    <HelmetProvider>
+      <Router>
+        <LanguageProvider>
+          <AppContent />
+        </LanguageProvider>
+      </Router>
+    </HelmetProvider>
   )
 }
 

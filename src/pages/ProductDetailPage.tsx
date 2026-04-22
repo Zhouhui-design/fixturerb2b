@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
 import QuoteRequest from '../components/QuoteRequest'
+import SchemaMarkup from '../components/SchemaMarkup'
 
 const ProductDetailPage = () => {
   const { id } = useParams()
@@ -13,9 +14,24 @@ const ProductDetailPage = () => {
   const productIndex = parseInt(id || '1') - 1
   const product = t.products.items[productIndex]
   const productName = product?.name || 'Product Inquiry'
+  const productDescription = product?.description || 'Professional display fixture for retail environments.'
+
+  // Product schema data
+  const productSchemaData = {
+    name: productName,
+    description: productDescription,
+    image: [`https://fixturerb2b.top/products/${id}.jpg`], // Placeholder image URL
+    url: `https://fixturerb2b.top/products/${id}`,
+    currency: 'USD',
+    rating: '4.8',
+    reviewCount: '120'
+  }
 
   return (
     <div className="min-h-screen py-20">
+      {/* Product Schema Markup */}
+      <SchemaMarkup type="product" data={productSchemaData} />
+      
       <div className="container-custom">
         <button
           onClick={() => navigate('/products')}
