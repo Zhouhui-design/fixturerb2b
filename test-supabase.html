@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supabase Connection Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-result {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .info {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Supabase Connection Test</h1>
+    <div id="results"></div>
+    
+    <h2>Test Language Loading</h2>
+    <button onclick="testLanguage('en')">English</button>
+    <button onclick="testLanguage('zh')">中文</button>
+    <button onclick="testLanguage('ja')">日本語</button>
+    <button onclick="testLanguage('es')">Español</button>
+    <button onclick="testLanguage('fr')">Français</button>
+    <button onclick="testLanguage('de')">Deutsch</button>
+    
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+        
+        const supabaseUrl = 'https://yaumblbimxrunltqadsq.supabase.co'
+        const supabaseKey = 'sb_publishable_bz-UdtzBNgA_ckTh--Hrig_bbSh8prW'
+        const supabase = createClient(supabaseUrl, supabaseKey)
+        
+        window.supabase = supabase
+        
+        function addResult(message, type = 'info') {
+            const div = document.createElement('div')
+            div.className = `test-result ${type}`
+            div.textContent = message
+            document.getElementById('results').appendChild(div)
+        }
+        
+        // Test 1: Check connection
+        async function testConnection() {
+            try {
+                const { data, error } = await supabase.from('translations').select('count', { count: 'exact', head: true })
+                
+                if (error) {
+                    addResult(`❌ Connection failed: ${error.message}`, 'error')
+                } else {
+                    addResult(`✅ Successfully connected to Supabase!`, 'success')
+                }
+            } catch (err) {
+                addResult(`❌ Error: ${err.message}`, 'error')
+            }
+        }
+        
+        // Test 2: Check tables
+        async function testTables() {
+            try {
+                const { data: tables, error } = await supabase
+                    .from('translations')
+                    .select('*')
+                    .limit(1)
+                
+                if (error) {
+                    addResult(`❌ Cannot access translations table: ${error.message}`, 'error')
+                } else {
+                    addResult(`✅ translations table exists and is accessible`, 'success')
+                }
+                
+                const { data: contacts, error: contactError } = await supabase
+                    .from('contact_submissions')
+                    .select('*')
+                    .limit(1)
+                
+                if (contactError) {
+                    addResult(`❌ Cannot access contact_submissions table: ${contactError.message}`, 'error')
+                } else {
+                    addResult(`✅ contact_submissions table exists and is accessible`, 'success')
+                }
+            } catch (err) {
+                addResult(`❌ Error checking tables: ${err.message}`, 'error')
+            }
+        }
+        
+        // Test 3: Load language
+        window.testLanguage = async function(language) {
+            try {
+                addResult(`\n🔄 Testing language: ${language}`, 'info')
+                
+                const { data, error } = await supabase
+                    .from('translations')
+                    .select('*')
+                    .eq('language', language)
+                
+                if (error) {
+                    addResult(`❌ Failed to load ${language}: ${error.message}`, 'error')
+                    return
+                }
+                
+                if (!data || data.length === 0) {
+                    addResult(`⚠️ No translations found for ${language} in database`, 'info')
+                    addResult(`💡 This language will use bundled translations or English fallback`, 'info')
+                } else {
+                    addResult(`✅ Found ${data.length} translation entries for ${language}`, 'success')
+                    addResult(`Sample: ${JSON.stringify(data[0])}`, 'info')
+                }
+            } catch (err) {
+                addResult(`❌ Error: ${err.message}`, 'error')
+            }
+        }
+        
+        // Run tests on load
+        testConnection()
+        testTables()
+    </script>
+</body>
+</html>

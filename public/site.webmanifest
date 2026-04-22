@@ -1,0 +1,22 @@
+{
+  "name": "FixtureRB2B - Store Fixtures & Display Solutions",
+  "short_name": "FixtureRB2B",
+  "description": "Professional B2B store fixtures for apparel retail",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2C2C2C",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ]
+}

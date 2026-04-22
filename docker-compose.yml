@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fixturerb2b-frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    volumes:
+      # SSL certificates (if using Let's Encrypt)
+      - ./ssl:/etc/nginx/ssl:ro
+    networks:
+      - fixturerb2b-network
+
+networks:
+  fixturerb2b-network:
+    driver: bridge

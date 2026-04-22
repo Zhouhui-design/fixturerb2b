@@ -1,0 +1,10 @@
+# Robotstxt.org - https://fixturerb2b.top
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://fixturerb2b.top/sitemap.xml
+
+# Crawl-delay (optional)
+Crawl-delay: 1

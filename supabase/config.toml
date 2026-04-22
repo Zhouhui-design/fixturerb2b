@@ -1,0 +1,33 @@
+# For detailed configuration reference, see https://supabase.com/docs/guides/local-development/cli/getting-started
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage"]
+
+[db]
+port = 54322
+
+[studio]
+enabled = true
+port = 54323
+
+[inbucket]
+enabled = true
+port = 54324
+
+[auth]
+enabled = true
+
+[auth.email]
+double_confirm_changes = true
+enable_signup = true
+
+[storage]
+enabled = true
+
+[analytics]
+enabled = false
+port = 54327
+vector_port = 54328
+backend = "postgres"
