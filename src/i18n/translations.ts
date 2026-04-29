@@ -554,7 +554,7 @@ export const translations: Record<Language, Translations> = {
         { name: 'French Light Luxury Lingerie', result: 'Custom retail display solution' },
         { name: 'American Fashion Womenswear', result: 'Display SKU count +40%' },
         { name: 'EVE New York', result: 'Customer dwell time +35%' },
-        { name: 'Sports Brand Flagship Guangzhou', result: 'Sales conversion +25%' },
+        { name: 'Korean Art Fashion Brand', result: 'Sales conversion +25%' },
         { name: 'Kids Fashion Store Shenzhen', result: 'Space utilization +50%' },
         { name: 'Luxury Womenswear Hangzhou', result: 'Brand perception elevated' }
       ]
@@ -871,7 +871,7 @@ export const translations: Record<Language, Translations> = {
         { name: '法国轻奢内衣', result: '定制零售陈列解决方案' },
         { name: '美国时尚女装', result: '陈列SKU数量 +40%' },
         { name: 'EVE New York', result: '顾客停留时间 +35%' },
-        { name: '广州运动品牌旗舰店', result: '销售转化率 +25%' },
+        { name: '韩国艺术潮牌', result: '销售转化率 +25%' },
         { name: '深圳童装时尚店', result: '空间利用率 +50%' },
         { name: '杭州高端女装店', result: '品牌形象提升' }
       ]
@@ -1165,7 +1165,7 @@ export const translations: Record<Language, Translations> = {
         { name: 'フランス高級ランジェリー', result: 'カスタム小売ディスプレイソリューション' },
         { name: 'アメリカファッション婦人服', result: '陳列SKU数 +40%' },
         { name: 'EVE New York', result: '顧客滞在時間 +35%' },
-        { name: '広州スポーツブランド旗艦店', result: '販売転換率 +25%' },
+        { name: '韓国アートファッションブランド', result: '販売転換率 +25%' },
         { name: '深センキッズファッション店', result: '空間利用率 +50%' },
         { name: '杭州高級婦人服店', result: 'ブランドイメージ向上' }
       ]
@@ -1442,7 +1442,7 @@ export const translations: Record<Language, Translations> = {
         { name: 'Lencería Francesa de Lujo Ligero', result: 'Solución personalizada de exhibición minorista' },
         { name: 'Moda Femenina Americana', result: 'SKU en exhibición +40%' },
         { name: 'EVE New York', result: 'Tiempo de permanencia +35%' },
-        { name: 'Tienda Insignia Deportiva Guangzhou', result: 'Conversión de ventas +25%' },
+        { name: 'Marca de Moda Artística Coreana', result: 'Conversión de ventas +25%' },
         { name: 'Tienda de Moda Infantil Shenzhen', result: 'Utilización del espacio +50%' },
         { name: 'Moda Femenina de Lujo Hangzhou', result: 'Percepción de marca elevada' }
       ]
@@ -1717,7 +1717,7 @@ export const translations: Record<Language, Translations> = {
         { name: 'Lingerie Française de Luxe Léger', result: 'Solution personnalisée d\'affichage de détail' },
         { name: 'Mode Féminine Américaine', result: 'SKU en affichage +40%' },
         { name: 'EVE New York', result: 'Temps de séjour client +35%' },
-        { name: 'Magasin Phare Sportif Guangzhou', result: 'Conversion des ventes +25%' },
+        { name: 'Marque de Mode Artistique Coréenne', result: 'Conversion des ventes +25%' },
         { name: 'Magasin de Mode Enfantine Shenzhen', result: 'Utilisation de l\'espace +50%' },
         { name: 'Mode Féminine de Luxe Hangzhou', result: 'Perception de la marque élevée' }
       ]
@@ -1992,7 +1992,7 @@ export const translations: Record<Language, Translations> = {
         { name: 'Französische Luxus-Dessous', result: 'Individuelle Einzelhandels-Display-Lösung' },
         { name: 'Amerikanische Mode Damenbekleidung', result: 'Display-SKU-Anzahl +40%' },
         { name: 'EVE New York', result: 'Kundenverweildauer +35%' },
-        { name: 'Sportmarken-Flagship Guangzhou', result: 'Verkaufskonversion +25%' },
+        { name: 'Koreanische Kunstmode-Marke', result: 'Verkaufskonversion +25%' },
         { name: 'Kindermode-Geschäft Shenzhen', result: 'Raumnutzung +50%' },
         { name: 'Luxus-Damenmode Hangzhou', result: 'Markenwahrnehmung verbessert' }
       ]
@@ -2267,7 +2267,7 @@ export const translations: Record<Language, Translations> = {
         { name: '프랑스 럭셔리 란제리', result: '맞춤형 소매 디스플레이 솔루션' },
         { name: '미국 패션 여성복', result: '디스플레이 SKU 수 +40%' },
         { name: 'EVE New York', result: '고객 체류 시간 +35%' },
-        { name: '광저우 스포츠 브랜드 플래그십', result: '판매 전환율 +25%' },
+        { name: '한국 아트 패션 브랜드', result: '판매 전환율 +25%' },
         { name: '선전 아동복 패션 매장', result: '공간 활용도 +50%' },
         { name: '항저우 럭셔리 여성복', result: '브랜드 인식 향상' }
       ]
@@ -2542,7 +2542,7 @@ export const translations: Record<Language, Translations> = {
         { name: 'Lingerie Francesa de Luxo Leve', result: 'Solução personalizada de exibição de varejo' },
         { name: 'Moda Feminina Americana', result: 'Número de SKU de exibição +40%' },
         { name: 'EVE New York', result: 'Tempo de permanência do cliente +35%' },
-        { name: 'Flagship de Marca Esportiva Guangzhou', result: 'Conversão de vendas +25%' },
+        { name: 'Marca de Moda Artística Coreana', result: 'Conversão de vendas +25%' },
         { name: 'Loja Infantil Shenzhen', result: 'Utilização do espaço +50%' },
         { name: 'Moda Feminina Luxo Hangzhou', result: 'Percepção da marca melhorada' }
       ]
@@ -2817,7 +2817,7 @@ export const translations: Record<Language, Translations> = {
         { name: 'Французское роскошное белье', result: 'Индивидуальное решение для розничной витрины' },
         { name: 'Американская модная женская одежда', result: 'Количество SKU дисплея +40%' },
         { name: 'EVE New York', result: 'Время пребывания клиентов +35%' },
-        { name: 'Флагман спортивного бренда Гуанчжоу', result: 'Конверсия продаж +25%' },
+        { name: 'Корейский бренд арт-моды', result: 'Конверсия продаж +25%' },
         { name: 'Детский магазин Шэньчжэнь', result: 'Использование пространства +50%' },
         { name: 'Роскошная женская одежда Ханчжоу', result: 'Восприятие бренда улучшено' }
       ]
@@ -3092,7 +3092,7 @@ export const translations: Record<Language, Translations> = {
         { name: 'لانجري فرنسي فاخر خفيف', result: 'حل عرض تجزئة مخصص' },
         { name: 'أزياء نسائية أمريكية عصرية', result: 'عدد SKU للعرض +40%' },
         { name: 'EVE New York', result: 'وقت بقاء العملاء +35%' },
-        { name: 'متجر رئيسي للعلامة الرياضية قوانغتشو', result: 'تحويل المبيعات +25%' },
+        { name: 'علامة أزياء فنية كورية', result: 'تحويل المبيعات +25%' },
         { name: 'متجر أطفال شنتشن', result: 'استخدام المساحة +50%' },
         { name: 'أزياء نسائية فاخرة هانغتشو', result: 'تحسين تصور العلامة التجارية' }
       ]

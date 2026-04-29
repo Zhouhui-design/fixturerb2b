@@ -102,10 +102,34 @@ export const caseStudies: CaseImageConfig[] = [
   },
   {
     id: 4,
-    name: 'Sports Brand Flagship Guangzhou',
+    name: 'Korean Art Fashion Brand',
     result: 'Sales conversion +25%',
-    coverImage: '/images/pullin-4.jpg',
-    galleryImages: [] // Images to be added
+    coverImage: '/images/korea-1.jpg',
+    galleryImages: [
+      '/images/korea-1.jpg',
+      '/images/korea-2.jpg',
+      '/images/korea-3.jpg',
+      '/images/korea-4.jpg',
+      '/images/korea-5.jpg',
+      '/images/korea-6.jpg',
+      '/images/korea-7.jpg',
+      '/images/korea-8.jpg',
+      '/images/korea-9.jpg',
+      '/images/korea-10.jpg',
+      '/images/korea-11.jpg',
+      '/images/korea-12.jpg',
+      '/images/korea-13.jpg',
+      '/images/korea-14.jpg',
+      '/images/korea-15.jpg',
+      '/images/korea-16.jpg',
+      '/images/korea-17.jpg',
+      '/images/korea-18.jpg',
+      '/images/korea-19.jpg',
+      '/images/korea-20.jpg',
+      '/images/korea-21.jpg',
+      '/images/korea-22.jpg',
+      '/images/korea-23.jpg'
+    ]
   },
   {
     id: 5,
