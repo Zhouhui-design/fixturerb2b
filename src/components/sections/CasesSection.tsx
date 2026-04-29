@@ -7,8 +7,20 @@ const CasesSection = () => {
   const navigate = useNavigate()
   const { t } = useLanguage()
 
-  // Get case studies from configuration
-  const cases = getAllCases()
+  // Get case studies from configuration for images
+  const casesConfig = getAllCases()
+  
+  // Merge config images with translated text
+  const cases = casesConfig.map((configItem, index) => {
+    const translationItem = t.cases.items[index]
+    return {
+      id: configItem.id,
+      coverImage: configItem.coverImage,
+      galleryImages: configItem.galleryImages,
+      name: translationItem?.name || configItem.name,
+      result: translationItem?.result || configItem.result
+    }
+  })
 
   return (
     <section id="cases" className="section-padding bg-background">

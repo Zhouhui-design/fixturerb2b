@@ -551,12 +551,12 @@ export const translations: Record<Language, Translations> = {
       subtitle: 'Real stores, real transformations - see how we\'ve helped businesses succeed',
       viewAll: 'View All Cases',
       items: [
+        { name: 'Pullin Store Fixture', result: 'Custom retail display solution' },
         { name: 'Elegant Boutique Shanghai', result: 'Display SKU count +40%' },
         { name: 'Trend Collection Store Beijing', result: 'Customer dwell time +35%' },
         { name: 'Sports Brand Flagship Guangzhou', result: 'Sales conversion +25%' },
         { name: 'Kids Fashion Store Shenzhen', result: 'Space utilization +50%' },
-        { name: 'Luxury Womenswear Hangzhou', result: 'Brand perception elevated' },
-        { name: 'Fast Fashion Chain Chengdu', result: 'Restocking efficiency +60%' }
+        { name: 'Luxury Womenswear Hangzhou', result: 'Brand perception elevated' }
       ]
     },
     services: {
@@ -868,12 +868,12 @@ export const translations: Record<Language, Translations> = {
       subtitle: '真实店铺，真实转型 - 看看我们如何帮助企业成功',
       viewAll: '查看全部案例',
       items: [
+        { name: 'Pullin商店展示道具', result: '定制零售陈列解决方案' },
         { name: '上海优雅精品店', result: '陈列SKU数量 +40%' },
         { name: '北京潮流集合店', result: '顾客停留时间 +35%' },
         { name: '广州运动品牌旗舰店', result: '销售转化率 +25%' },
         { name: '深圳童装时尚店', result: '空间利用率 +50%' },
-        { name: '杭州高端女装店', result: '品牌形象提升' },
-        { name: '成都快时尚连锁店', result: '补货效率 +60%' }
+        { name: '杭州高端女装店', result: '品牌形象提升' }
       ]
     },
     services: {
