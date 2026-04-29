@@ -14,7 +14,7 @@ export interface CaseImageConfig {
 export const caseStudies: CaseImageConfig[] = [
   {
     id: 1,
-    name: 'Pullin Store Fixture',
+    name: 'French Light Luxury Lingerie',
     result: 'Custom retail display solution',
     coverImage: '/images/pullin-1.jpg',
     galleryImages: [
@@ -30,7 +30,7 @@ export const caseStudies: CaseImageConfig[] = [
   },
   {
     id: 2,
-    name: 'Elegant Boutique Shanghai',
+    name: 'American Fashion Womenswear',
     result: 'Display SKU count +40%',
     coverImage: '/images/badgley-1.jpeg',
     galleryImages: [
@@ -70,7 +70,7 @@ export const caseStudies: CaseImageConfig[] = [
   },
   {
     id: 3,
-    name: 'Trend Collection Store Beijing',
+    name: 'EVE New York',
     result: 'Customer dwell time +35%',
     coverImage: '/images/eve-1.jpg',
     galleryImages: [

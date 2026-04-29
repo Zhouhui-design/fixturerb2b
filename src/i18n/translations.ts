@@ -551,9 +551,9 @@ export const translations: Record<Language, Translations> = {
       subtitle: 'Real stores, real transformations - see how we\'ve helped businesses succeed',
       viewAll: 'View All Cases',
       items: [
-        { name: 'Pullin Store Fixture', result: 'Custom retail display solution' },
-        { name: 'Elegant Boutique Shanghai', result: 'Display SKU count +40%' },
-        { name: 'Trend Collection Store Beijing', result: 'Customer dwell time +35%' },
+        { name: 'French Light Luxury Lingerie', result: 'Custom retail display solution' },
+        { name: 'American Fashion Womenswear', result: 'Display SKU count +40%' },
+        { name: 'EVE New York', result: 'Customer dwell time +35%' },
         { name: 'Sports Brand Flagship Guangzhou', result: 'Sales conversion +25%' },
         { name: 'Kids Fashion Store Shenzhen', result: 'Space utilization +50%' },
         { name: 'Luxury Womenswear Hangzhou', result: 'Brand perception elevated' }
@@ -868,9 +868,9 @@ export const translations: Record<Language, Translations> = {
       subtitle: '真实店铺，真实转型 - 看看我们如何帮助企业成功',
       viewAll: '查看全部案例',
       items: [
-        { name: 'Pullin商店展示道具', result: '定制零售陈列解决方案' },
-        { name: '上海优雅精品店', result: '陈列SKU数量 +40%' },
-        { name: '北京潮流集合店', result: '顾客停留时间 +35%' },
+        { name: '法国轻奢内衣', result: '定制零售陈列解决方案' },
+        { name: '美国时尚女装', result: '陈列SKU数量 +40%' },
+        { name: 'EVE New York', result: '顾客停留时间 +35%' },
         { name: '广州运动品牌旗舰店', result: '销售转化率 +25%' },
         { name: '深圳童装时尚店', result: '空间利用率 +50%' },
         { name: '杭州高端女装店', result: '品牌形象提升' }
@@ -1162,12 +1162,12 @@ export const translations: Record<Language, Translations> = {
       subtitle: '実際の店舗、実際の変革 - 私たちが企業の成功にどう貢献したかをご覧ください',
       viewAll: 'すべての事例を見る',
       items: [
-        { name: '上海エレガントブティック', result: '陳列SKU数 +40%' },
-        { name: '北京トレンドセレクトショップ', result: '顧客滞在時間 +35%' },
+        { name: 'フランス高級ランジェリー', result: 'カスタム小売ディスプレイソリューション' },
+        { name: 'アメリカファッション婦人服', result: '陳列SKU数 +40%' },
+        { name: 'EVE New York', result: '顧客滞在時間 +35%' },
         { name: '広州スポーツブランド旗艦店', result: '販売転換率 +25%' },
         { name: '深センキッズファッション店', result: '空間利用率 +50%' },
-        { name: '杭州高級婦人服店', result: 'ブランドイメージ向上' },
-        { name: '成都ファストファッションチェーン', result: '補充効率 +60%' }
+        { name: '杭州高級婦人服店', result: 'ブランドイメージ向上' }
       ]
     },
     caseDetail: {
@@ -1439,12 +1439,12 @@ export const translations: Record<Language, Translations> = {
       subtitle: 'Tiendas reales, transformaciones reales - vea cómo hemos ayudado a las empresas a tener éxito',
       viewAll: 'Ver Todos los Casos',
       items: [
-        { name: 'Boutique Elegante Shanghái', result: 'SKU en exhibición +40%' },
-        { name: 'Tienda de Colección Trendy Pekín', result: 'Tiempo de permanencia +35%' },
+        { name: 'Lencería Francesa de Lujo Ligero', result: 'Solución personalizada de exhibición minorista' },
+        { name: 'Moda Femenina Americana', result: 'SKU en exhibición +40%' },
+        { name: 'EVE New York', result: 'Tiempo de permanencia +35%' },
         { name: 'Tienda Insignia Deportiva Guangzhou', result: 'Conversión de ventas +25%' },
         { name: 'Tienda de Moda Infantil Shenzhen', result: 'Utilización del espacio +50%' },
-        { name: 'Moda Femenina de Lujo Hangzhou', result: 'Percepción de marca elevada' },
-        { name: 'Cadena Fast Fashion Chengdu', result: 'Eficiencia de reabastecimiento +60%' }
+        { name: 'Moda Femenina de Lujo Hangzhou', result: 'Percepción de marca elevada' }
       ]
     },
     services: {
@@ -1714,12 +1714,12 @@ export const translations: Record<Language, Translations> = {
       subtitle: 'Magasins réels, transformations réelles - voyez comment nous avons aidé les entreprises à réussir',
       viewAll: 'Voir Toutes les Études de Cas',
       items: [
-        { name: 'Boutique Élégante Shanghai', result: 'SKU en affichage +40%' },
-        { name: 'Magasin de Collection Tendance Pékin', result: 'Temps de séjour client +35%' },
+        { name: 'Lingerie Française de Luxe Léger', result: 'Solution personnalisée d\'affichage de détail' },
+        { name: 'Mode Féminine Américaine', result: 'SKU en affichage +40%' },
+        { name: 'EVE New York', result: 'Temps de séjour client +35%' },
         { name: 'Magasin Phare Sportif Guangzhou', result: 'Conversion des ventes +25%' },
         { name: 'Magasin de Mode Enfantine Shenzhen', result: 'Utilisation de l\'espace +50%' },
-        { name: 'Mode Féminine de Luxe Hangzhou', result: 'Perception de la marque élevée' },
-        { name: 'Chaîne Fast Fashion Chengdu', result: 'Efficacité de réapprovisionnement +60%' }
+        { name: 'Mode Féminine de Luxe Hangzhou', result: 'Perception de la marque élevée' }
       ]
     },
     services: {
@@ -1989,12 +1989,12 @@ export const translations: Record<Language, Translations> = {
       subtitle: 'Echte Geschäfte, echte Transformationen - sehen Sie, wie wir Unternehmen zum Erfolg verholfen haben',
       viewAll: 'Alle Referenzen anzeigen',
       items: [
-        { name: 'Elegante Boutique Shanghai', result: 'Display-SKU-Anzahl +40%' },
-        { name: 'Trendy Kollektionsgeschäft Peking', result: 'Kundenverweildauer +35%' },
+        { name: 'Französische Luxus-Dessous', result: 'Individuelle Einzelhandels-Display-Lösung' },
+        { name: 'Amerikanische Mode Damenbekleidung', result: 'Display-SKU-Anzahl +40%' },
+        { name: 'EVE New York', result: 'Kundenverweildauer +35%' },
         { name: 'Sportmarken-Flagship Guangzhou', result: 'Verkaufskonversion +25%' },
         { name: 'Kindermode-Geschäft Shenzhen', result: 'Raumnutzung +50%' },
-        { name: 'Luxus-Damenmode Hangzhou', result: 'Markenwahrnehmung verbessert' },
-        { name: 'Fast-Fashion-Kette Chengdu', result: 'Nachschubeffizienz +60%' }
+        { name: 'Luxus-Damenmode Hangzhou', result: 'Markenwahrnehmung verbessert' }
       ]
     },
     services: {
@@ -2264,12 +2264,12 @@ export const translations: Record<Language, Translations> = {
       subtitle: '실제 매장, 실제 변화 - 우리가 기업의 성공을 어떻게 도왔는지 확인하세요',
       viewAll: '모든 사례 보기',
       items: [
-        { name: '상하이 우아한 부티크', result: '디스플레이 SKU 수 +40%' },
-        { name: '베이징 트렌드 컬렉션 매장', result: '고객 체류 시간 +35%' },
+        { name: '프랑스 럭셔리 란제리', result: '맞춤형 소매 디스플레이 솔루션' },
+        { name: '미국 패션 여성복', result: '디스플레이 SKU 수 +40%' },
+        { name: 'EVE New York', result: '고객 체류 시간 +35%' },
         { name: '광저우 스포츠 브랜드 플래그십', result: '판매 전환율 +25%' },
         { name: '선전 아동복 패션 매장', result: '공간 활용도 +50%' },
-        { name: '항저우 럭셔리 여성복', result: '브랜드 인식 향상' },
-        { name: '청두 패스트 패션 체인', result: '재고補充 효율 +60%' }
+        { name: '항저우 럭셔리 여성복', result: '브랜드 인식 향상' }
       ]
     },
     services: {
@@ -2539,12 +2539,12 @@ export const translations: Record<Language, Translations> = {
       subtitle: 'Lojas reais, transformações reais - veja como ajudamos empresas a terem sucesso',
       viewAll: 'Ver todos os casos',
       items: [
-        { name: 'Boutique Elegante Xangai', result: 'Número de SKU de exibição +40%' },
-        { name: 'Loja de Coleção Trendy Pequim', result: 'Tempo de permanência do cliente +35%' },
+        { name: 'Lingerie Francesa de Luxo Leve', result: 'Solução personalizada de exibição de varejo' },
+        { name: 'Moda Feminina Americana', result: 'Número de SKU de exibição +40%' },
+        { name: 'EVE New York', result: 'Tempo de permanência do cliente +35%' },
         { name: 'Flagship de Marca Esportiva Guangzhou', result: 'Conversão de vendas +25%' },
         { name: 'Loja Infantil Shenzhen', result: 'Utilização do espaço +50%' },
-        { name: 'Moda Feminina Luxo Hangzhou', result: 'Percepção da marca melhorada' },
-        { name: 'Rede Fast Fashion Chengdu', result: 'Eficiência de reposição +60%' }
+        { name: 'Moda Feminina Luxo Hangzhou', result: 'Percepção da marca melhorada' }
       ]
     },
     services: {
@@ -2814,12 +2814,12 @@ export const translations: Record<Language, Translations> = {
       subtitle: 'Реальные магазины, реальные трансформации - посмотрите, как мы помогли предприятиям добиться успеха',
       viewAll: 'Посмотреть все кейсы',
       items: [
-        { name: 'Элегантный бутик Шанхай', result: 'Количество SKU дисплея +40%' },
-        { name: 'Трендовый магазин коллекций Пекин', result: 'Время пребывания клиентов +35%' },
+        { name: 'Французское роскошное белье', result: 'Индивидуальное решение для розничной витрины' },
+        { name: 'Американская модная женская одежда', result: 'Количество SKU дисплея +40%' },
+        { name: 'EVE New York', result: 'Время пребывания клиентов +35%' },
         { name: 'Флагман спортивного бренда Гуанчжоу', result: 'Конверсия продаж +25%' },
         { name: 'Детский магазин Шэньчжэнь', result: 'Использование пространства +50%' },
-        { name: 'Роскошная женская одежда Ханчжоу', result: 'Восприятие бренда улучшено' },
-        { name: 'Сеть быстрой моды Чэнду', result: 'Эффективность пополнения запасов +60%' }
+        { name: 'Роскошная женская одежда Ханчжоу', result: 'Восприятие бренда улучшено' }
       ]
     },
     services: {
@@ -3089,12 +3089,12 @@ export const translations: Record<Language, Translations> = {
       subtitle: 'متاجر حقيقية، تحولات حقيقية - شاهد كيف ساعدنا الشركات على النجاح',
       viewAll: 'عرض جميع الحالات',
       items: [
-        { name: 'بوتيك أنيق شنغهاي', result: 'عدد SKU للعرض +40%' },
-        { name: 'متجر مجموعة عصرية بكين', result: 'وقت بقاء العملاء +35%' },
+        { name: 'لانجري فرنسي فاخر خفيف', result: 'حل عرض تجزئة مخصص' },
+        { name: 'أزياء نسائية أمريكية عصرية', result: 'عدد SKU للعرض +40%' },
+        { name: 'EVE New York', result: 'وقت بقاء العملاء +35%' },
         { name: 'متجر رئيسي للعلامة الرياضية قوانغتشو', result: 'تحويل المبيعات +25%' },
         { name: 'متجر أطفال شنتشن', result: 'استخدام المساحة +50%' },
-        { name: 'أزياء نسائية فاخرة هانغتشو', result: 'تحسين تصور العلامة التجارية' },
-        { name: 'سلسلة أزياء سريعة تشنغدو', result: 'كفاءة إعادة التزويد +60%' }
+        { name: 'أزياء نسائية فاخرة هانغتشو', result: 'تحسين تصور العلامة التجارية' }
       ]
     },
     services: {
