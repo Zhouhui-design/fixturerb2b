@@ -33,50 +33,35 @@ export const caseStudies: CaseImageConfig[] = [
     name: 'Elegant Boutique Shanghai',
     result: 'Display SKU count +40%',
     coverImage: '/images/pullin-2.jpg',
-    galleryImages: [
-      '/images/pullin-2.jpg',
-      '/images/pullin-1.jpg'
-    ]
+    galleryImages: [] // Images to be added
   },
   {
     id: 3,
     name: 'Trend Collection Store Beijing',
     result: 'Customer dwell time +35%',
     coverImage: '/images/pullin-3.jpg',
-    galleryImages: [
-      '/images/pullin-3.jpg',
-      '/images/pullin-4.jpg'
-    ]
+    galleryImages: [] // Images to be added
   },
   {
     id: 4,
     name: 'Sports Brand Flagship Guangzhou',
     result: 'Sales conversion +25%',
     coverImage: '/images/pullin-4.jpg',
-    galleryImages: [
-      '/images/pullin-4.jpg',
-      '/images/pullin-5.jpg'
-    ]
+    galleryImages: [] // Images to be added
   },
   {
     id: 5,
     name: 'Kids Fashion Store Shenzhen',
     result: 'Space utilization +50%',
     coverImage: '/images/pullin-5.jpg',
-    galleryImages: [
-      '/images/pullin-5.jpg',
-      '/images/pullin-6.jpg'
-    ]
+    galleryImages: [] // Images to be added
   },
   {
     id: 6,
     name: 'Luxury Womenswear Hangzhou',
     result: 'Brand perception elevated',
     coverImage: '/images/pullin-6.jpg',
-    galleryImages: [
-      '/images/pullin-6.jpg',
-      '/images/pullin-7.jpg'
-    ]
+    galleryImages: [] // Images to be added
   }
 ]
 
