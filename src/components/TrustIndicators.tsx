@@ -1,6 +1,9 @@
 import { Shield, Award, Globe, Lock, CheckCircle, Star, Users, TrendingUp } from 'lucide-react'
+import { useLanguage } from '../contexts/LanguageContext'
 
 const TrustIndicators = () => {
+  const { t } = useLanguage()
+
   const certifications = [
     { icon: Shield, title: 'ISO 9001 Certified', desc: 'Quality Management' },
     { icon: Award, title: 'CE Certified', desc: 'European Standards' },
@@ -9,10 +12,10 @@ const TrustIndicators = () => {
   ]
 
   const stats = [
-    { icon: Users, value: '500+', label: 'Happy Clients', color: 'text-blue-600' },
-    { icon: Globe, value: '50+', label: 'Countries Served', color: 'text-green-600' },
-    { icon: TrendingUp, value: '10K+', label: 'Products Delivered', color: 'text-purple-600' },
-    { icon: Star, value: '4.9/5', label: 'Customer Rating', color: 'text-yellow-600' }
+    { icon: Users, value: '500+', label: t.trustIndicators?.happyClients || 'Happy Clients', color: 'text-blue-600' },
+    { icon: Globe, value: '50+', label: t.trustIndicators?.countriesServed || 'Countries Served', color: 'text-green-600' },
+    { icon: TrendingUp, value: '10K+', label: t.trustIndicators?.productsDelivered || 'Products Delivered', color: 'text-purple-600' },
+    { icon: Star, value: '4.9/5', label: t.trustIndicators?.customerRating || 'Customer Rating', color: 'text-yellow-600' }
   ]
 
   const guarantees = [
@@ -86,8 +89,8 @@ const TrustIndicators = () => {
       <section>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Certifications & Compliance</h2>
-            <p className="text-gray-600">Internationally recognized quality standards</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">{t.trustIndicators?.certificationsTitle || 'Certifications & Compliance'}</h2>
+            <p className="text-gray-600">{t.trustIndicators?.certificationsSubtitle || 'Internationally recognized quality standards'}</p>
           </div>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">

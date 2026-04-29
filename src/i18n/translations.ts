@@ -256,6 +256,14 @@ export interface Translations {
       role: string
     }>
   }
+  trustIndicators?: {
+    happyClients: string
+    countriesServed: string
+    productsDelivered: string
+    customerRating: string
+    certificationsTitle: string
+    certificationsSubtitle: string
+  }
   cta: {
     title: string
     subtitle: string
@@ -632,6 +640,14 @@ export const translations: Record<Language, Translations> = {
         }
       ]
     },
+    trustIndicators: {
+      happyClients: 'Happy Clients',
+      countriesServed: 'Countries Served',
+      productsDelivered: 'Products Delivered',
+      customerRating: 'Customer Rating',
+      certificationsTitle: 'Certifications & Compliance',
+      certificationsSubtitle: 'Internationally recognized quality standards'
+    },
     cta: {
       title: 'Ready to Open a Clothing Store? Or Upgrade Your Existing Store?',
       subtitle: 'Need fixture updates and modernization?',
@@ -948,6 +964,14 @@ export const translations: Record<Language, Translations> = {
           role: '零售连锁店经理，北京'
         }
       ]
+    },
+    trustIndicators: {
+      happyClients: '满意客户',
+      countriesServed: '服务国家',
+      productsDelivered: '交付产品',
+      customerRating: '客户评分',
+      certificationsTitle: '认证与合规',
+      certificationsSubtitle: '国际认可的质量标准'
     },
     cta: {
       title: '准备开一家服装店？或升级现有店铺？',

@@ -78,12 +78,16 @@ const CaseCard = ({ caseItem, index, navigate }: CaseCardProps) => {
   }, [caseItem.galleryImages.length, caseItem.id, hasImages])
 
   return (
-    <Card
-      className={`group cursor-pointer overflow-hidden ${
-        index === 0 || index === 5 ? 'md:col-span-2 lg:col-span-1' : ''
-      }`}
-      onClick={() => navigate(`/cases/${caseItem.id}`)}
-    >
+    <div className="flex flex-col">
+      {/* Title above the card */}
+      <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">{caseItem.name}</h3>
+      
+      <Card
+        className={`group cursor-pointer overflow-hidden ${
+          index === 0 || index === 5 ? 'md:col-span-2 lg:col-span-1' : ''
+        }`}
+        onClick={() => navigate(`/cases/${caseItem.id}`)}
+      >
       <div className="relative aspect-[4/3] overflow-hidden">
         {/* Placeholder when no images */}
         {!hasImages && (
@@ -127,6 +131,7 @@ const CaseCard = ({ caseItem, index, navigate }: CaseCardProps) => {
         </div>
       </div>
     </Card>
+    </div>
   )
 }
 
