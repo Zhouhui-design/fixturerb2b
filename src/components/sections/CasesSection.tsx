@@ -53,14 +53,17 @@ const CaseCard = ({ caseItem, index, navigate }: CaseCardProps) => {
   
   // Auto-rotate images every 3 seconds
   useEffect(() => {
-    if (caseItem.galleryImages.length <= 1) return
+    if (caseItem.galleryImages.length <= 1) {
+      console.log(`Case ${caseItem.id} has only 1 image, no carousel needed`)
+      return
+    }
     
     console.log(`Case ${caseItem.id} carousel started with ${caseItem.galleryImages.length} images`)
     
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) => {
         const next = prev === caseItem.galleryImages.length - 1 ? 0 : prev + 1
-        console.log(`Case ${caseItem.id} switching to image ${next + 1}`)
+        console.log(`Case ${caseItem.id} switching to image ${next + 1}/${caseItem.galleryImages.length}`)
         return next
       })
     }, 3000) // Change image every 3 seconds
@@ -82,13 +85,13 @@ const CaseCard = ({ caseItem, index, navigate }: CaseCardProps) => {
         {/* Image Carousel */}
         {caseItem.galleryImages.map((img, imgIndex) => (
           <img
-            key={`${caseItem.id}-${imgIndex}-${currentImageIndex}`}
-            src={`${img}?v=${Date.now()}`}
+            key={`${caseItem.id}-${imgIndex}`}
+            src={img}
             alt={`${caseItem.name} - image ${imgIndex + 1}`}
-            className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ${
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-in-out ${
               imgIndex === currentImageIndex 
-                ? 'opacity-100 scale-100 z-10' 
-                : 'opacity-0 scale-110 z-0'
+                ? 'opacity-100 z-10' 
+                : 'opacity-0 z-0'
             }`}
             loading="lazy"
           />
