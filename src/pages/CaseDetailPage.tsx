@@ -28,19 +28,21 @@ const CaseDetailPage = () => {
         <div className="max-w-6xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold mb-8">{caseName}</h1>
           
-          {/* Image Gallery */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {images.map((img, index) => (
-              <div key={index} className="overflow-hidden rounded-lg shadow-lg">
-                <img
-                  src={img}
-                  alt={`${caseName} - image ${index + 1}`}
-                  className="w-full h-auto object-cover hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
-              </div>
-            ))}
-          </div>
+          {/* Image Gallery - Only show for case 1 */}
+          {caseId === 1 && images.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {images.map((img, index) => (
+                <div key={index} className="overflow-hidden rounded-lg shadow-lg">
+                  <img
+                    src={img}
+                    alt={`${caseName} - image ${index + 1}`}
+                    className="w-full h-auto object-cover hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
