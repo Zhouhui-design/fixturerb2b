@@ -1,14 +1,18 @@
 // Site configuration - easily replaceable from backend
 export const siteConfig = {
   contact: {
-    email: 'info@fixturerb2b.top',
-    phone: '+86 XXX XXXX XXXX',
-    address: 'China Manufacturing Base',
+    email: 'aardenx@outlook.com',
+    phone: '', // International calls not available yet
+    address: 'addressPlaceholder', // Will be replaced by translation
     whatsapp: '+86XXXXXXXXXXX',
-    wechat: 'YourWeChatID',
-    lark: 'YourLarkID',
-    dingtalk: 'YourDingTalkID',
-    chatSystem: '/chat' // Link to your chat-system
+    wechat: 'YourWeChatID', // TODO: Replace with your actual WeChat ID
+    lark: 'YourLarkID', // TODO: Replace with your actual Lark user_id or open_id
+    dingtalk: 'YourDingTalkID', // TODO: Replace with your actual DingTalk ID
+    chatSystem: '/chat', // Link to your chat-system
+    // Lark AppLink for direct chat opening (Scheme 1 - Recommended)
+    // Format: larksuite://open?user_id=[YOUR_USER_ID]&action=chat
+    // Get your user_id from: Lark > Settings > Account & Security > API Access
+    larkAppLink: 'larksuite://open?user_id=YourLarkUserID&action=chat' // TODO: Replace YourLarkUserID with actual ID
   },
   social: {
     facebook: '#',

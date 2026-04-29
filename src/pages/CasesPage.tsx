@@ -9,10 +9,7 @@ const CasesPage = () => {
       {/* Page Header */}
       <div className="bg-charcoal text-white py-20">
         <div className="container-custom text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">{t.cases.title}</h1>
-          <p className="text-lg text-white/80 max-w-2xl mx-auto">
-            {t.cases.subtitle}
-          </p>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">我们按客户设计师 还原的效果</h1>
         </div>
       </div>
 

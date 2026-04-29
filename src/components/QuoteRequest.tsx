@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { supabase } from '../lib/supabase'
 import { X, Send, FileText, Shield, CheckCircle } from 'lucide-react'
+import { useLanguage } from '../contexts/LanguageContext'
 
 interface QuoteRequestProps {
   productName?: string
@@ -9,6 +10,7 @@ interface QuoteRequestProps {
 }
 
 const QuoteRequest = ({ productName, productId, onClose }: QuoteRequestProps) => {
+  const { t } = useLanguage()
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -31,7 +33,7 @@ const QuoteRequest = ({ productName, productId, onClose }: QuoteRequestProps) =>
     e.preventDefault()
     
     if (!formData.agreeToTerms) {
-      setError('Please agree to the terms and conditions')
+      setError(t.quoteRequest?.errorAgreeTerms || 'Please agree to the terms and conditions')
       return
     }
 
@@ -70,7 +72,7 @@ const QuoteRequest = ({ productName, productId, onClose }: QuoteRequestProps) =>
       
     } catch (err: any) {
       console.error('Error submitting quote request:', err)
-      setError(err.message || 'Failed to submit quote request. Please try again.')
+      setError(err.message || t.quoteRequest?.errorSubmit || 'Failed to submit quote request. Please try again.')
     } finally {
       setIsSubmitting(false)
     }
@@ -92,24 +94,24 @@ const QuoteRequest = ({ productName, productId, onClose }: QuoteRequestProps) =>
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Quote Request Submitted!</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">{t.quoteRequest?.submittedTitle || 'Quote Request Submitted!'}</h3>
             <p className="text-gray-600 mb-6">
-              Thank you for your inquiry. Our team will review your request and send you a formal quotation within 24 hours.
+              {t.quoteRequest?.submittedMessage || 'Thank you for your inquiry. Our team will review your request and send you a formal quotation within 24 hours.'}
             </p>
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
               <p className="text-sm text-blue-800">
-                <strong>Next Steps:</strong><br />
-                1. Check your email for confirmation<br />
-                2. We'll send a detailed quotation<br />
-                3. Review and sign the contract online<br />
-                4. Arrange payment securely
+                <strong>{t.quoteRequest?.nextSteps || 'Next Steps:'}</strong><br />
+                {t.quoteRequest?.step1 || '1. Check your email for confirmation'}<br />
+                {t.quoteRequest?.step2 || '2. We\'ll send a detailed quotation'}<br />
+                {t.quoteRequest?.step3 || '3. Review and sign the contract online'}<br />
+                {t.quoteRequest?.step4 || '4. Arrange payment securely'}
               </p>
             </div>
             <button
               onClick={onClose}
               className="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 px-6 rounded-lg transition-colors"
             >
-              Close
+              {t.common.close || 'Close'}
             </button>
           </div>
         </div>
@@ -123,7 +125,7 @@ const QuoteRequest = ({ productName, productId, onClose }: QuoteRequestProps) =>
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Request a Quote</h2>
+            <h2 className="text-2xl font-bold text-gray-900">{t.quoteRequest?.title || 'Request a Quote'}</h2>
             {productName && (
               <p className="text-sm text-gray-600 mt-1">Product: {productName}</p>
             )}
@@ -142,26 +144,26 @@ const QuoteRequest = ({ productName, productId, onClose }: QuoteRequestProps) =>
           <div className="grid grid-cols-3 gap-4 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-100">
             <div className="text-center">
               <Shield className="w-6 h-6 text-blue-600 mx-auto mb-1" />
-              <p className="text-xs font-medium text-gray-700">Secure Transaction</p>
+              <p className="text-xs font-medium text-gray-700">{t.quoteRequest?.secureInfo || '🔒 Your information is secure'}</p>
             </div>
             <div className="text-center">
               <FileText className="w-6 h-6 text-blue-600 mx-auto mb-1" />
-              <p className="text-xs font-medium text-gray-700">Formal Contract</p>
+              <p className="text-xs font-medium text-gray-700">{t.quoteRequest?.contractInfo || '✓ Formal contract provided'}</p>
             </div>
             <div className="text-center">
               <CheckCircle className="w-6 h-6 text-blue-600 mx-auto mb-1" />
-              <p className="text-xs font-medium text-gray-700">Trade Assurance</p>
+              <p className="text-xs font-medium text-gray-700">{t.quoteRequest?.responseTime || '✓ 24hr response time'}</p>
             </div>
           </div>
 
           {/* Contact Information */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-gray-900 border-b pb-2">Contact Information</h3>
+            <h3 className="font-semibold text-gray-900 border-b pb-2">{t.quoteRequest?.contactInfo || 'Contact Information'}</h3>
             
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Full Name *
+                  {t.quoteRequest?.fullName || 'Full Name *'}
                 </label>
                 <input
                   type="text"
@@ -176,7 +178,7 @@ const QuoteRequest = ({ productName, productId, onClose }: QuoteRequestProps) =>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email Address *
+                  {t.quoteRequest?.emailAddress || 'Email Address *'}
                 </label>
                 <input
                   type="email"
@@ -193,7 +195,7 @@ const QuoteRequest = ({ productName, productId, onClose }: QuoteRequestProps) =>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Company Name *
+                  {t.quoteRequest?.companyName || 'Company Name *'}
                 </label>
                 <input
                   type="text"
@@ -208,7 +210,7 @@ const QuoteRequest = ({ productName, productId, onClose }: QuoteRequestProps) =>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Country *
+                  {t.quoteRequest?.country || 'Country *'}
                 </label>
                 <input
                   type="text"
@@ -224,7 +226,7 @@ const QuoteRequest = ({ productName, productId, onClose }: QuoteRequestProps) =>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Phone Number
+                {t.quoteRequest?.phoneNumber || 'Phone Number'}
               </label>
               <input
                 type="tel"
@@ -239,12 +241,12 @@ const QuoteRequest = ({ productName, productId, onClose }: QuoteRequestProps) =>
 
           {/* Product Details */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-gray-900 border-b pb-2">Product Details</h3>
+            <h3 className="font-semibold text-gray-900 border-b pb-2">{t.quoteRequest?.productDetails || 'Product Details'}</h3>
             
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Quantity *
+                  {t.quoteRequest?.quantity || 'Quantity *'}
                 </label>
                 <input
                   type="text"
@@ -259,7 +261,7 @@ const QuoteRequest = ({ productName, productId, onClose }: QuoteRequestProps) =>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Target Price (USD)
+                  {t.quoteRequest?.targetPrice || 'Target Price (USD)'}
                 </label>
                 <input
                   type="text"
@@ -274,7 +276,7 @@ const QuoteRequest = ({ productName, productId, onClose }: QuoteRequestProps) =>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Specifications / Requirements
+                {t.quoteRequest?.specifications || 'Specifications / Requirements'}
               </label>
               <textarea
                 name="specifications"
@@ -289,12 +291,12 @@ const QuoteRequest = ({ productName, productId, onClose }: QuoteRequestProps) =>
 
           {/* Trade Terms */}
           <div className="space-y-4">
-            <h3 className="font-semibold text-gray-900 border-b pb-2">Trade Terms</h3>
+            <h3 className="font-semibold text-gray-900 border-b pb-2">{t.quoteRequest?.tradeTerms || 'Trade Terms'}</h3>
             
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Delivery Terms
+                  {t.quoteRequest?.deliveryTerms || 'Delivery Terms'}
                 </label>
                 <select
                   name="deliveryTerms"
@@ -311,7 +313,7 @@ const QuoteRequest = ({ productName, productId, onClose }: QuoteRequestProps) =>
               
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Payment Terms
+                  {t.quoteRequest?.paymentTerms || 'Payment Terms'}
                 </label>
                 <select
                   name="paymentTerms"
@@ -331,7 +333,7 @@ const QuoteRequest = ({ productName, productId, onClose }: QuoteRequestProps) =>
           {/* Additional Message */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Additional Message
+              {t.quoteRequest?.additionalMessage || 'Additional Message'}
             </label>
             <textarea
               name="message"
@@ -354,15 +356,7 @@ const QuoteRequest = ({ productName, productId, onClose }: QuoteRequestProps) =>
                 className="mt-1 w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
               />
               <span className="text-sm text-gray-700">
-                I agree to the{' '}
-                <a href="/terms" target="_blank" className="text-primary hover:underline">
-                  Terms and Conditions
-                </a>{' '}
-                and{' '}
-                <a href="/privacy" target="_blank" className="text-primary hover:underline">
-                  Privacy Policy
-                </a>
-                . I understand that this is a quote request and not a binding order.
+                {t.quoteRequest?.termsAgreement || 'I agree to the Terms and Conditions and Privacy Policy. I understand that this is a quote request and not a binding order.'}
               </span>
             </label>
           </div>
@@ -387,16 +381,16 @@ const QuoteRequest = ({ productName, productId, onClose }: QuoteRequestProps) =>
             ) : (
               <>
                 <Send className="w-5 h-5" />
-                <span>Submit Quote Request</span>
+                <span>{isSubmitting ? (t.quoteRequest?.submitting || 'Submitting...') : (t.quoteRequest?.submitButton || 'Submit Quote Request')}</span>
               </>
             )}
           </button>
 
           {/* Trust Message */}
           <div className="text-center text-xs text-gray-500 space-y-1">
-            <p>🔒 Your information is secure and will never be shared</p>
-            <p>✓ We respond to all inquiries within 24 hours</p>
-            <p>✓ Formal contract provided before payment</p>
+            <p>{t.quoteRequest?.secureInfo || '🔒 Your information is secure and will never be shared'}</p>
+            <p>{t.quoteRequest?.responseTime || '✓ We respond to all inquiries within 24 hours'}</p>
+            <p>{t.quoteRequest?.contractInfo || '✓ Formal contract provided before payment'}</p>
           </div>
         </form>
       </div>

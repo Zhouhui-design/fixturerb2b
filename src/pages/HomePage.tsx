@@ -1,7 +1,6 @@
 import HeroSection from '../components/sections/HeroSection'
 import CapabilitiesSection from '../components/sections/CapabilitiesSection'
 import SolutionsSection from '../components/sections/SolutionsSection'
-import BlueprintShowcase from '../components/sections/BlueprintShowcase'
 import ProductsSection from '../components/sections/ProductsSection'
 import BrandStory from '../components/sections/BrandStory'
 import TrustIndicators from '../components/TrustIndicators'
@@ -18,7 +17,6 @@ const HomePage = () => {
       <HeroSection />
       <CapabilitiesSection />
       <SolutionsSection />
-      <BlueprintShowcase />
       <ProductsSection />
       <TrustIndicators />
       <BrandStory />

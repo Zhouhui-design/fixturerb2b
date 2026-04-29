@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useLanguage } from '../contexts/LanguageContext'
 import QuoteRequest from '../components/QuoteRequest'
 import SchemaMarkup from '../components/SchemaMarkup'
+import { getProductGallery } from '../config/products'
 
 const ProductDetailPage = () => {
   const { id } = useParams()
   const navigate = useNavigate()
   const { t } = useLanguage()
   const [showQuoteModal, setShowQuoteModal] = useState(false)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   // Get product info
   const productIndex = parseInt(id || '1') - 1
@@ -16,11 +19,15 @@ const ProductDetailPage = () => {
   const productName = product?.name || 'Product Inquiry'
   const productDescription = product?.description || 'Professional display fixture for retail environments.'
 
+  // Get image gallery using configuration
+  const productId = parseInt(id || '1')
+  const images = getProductGallery(productId)
+
   // Product schema data
   const productSchemaData = {
     name: productName,
     description: productDescription,
-    image: [`https://fixturerb2b.top/products/${id}.jpg`], // Placeholder image URL
+    image: [`https://fixturerb2b.top${images[0]}`],
     url: `https://fixturerb2b.top/products/${id}`,
     currency: 'USD',
     rating: '4.8',
@@ -41,33 +48,106 @@ const ProductDetailPage = () => {
         </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Image Gallery */}
+          {/* Image Gallery - Carousel */}
           <div>
-            <img
-              src="/images/product-showcase.jpg"
-              alt="Product"
-              className="w-full rounded-lg"
-            />
+            {images.length === 1 ? (
+              // Single image for other products
+              <img
+                src={images[0]}
+                alt="Product"
+                className="w-full rounded-lg"
+              />
+            ) : (
+              // Carousel for Shirt Display Rack
+              <div className="relative">
+                {/* Main Image */}
+                <div className="relative aspect-square bg-gray-50 rounded-lg overflow-hidden">
+                  <img
+                    src={images[currentImageIndex]}
+                    alt={`${productName} - View ${currentImageIndex + 1}`}
+                    className="w-full h-full object-contain"
+                  />
+                  
+                  {/* Navigation Arrows */}
+                  <button
+                    onClick={() => setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft className="w-6 h-6 text-gray-800" />
+                  </button>
+                  
+                  <button
+                    onClick={() => setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight className="w-6 h-6 text-gray-800" />
+                  </button>
+                </div>
+                
+                {/* Image Counter */}
+                <div className="mt-4 text-center text-sm text-gray-600">
+                  {currentImageIndex + 1} / {images.length}
+                </div>
+                
+                {/* Thumbnail Strip */}
+                <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
+                  {images.map((img, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentImageIndex(index)}
+                      className={`flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 transition-all ${
+                        index === currentImageIndex
+                          ? 'border-wood ring-2 ring-wood/30'
+                          : 'border-gray-200 hover:border-gray-400'
+                      }`}
+                    >
+                      <img
+                        src={img}
+                        alt={`Thumbnail ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Product Info */}
           <div>
-            <h1 className="text-3xl font-bold mb-4">{t.products.items[parseInt(id || '1') - 1]?.name || 'Product'}</h1>
-            <p className="text-muted-foreground mb-6">
-              {t.productDetail.description}
-            </p>
+            <h1 className="text-3xl font-bold mb-4">{product?.name || 'Product'}</h1>
+            
+            {/* Custom descriptions for specific products */}
+            {parseInt(id || '1') === 1 ? (
+              <p className="text-muted-foreground mb-6 text-lg">
+                {t.productDetail?.shirtRackDescription || 'Customizable'}
+              </p>
+            ) : parseInt(id || '1') === 2 ? (
+              <p className="text-muted-foreground mb-6 text-lg">
+                {t.productDetail?.bagRackDescription || 'Customizable with logo options'}
+              </p>
+            ) : (
+              <p className="text-muted-foreground mb-6">
+                {t.productDetail.description}
+              </p>
+            )}
 
-            <div className="space-y-4 mb-8">
-              <div>
-                <h3 className="font-semibold mb-2">{t.productDetail.specifications}</h3>
-                <ul className="text-sm text-muted-foreground space-y-1">
-                  <li>• {t.productDetail.material}: {t.products.items[parseInt(id || '1') - 1]?.specs?.split(' / ')[0] || 'Premium steel and wood'}</li>
-                  <li>• {t.productDetail.loadCapacity}: {t.products.items[parseInt(id || '1') - 1]?.specs?.split('/ ').pop() || 'Up to 200kg'}</li>
-                  <li>• {t.productDetail.customizableSizes}</li>
-                  <li>• {t.productDetail.easyAssembly}</li>
-                </ul>
+            {/* Specifications - Only show for products other than 1 and 2 */}
+            {parseInt(id || '1') !== 1 && parseInt(id || '1') !== 2 && (
+              <div className="space-y-4 mb-8">
+                <div>
+                  <h3 className="font-semibold mb-2">{t.productDetail.specifications}</h3>
+                  <ul className="text-sm text-muted-foreground space-y-1">
+                    <li>• {t.productDetail.material}: {product?.specs?.split(' / ')[0] || 'Premium steel and wood'}</li>
+                    <li>• {t.productDetail.loadCapacity}: {product?.specs?.split('/ ').pop() || 'Up to 200kg'}</li>
+                    <li>• {t.productDetail.customizableSizes}</li>
+                    <li>• {t.productDetail.easyAssembly}</li>
+                  </ul>
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="space-y-4">
               <button
@@ -78,9 +158,6 @@ const ProductDetailPage = () => {
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
-              </button>
-              <button className="w-full px-8 py-3 border-2 border-charcoal text-charcoal rounded-md font-medium hover:bg-charcoal hover:text-white transition-colors">
-                {t.productDetail.downloadSpecs}
               </button>
             </div>
           </div>

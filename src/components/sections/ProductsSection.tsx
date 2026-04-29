@@ -4,20 +4,26 @@ import { ArrowRight } from 'lucide-react'
 import { Button } from '../ui/button'
 import { Card, CardContent } from '../ui/card'
 import { useLanguage } from '../../contexts/LanguageContext'
+import { getProductImages } from '../../config/products'
 
 const ProductsSection = () => {
   const navigate = useNavigate()
   const { t } = useLanguage()
   const [hoveredProduct, setHoveredProduct] = useState<number | null>(null)
 
-  const products = t.products.items.map((item, index) => ({
-    id: index + 1,
-    name: item.name,
-    description: item.description,
-    whiteImage: '/images/product-showcase.jpg',
-    sceneImage: '/images/hero-boutique.jpg',
-    specs: item.specs
-  }))
+  const products = t.products.items.map((item, index) => {
+    const productId = index + 1
+    const images = getProductImages(productId)
+    
+    return {
+      id: productId,
+      name: item.name,
+      description: item.description,
+      whiteImage: images.whiteImage,
+      sceneImage: images.sceneImage,
+      specs: item.specs
+    }
+  })
 
   return (
     <section id="products" className="section-padding bg-gradient-to-b from-secondary to-background">

@@ -1,17 +1,14 @@
 import { useNavigate } from 'react-router-dom'
 import { Card } from '../ui/card'
 import { useLanguage } from '../../contexts/LanguageContext'
+import { getAllCases } from '../../config/cases'
 
 const CasesSection = () => {
   const navigate = useNavigate()
   const { t } = useLanguage()
 
-  const cases = t.cases.items.map((item, index) => ({
-    id: index + 1,
-    image: ['/images/hero-boutique.jpg', '/images/factory-workshop.jpg', '/images/product-showcase.jpg'][index % 3],
-    name: item.name,
-    result: item.result
-  }))
+  // Get case studies from configuration
+  const cases = getAllCases()
 
   return (
     <section id="cases" className="section-padding bg-background">
@@ -32,7 +29,7 @@ const CasesSection = () => {
             >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <img
-                  src={caseItem.image}
+                  src={caseItem.coverImage}
                   alt={caseItem.name}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
@@ -45,16 +42,6 @@ const CasesSection = () => {
               </div>
             </Card>
           ))}
-        </div>
-
-        {/* View All Button */}
-        <div className="text-center mt-12">
-          <button
-            onClick={() => navigate('/cases')}
-            className="px-8 py-3 border-2 border-charcoal text-charcoal rounded-md font-medium hover:bg-charcoal hover:text-white transition-all duration-300"
-          >
-            {t.cases.viewAll}
-          </button>
         </div>
       </div>
     </section>

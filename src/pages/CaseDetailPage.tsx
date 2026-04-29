@@ -1,9 +1,19 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { getCaseStudy } from '../config/cases'
 import { useLanguage } from '../contexts/LanguageContext'
 
 const CaseDetailPage = () => {
   const navigate = useNavigate()
+  const { id } = useParams()
   const { t } = useLanguage()
+
+  // Get case study from configuration
+  const caseId = parseInt(id || '1')
+  const caseStudy = getCaseStudy(caseId)
+  
+  // Fallback to first case if not found
+  const images = caseStudy?.galleryImages || []
+  const caseName = caseStudy?.name || 'Case Study'
 
   return (
     <div className="min-h-screen py-20">
@@ -12,48 +22,24 @@ const CaseDetailPage = () => {
           onClick={() => navigate('/cases')}
           className="mb-8 text-wood hover:text-wood-light"
         >
-          {t.caseDetail.backToCases}
+          ← {t.caseDetail?.backToCases || 'Back to Cases'}
         </button>
 
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl font-bold mb-4">{t.cases.title}</h1>
-          <img
-            src="/images/hero-boutique.jpg"
-            alt="Case study"
-            className="w-full rounded-lg mb-8"
-          />
-
-          <div className="prose max-w-none">
-            <h2 className="text-2xl font-semibold mb-4">{t.caseDetail.projectOverview}</h2>
-            <p className="text-muted-foreground mb-6">
-              {t.caseDetail.projectOverviewDesc}
-            </p>
-
-            <h2 className="text-2xl font-semibold mb-4">{t.caseDetail.challenge}</h2>
-            <p className="text-muted-foreground mb-6">
-              {t.caseDetail.challengeDesc}
-            </p>
-
-            <h2 className="text-2xl font-semibold mb-4">{t.caseDetail.solution}</h2>
-            <p className="text-muted-foreground mb-6">
-              {t.caseDetail.solutionDesc}
-            </p>
-
-            <h2 className="text-2xl font-semibold mb-4">{t.caseDetail.results}</h2>
-            <ul className="list-disc list-inside text-muted-foreground space-y-2">
-              <li>{t.caseDetail.result1}</li>
-              <li>{t.caseDetail.result2}</li>
-              <li>{t.caseDetail.result3}</li>
-            </ul>
-          </div>
-
-          <div className="mt-12 text-center">
-            <button
-              onClick={() => navigate('/contact')}
-              className="px-8 py-3 bg-wood text-white rounded-md font-medium hover:bg-wood-light transition-colors"
-            >
-              {t.caseDetail.startProject}
-            </button>
+        <div className="max-w-6xl mx-auto">
+          <h1 className="text-3xl md:text-4xl font-bold mb-8">{caseName}</h1>
+          
+          {/* Image Gallery */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {images.map((img, index) => (
+              <div key={index} className="overflow-hidden rounded-lg shadow-lg">
+                <img
+                  src={img}
+                  alt={`${caseName} - image ${index + 1}`}
+                  className="w-full h-auto object-cover hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>

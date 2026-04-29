@@ -106,21 +106,15 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       if (saved && translations[saved as Language]) {
         setLanguageState(saved as Language)
         setIsInitialized(true)
+        console.log('[i18n] Using saved language preference:', saved)
         return
       }
 
-      // Priority 2: Try IP-based detection for first-time visitors
-      const detectedLang = await detectLanguageFromIP()
-      if (detectedLang) {
-        setLanguageState(detectedLang)
-        setIsInitialized(true)
-        return
-      }
-
-      // Priority 3: Fallback to browser language
-      const browserLang = getBrowserLanguage()
-      setLanguageState(browserLang)
+      // Priority 2: Default to English for global B2B audience
+      // English is the international business language
+      setLanguageState('en')
       setIsInitialized(true)
+      console.log('[i18n] Defaulting to English for global audience')
     }
 
     initializeLanguage()

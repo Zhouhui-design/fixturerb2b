@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ChevronDown, ArrowRight } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 import { Button } from '../ui/button'
 import { useLanguage } from '../../contexts/LanguageContext'
 
@@ -11,49 +11,72 @@ const HeroSection = () => {
 
   const slides = [
     {
-      image: '/images/hero-boutique.jpg',
-      alt: 'Upscale women\'s clothing boutique interior'
+      image: '/images/pullin-1.jpg',
+      alt: 'Premium clothing display fixtures'
     },
     {
-      image: '/images/factory-workshop.jpg',
-      alt: 'Professional manufacturing workshop'
+      image: '/images/pullin-2.jpg',
+      alt: 'Modern retail shelving system'
     },
     {
-      image: '/images/product-showcase.jpg',
-      alt: 'Modular retail display system'
+      image: '/images/pullin-3.jpg',
+      alt: 'Boutique store display solutions'
+    },
+    {
+      image: '/images/pullin-4.jpg',
+      alt: 'Professional garment racks'
+    },
+    {
+      image: '/images/pullin-5.jpg',
+      alt: 'Custom retail fixtures'
+    },
+    {
+      image: '/images/pullin-6.jpg',
+      alt: 'Store interior design'
+    },
+    {
+      image: '/images/pullin-7.jpg',
+      alt: 'Display showcase systems'
+    },
+    {
+      image: '/images/pullin-8.jpg',
+      alt: 'Commercial furniture solutions'
     }
   ]
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length)
-    }, 5000)
+    }, 6000)
     return () => clearInterval(interval)
   }, [slides.length])
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Slideshow - Simplified transitions */}
-      <div className="absolute inset-0">
-        {slides.map((slide, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentSlide ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <img
-              src={slide.image}
-              alt={slide.alt}
-              className="w-full h-full object-cover"
-                  loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-charcoal/70 via-charcoal/60 to-charcoal/80" />
-          </div>
-        ))}
+      {/* Background Slideshow - Smooth right-to-left sliding */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div 
+          className="flex h-full transition-transform duration-[2000ms] ease-out"
+          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+        >
+          {slides.map((slide, index) => (
+            <div
+              key={index}
+              className="w-full h-full flex-shrink-0 relative"
+            >
+              <img
+                src={slide.image}
+                alt={slide.alt}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-charcoal/70 via-charcoal/60 to-charcoal/80" />
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Static Background Overlay - Removed animation for performance */}
+      {/* Static Background Overlay */}
       <div className="absolute inset-0 opacity-20">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(210,180,140,0.15),transparent_50%)]" />
       </div>
@@ -61,7 +84,7 @@ const HeroSection = () => {
       {/* Content */}
       <div className="relative z-10 container-custom text-center text-white">
         <div className="max-w-5xl mx-auto space-y-8">
-          {/* Main Title - Simplified animation */}
+          {/* Main Title */}
           <h1 className="heading-1 font-bold tracking-tight fade-in-up animate-delay-200">
             {t.hero.title}
           </h1>
@@ -71,24 +94,15 @@ const HeroSection = () => {
             {t.hero.subtitle}
           </p>
 
-          {/* Trust Statement - Removed hover-lift for better UX */}
+          {/* Trust Statement */}
           <div className="glass-dark rounded-2xl p-6 max-w-3xl mx-auto border border-white/20 fade-in-up animate-delay-600">
             <p className="text-sm md:text-base leading-relaxed text-white/90">
               {t.hero.trustStatement}
             </p>
           </div>
 
-          {/* CTA Buttons - Simplified effects */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 fade-in-up animate-delay-800">
-            <Button
-              variant="accent"
-              size="lg"
-              className="group shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300"
-              onClick={() => navigate('/services')}
-            >
-              {t.hero.exploreSolutions}
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-            </Button>
+          {/* CTA Button - Only Contact Expert */}
+          <div className="flex items-center justify-center pt-4 fade-in-up animate-delay-800">
             <Button
               variant="outline"
               size="lg"
@@ -101,12 +115,12 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator - Gentler animation */}
+      {/* Scroll Indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce-slow">
         <ChevronDown className="w-8 h-8 text-white/70 hover:text-white transition-colors cursor-pointer" />
       </div>
 
-      {/* Slide Indicators - Simplified */}
+      {/* Slide Indicators */}
       <div className="absolute bottom-8 right-8 flex space-x-2 glass px-4 py-2 rounded-full">
         {slides.map((_, index) => (
           <button
