@@ -40,7 +40,8 @@ function AppContent() {
       <Navbar />
       <main className="pt-0">
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<CasesPage />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/products/:id" element={<ProductDetailPage />} />
           <Route path="/cases" element={<CasesPage />} />
