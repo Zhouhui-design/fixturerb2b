@@ -15,7 +15,7 @@ export const siteConfig = {
     larkAppLink: 'larksuite://open?user_id=YourLarkUserID&action=chat' // TODO: Replace YourLarkUserID with actual ID
   },
   social: {
-    facebook: 'https://www.facebook.com/profile.php?id=61588848039978',
+    tiktok: 'https://www.tiktok.com/@huizhou56',
     instagram: '#',
     linkedin: '#',
     twitter: '#'
