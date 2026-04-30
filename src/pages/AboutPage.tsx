@@ -1,7 +1,63 @@
+import { useState, useEffect, useRef } from 'react'
+import { RotateCw, ZoomIn, X } from 'lucide-react'
 import { useLanguage } from '../contexts/LanguageContext'
 
 const AboutPage = () => {
   const { t } = useLanguage()
+
+  // Image viewer state
+  const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const [imageRotation, setImageRotation] = useState<{[key: string]: number}>({})
+  const [imageScale, setImageScale] = useState<{[key: string]: number}>({})
+  const modalRef = useRef<HTMLDivElement>(null)
+
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedImage(null)
+        setImageScale({})
+      }
+    }
+    window.addEventListener('keydown', handleEsc)
+    return () => window.removeEventListener('keydown', handleEsc)
+  }, [])
+
+  // Handle image rotation
+  const handleRotate = (imgSrc: string) => {
+    setImageRotation(prev => ({
+      ...prev,
+      [imgSrc]: ((prev[imgSrc] || 0) + 90) % 360
+    }))
+  }
+
+  // Handle image zoom with mouse wheel
+  const handleWheel = (e: React.WheelEvent, imgSrc: string) => {
+    e.preventDefault()
+    const delta = e.deltaY > 0 ? -0.1 : 0.1
+    setImageScale(prev => {
+      const currentScale = prev[imgSrc] || 1
+      const newScale = Math.max(0.5, Math.min(5, currentScale + delta))
+      return {
+        ...prev,
+        [imgSrc]: newScale
+      }
+    })
+  }
+
+  // Handle double click to open modal
+  const handleDoubleClick = (imgSrc: string) => {
+    setSelectedImage(imgSrc)
+    setImageScale(prev => ({
+      ...prev,
+      [imgSrc]: prev[imgSrc] || 1
+    }))
+  }
+
+  // Close modal
+  const closeModal = () => {
+    setSelectedImage(null)
+  }
 
   return (
     <div className="min-h-screen">
@@ -54,13 +110,41 @@ const AboutPage = () => {
             {/* Founder Photo Card */}
             <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow border border-slate-200 dark:border-slate-700">
               <h3 className="text-2xl font-bold mb-6 text-center">Founder Photo</h3>
-              <div className="aspect-square bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-600 rounded-xl flex items-center justify-center mb-4 overflow-hidden">
+              <div 
+                className="aspect-square bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-600 rounded-xl flex items-center justify-center mb-4 overflow-hidden relative group cursor-pointer"
+                onDoubleClick={() => handleDoubleClick('/images/founder-photo-1.jpg')}
+              >
                 <img 
                   src="/images/founder-photo-1.jpg" 
                   alt="Gou Hui - Founder" 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-300"
+                  style={{ transform: `rotate(${imageRotation['/images/founder-photo-1.jpg'] || 0}deg)` }}
                   loading="lazy"
                 />
+                
+                {/* Hover overlay with controls */}
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleRotate('/images/founder-photo-1.jpg')
+                    }}
+                    className="p-2 bg-white rounded-full hover:bg-gray-100 transition-colors"
+                    title="Rotate 90°"
+                  >
+                    <RotateCw className="w-5 h-5 text-gray-700" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleDoubleClick('/images/founder-photo-1.jpg')
+                    }}
+                    className="p-2 bg-white rounded-full hover:bg-gray-100 transition-colors"
+                    title="Zoom In"
+                  >
+                    <ZoomIn className="w-5 h-5 text-gray-700" />
+                  </button>
+                </div>
               </div>
               <p className="text-center text-slate-600 dark:text-slate-300 font-medium">Gou Hui - Founder</p>
               <p className="text-center text-slate-500 dark:text-slate-400 text-sm mt-2">Hangzhou Gouhui International Trade Co., Ltd.</p>
@@ -69,13 +153,41 @@ const AboutPage = () => {
             {/* Business License Card */}
             <div className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow border border-slate-200 dark:border-slate-700">
               <h3 className="text-2xl font-bold mb-6 text-center">Business License</h3>
-              <div className="aspect-[3/4] bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-600 rounded-xl flex items-center justify-center mb-4 overflow-hidden">
+              <div 
+                className="aspect-[3/4] bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-600 rounded-xl flex items-center justify-center mb-4 overflow-hidden relative group cursor-pointer"
+                onDoubleClick={() => handleDoubleClick('/images/business-license.jpg')}
+              >
                 <img 
                   src="/images/business-license.jpg" 
                   alt="Business License - Hangzhou Gouhui International Trade Co., Ltd." 
-                  className="w-full h-full object-contain p-4"
+                  className="w-full h-full object-contain p-4 transition-transform duration-300"
+                  style={{ transform: `rotate(${imageRotation['/images/business-license.jpg'] || 0}deg)` }}
                   loading="lazy"
                 />
+                
+                {/* Hover overlay with controls */}
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleRotate('/images/business-license.jpg')
+                    }}
+                    className="p-2 bg-white rounded-full hover:bg-gray-100 transition-colors"
+                    title="Rotate 90°"
+                  >
+                    <RotateCw className="w-5 h-5 text-gray-700" />
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleDoubleClick('/images/business-license.jpg')
+                    }}
+                    className="p-2 bg-white rounded-full hover:bg-gray-100 transition-colors"
+                    title="Zoom In"
+                  >
+                    <ZoomIn className="w-5 h-5 text-gray-700" />
+                  </button>
+                </div>
               </div>
               <p className="text-center text-slate-600 dark:text-slate-300 font-medium">Official Business License</p>
               <p className="text-center text-slate-500 dark:text-slate-400 text-sm mt-2">Registration No.: 91330102MA7YAL1L8G</p>
@@ -229,6 +341,56 @@ const AboutPage = () => {
           </div>
         </div>
       </section>
+
+      {/* Image Modal */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
+          onClick={closeModal}
+        >
+          <div 
+            ref={modalRef}
+            className="relative max-w-[90vw] max-h-[90vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={closeModal}
+              className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+            >
+              <X className="w-6 h-6 text-white" />
+            </button>
+
+            {/* Rotate button */}
+            <button
+              onClick={() => handleRotate(selectedImage)}
+              className="absolute top-4 left-4 z-10 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+              title="Rotate 90°"
+            >
+              <RotateCw className="w-6 h-6 text-white" />
+            </button>
+
+            {/* Image with zoom and rotation */}
+            <img
+              src={selectedImage}
+              alt="Enlarged view"
+              className="max-w-full max-h-[85vh] object-contain transition-transform duration-200"
+              style={{ 
+                transform: `rotate(${imageRotation[selectedImage] || 0}deg) scale(${imageScale[selectedImage] || 1})`,
+                cursor: 'zoom-in'
+              }}
+              onWheel={(e) => handleWheel(e, selectedImage)}
+              onDoubleClick={closeModal}
+            />
+
+            {/* Zoom level indicator */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/60 text-white px-4 py-2 rounded-full text-sm">
+              {Math.round((imageScale[selectedImage] || 1) * 100)}%
+              {' • '}Scroll to zoom, ESC to close
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
