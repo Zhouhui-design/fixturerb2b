@@ -564,7 +564,7 @@ export const translations: Record<Language, Translations> = {
         { name: 'EVE New York', result: 'Customer dwell time +35%' },
         { name: 'Korean Art Fashion Brand', result: 'Sales conversion +25%' },
         { name: 'Display Cabinet Collection', result: 'Space utilization +50%' },
-        { name: 'Luxury Womenswear Hangzhou', result: 'Brand perception elevated' }
+        { name: 'Hangzhou Womenswear', result: 'Brand perception elevated' }
       ]
     },
     services: {
@@ -889,7 +889,7 @@ export const translations: Record<Language, Translations> = {
         { name: 'EVE New York', result: '顾客停留时间 +35%' },
         { name: '韩国艺术潮牌', result: '销售转化率 +25%' },
         { name: '展柜类', result: '空间利用率 +50%' },
-        { name: '杭州高端女装店', result: '品牌形象提升' }
+        { name: '杭州女装', result: '品牌形象提升' }
       ]
     },
     services: {
@@ -1191,7 +1191,7 @@ export const translations: Record<Language, Translations> = {
         { name: 'EVE New York', result: '顧客滞在時間 +35%' },
         { name: '韓国アートファッションブランド', result: '販売転換率 +25%' },
         { name: '展示キャビネットコレクション', result: '空間利用率 +50%' },
-        { name: '杭州高級婦人服店', result: 'ブランドイメージ向上' }
+        { name: '杭州婦人服', result: 'ブランドイメージ向上' }
       ]
     },
     caseDetail: {
@@ -1468,7 +1468,7 @@ export const translations: Record<Language, Translations> = {
         { name: 'EVE New York', result: 'Tiempo de permanencia +35%' },
         { name: 'Marca de Moda Artística Coreana', result: 'Conversión de ventas +25%' },
         { name: 'Colección de Vitrinas', result: 'Utilización del espacio +50%' },
-        { name: 'Moda Femenina de Lujo Hangzhou', result: 'Percepción de marca elevada' }
+        { name: 'Moda Femenina Hangzhou', result: 'Percepción de marca elevada' }
       ]
     },
     services: {
@@ -1743,7 +1743,7 @@ export const translations: Record<Language, Translations> = {
         { name: 'EVE New York', result: 'Temps de séjour client +35%' },
         { name: 'Marque de Mode Artistique Coréenne', result: 'Conversion des ventes +25%' },
         { name: 'Collection de Vitrines', result: 'Utilisation de l\'espace +50%' },
-        { name: 'Mode Féminine de Luxe Hangzhou', result: 'Perception de la marque élevée' }
+        { name: 'Mode Féminine Hangzhou', result: 'Perception de la marque élevée' }
       ]
     },
     services: {
@@ -2018,7 +2018,7 @@ export const translations: Record<Language, Translations> = {
         { name: 'EVE New York', result: 'Kundenverweildauer +35%' },
         { name: 'Koreanische Kunstmode-Marke', result: 'Verkaufskonversion +25%' },
         { name: 'Vitrinen-Kollektion', result: 'Raumnutzung +50%' },
-        { name: 'Luxus-Damenmode Hangzhou', result: 'Markenwahrnehmung verbessert' }
+        { name: 'Hangzhou Damenmode', result: 'Markenwahrnehmung verbessert' }
       ]
     },
     services: {
@@ -2293,7 +2293,7 @@ export const translations: Record<Language, Translations> = {
         { name: 'EVE New York', result: '고객 체류 시간 +35%' },
         { name: '한국 아트 패션 브랜드', result: '판매 전환율 +25%' },
         { name: '디스플레이 캐비닛 컬렉션', result: '공간 활용도 +50%' },
-        { name: '항저우 럭셔리 여성복', result: '브랜드 인식 향상' }
+        { name: '항저우 여성복', result: '브랜드 인식 향상' }
       ]
     },
     services: {
@@ -2568,7 +2568,7 @@ export const translations: Record<Language, Translations> = {
         { name: 'EVE New York', result: 'Tempo de permanência do cliente +35%' },
         { name: 'Marca de Moda Artística Coreana', result: 'Conversão de vendas +25%' },
         { name: 'Coleção de Vitrines', result: 'Utilização do espaço +50%' },
-        { name: 'Moda Feminina Luxo Hangzhou', result: 'Percepção da marca melhorada' }
+        { name: 'Moda Feminina Hangzhou', result: 'Percepção da marca melhorada' }
       ]
     },
     services: {
@@ -2843,7 +2843,7 @@ export const translations: Record<Language, Translations> = {
         { name: 'EVE New York', result: 'Время пребывания клиентов +35%' },
         { name: 'Корейский бренд арт-моды', result: 'Конверсия продаж +25%' },
         { name: 'Коллекция витрин', result: 'Использование пространства +50%' },
-        { name: 'Роскошная женская одежда Ханчжоу', result: 'Восприятие бренда улучшено' }
+        { name: 'Женская одежда Ханчжоу', result: 'Восприятие бренда улучшено' }
       ]
     },
     services: {
@@ -3118,7 +3118,7 @@ export const translations: Record<Language, Translations> = {
         { name: 'EVE New York', result: 'وقت بقاء العملاء +35%' },
         { name: 'علامة أزياء فنية كورية', result: 'تحويل المبيعات +25%' },
         { name: 'مجموعة خزائن العرض', result: 'استخدام المساحة +50%' },
-        { name: 'أزياء نسائية فاخرة هانغتشو', result: 'تحسين تصور العلامة التجارية' }
+        { name: 'أزياء نسائية هانغتشو', result: 'تحسين تصور العلامة التجارية' }
       ]
     },
     services: {

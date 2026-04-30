@@ -171,10 +171,20 @@ export const caseStudies: CaseImageConfig[] = [
   },
   {
     id: 6,
-    name: 'Luxury Womenswear Hangzhou',
+    name: 'Hangzhou Womenswear',
     result: 'Brand perception elevated',
-    coverImage: '/images/pullin-6.jpg',
-    galleryImages: [] // Images to be added
+    coverImage: '/images/hangzhou-womenswear-1.jpg',
+    galleryImages: [
+      '/images/hangzhou-womenswear-1.jpg',
+      '/images/hangzhou-womenswear-2.jpg',
+      '/images/hangzhou-womenswear-3.jpg',
+      '/images/hangzhou-womenswear-4.jpg',
+      '/images/hangzhou-womenswear-5.jpg',
+      '/images/hangzhou-womenswear-6.jpg',
+      '/images/hangzhou-womenswear-7.jpg',
+      '/images/hangzhou-womenswear-8.jpg',
+      '/images/hangzhou-womenswear-9.jpg'
+    ]
   }
 ]
 
