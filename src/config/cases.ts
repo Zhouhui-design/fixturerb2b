@@ -166,18 +166,7 @@ export const caseStudies: CaseImageConfig[] = [
       '/images/display-case-27.png',
       '/images/display-case-28.png',
       '/images/display-case-29.png',
-      '/images/display-case-30.png',
-      '/images/display-case-31.png',
-      '/images/display-case-32.png',
-      '/images/display-case-33.png',
-      '/images/display-case-34.png',
-      '/images/display-case-35.png',
-      '/images/display-case-36.png',
-      '/images/display-case-37.png',
-      '/images/display-case-38.png',
-      '/images/display-case-39.png',
-      '/images/display-case-40.png',
-      '/images/display-case-41.png'
+      '/images/display-case-30.png'
     ]
   },
   {
