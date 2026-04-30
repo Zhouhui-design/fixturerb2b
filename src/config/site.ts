@@ -15,7 +15,7 @@ export const siteConfig = {
     larkAppLink: 'larksuite://open?user_id=YourLarkUserID&action=chat' // TODO: Replace YourLarkUserID with actual ID
   },
   social: {
-    facebook: '#',
+    facebook: 'https://www.facebook.com/profile.php?id=61588848039978',
     instagram: '#',
     linkedin: '#',
     twitter: '#'
