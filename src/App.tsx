@@ -13,6 +13,7 @@ import ServicesPage from './pages/ServicesPage'
 import AboutPage from './pages/AboutPage'
 import ContactPage from './pages/ContactPage'
 import AdminDashboard from './pages/AdminDashboard'
+import AdminLogin from './pages/AdminLogin'
 import MyInquiriesPage from './pages/MyInquiriesPage'
 import ChatWidget from './components/ChatWidget'
 import SalesmartlyChat from './components/SalesmartlyChat'
@@ -20,7 +21,7 @@ import TidioChat from './components/TidioChat'
 import WhatsAppCallback from './components/WhatsAppCallback'
 import TrustBanner from './components/sections/TrustBanner'
 
-function AppContent() {
+function AppContent({ isAuthenticated, handleLogin }: { isAuthenticated: boolean; handleLogin: () => void }) {
   const [showBanner, setShowBanner] = useState(true)
 
   useEffect(() => {
@@ -34,6 +35,14 @@ function AppContent() {
     setShowBanner(false)
     localStorage.setItem('bannerClosed', 'true')
   }
+
+  // Check authentication on mount
+  useEffect(() => {
+    const authenticated = sessionStorage.getItem('admin_authenticated')
+    if (authenticated === 'true') {
+      // Already handled in App component
+    }
+  }, [])
 
   return (
     <div className="min-h-screen bg-background">
@@ -51,7 +60,17 @@ function AppContent() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/my-inquiries" element={<MyInquiriesPage />} />
-          <Route path="/admin" element={<AdminDashboard />} />
+          {/* Admin routes with authentication */}
+          <Route 
+            path="/admin" 
+            element={
+              isAuthenticated ? (
+                <AdminDashboard />
+              ) : (
+                <AdminLogin onLogin={handleLogin} />
+              )
+            } 
+          />
         </Routes>
       </main>
       <Footer />
@@ -67,11 +86,25 @@ function AppContent() {
 }
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+
+  // Check authentication on mount
+  useEffect(() => {
+    const authenticated = sessionStorage.getItem('admin_authenticated')
+    if (authenticated === 'true') {
+      setIsAuthenticated(true)
+    }
+  }, [])
+
+  const handleLogin = () => {
+    setIsAuthenticated(true)
+  }
+
   return (
     <HelmetProvider>
       <Router>
         <LanguageProvider>
-          <AppContent />
+          <AppContent isAuthenticated={isAuthenticated} handleLogin={handleLogin} />
         </LanguageProvider>
       </Router>
     </HelmetProvider>
