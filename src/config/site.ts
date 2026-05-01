@@ -16,6 +16,7 @@ export const siteConfig = {
   },
   social: {
     tiktok: 'https://www.tiktok.com/@huizhou56',
+    youtube: 'https://www.youtube.com/channel/UC6ZzR9Ch5O_hHnJ9epPtTaw',
     instagram: '#',
     linkedin: '#',
     twitter: '#'
