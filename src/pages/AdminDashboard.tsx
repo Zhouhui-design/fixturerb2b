@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
 import { Mail, Phone, MapPin, Package, DollarSign, FileText, CheckCircle, XCircle, Clock, MessageSquare, Store, Building } from 'lucide-react'
+import EmailCompose from '../components/EmailCompose'
 
 interface ContactSubmission {
   id: string
@@ -41,6 +42,8 @@ const AdminDashboard = () => {
   const [filter, setFilter] = useState('all')
   const [selectedQuote, setSelectedQuote] = useState<QuoteRequest | null>(null)
   const [activeTab, setActiveTab] = useState<'contacts' | 'quotes'>('contacts')
+  const [showEmailCompose, setShowEmailCompose] = useState(false)
+  const [emailComposeData, setEmailComposeData] = useState<{ to: string; subject: string; type: 'contact' | 'quote'; id: string } | null>(null)
 
   useEffect(() => {
     loadContactSubmissions()
@@ -87,6 +90,22 @@ const AdminDashboard = () => {
     }
   }
 
+  const handleReplyEmail = (email: string, subject: string, type: 'contact' | 'quote', id: string) => {
+    setEmailComposeData({ to: email, subject, type, id })
+    setShowEmailCompose(true)
+  }
+
+  const handleEmailSent = () => {
+    if (emailComposeData) {
+      // 更新状态为已回复
+      if (emailComposeData.type === 'contact') {
+        updateContactStatus(emailComposeData.id, 'replied')
+      } else {
+        updateStatus(emailComposeData.id, 'replied')
+      }
+    }
+  }
+
   // 管理员已认证，显示完整信息（不脱敏）
   const displayEmail = (email: string | null): string => {
     return email || '-'
@@ -94,11 +113,6 @@ const AdminDashboard = () => {
 
   const displayPhone = (phone: string | null): string => {
     return phone || '-'
-  }
-
-  const openEmailClient = (email: string, subject: string = '') => {
-    const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}`
-    window.location.href = mailtoLink  // 在当前标签页打开邮件客户端
   }
 
   const updateContactStatus = async (id: string, newStatus: string) => {
@@ -339,7 +353,7 @@ const AdminDashboard = () => {
                           </button>
                         )}
                         <button
-                          onClick={() => openEmailClient(submission.email, `Re: Your Inquiry - ${submission.name}`)}
+                          onClick={() => handleReplyEmail(submission.email, `Re: Your Inquiry - ${submission.name}`, 'contact', submission.id)}
                           className="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700"
                         >
                           Reply Email
@@ -471,7 +485,7 @@ const AdminDashboard = () => {
                         </>
                       )}
                       <button
-                        onClick={() => openEmailClient(quote.customer_email, `Re: Quote Request for ${quote.product_name}`)}
+                        onClick={() => handleReplyEmail(quote.customer_email, `Re: Quote Request for ${quote.product_name}`, 'quote', quote.id)}
                         className="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700"
                       >
                         Reply Email
@@ -485,6 +499,16 @@ const AdminDashboard = () => {
           </div>
         )}
       </div>
+
+      {/* Email Compose Modal */}
+      {showEmailCompose && emailComposeData && (
+        <EmailCompose
+          to={emailComposeData.to}
+          subject={emailComposeData.subject}
+          onClose={() => setShowEmailCompose(false)}
+          onSent={handleEmailSent}
+        />
+      )}
     </div>
   )
 }
