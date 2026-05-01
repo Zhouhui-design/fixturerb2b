@@ -98,7 +98,7 @@ const AdminDashboard = () => {
 
   const openEmailClient = (email: string, subject: string = '') => {
     const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}`
-    window.open(mailtoLink, '_blank')
+    window.location.href = mailtoLink  // 在当前标签页打开邮件客户端
   }
 
   const updateContactStatus = async (id: string, newStatus: string) => {
