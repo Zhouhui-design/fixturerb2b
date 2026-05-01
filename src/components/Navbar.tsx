@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { Menu, X, Globe, ChevronDown } from 'lucide-react'
+import { Menu, X, Globe, ChevronDown, User, Shield } from 'lucide-react'
 import { Button } from './ui/button'
 import { useLanguage } from '../contexts/LanguageContext'
 import { Language } from '../i18n/translations'
@@ -89,6 +89,35 @@ const Navbar = () => {
                 />
               </button>
             ))}
+            
+            {/* Divider */}
+            <div className="w-px h-6 bg-white/20 mx-2" />
+            
+            {/* Customer Inquiry Button */}
+            <button
+              onClick={() => handleNavClick('/my-inquiries')}
+              className={`flex items-center space-x-1.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
+                location.pathname === '/my-inquiries'
+                  ? 'text-wood bg-white/10'
+                  : 'text-white/90 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <User className="w-4 h-4" />
+              <span>客户查询</span>
+            </button>
+            
+            {/* Admin Dashboard Button */}
+            <button
+              onClick={() => handleNavClick('/admin')}
+              className={`flex items-center space-x-1.5 px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
+                location.pathname === '/admin'
+                  ? 'text-wood bg-white/10'
+                  : 'text-white/90 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <Shield className="w-4 h-4" />
+              <span>管理后台</span>
+            </button>
           </div>
 
           {/* Right Actions - Simplified */}
@@ -169,6 +198,35 @@ const Navbar = () => {
                 {item.label}
               </button>
             ))}
+            
+            {/* Mobile Divider */}
+            <div className="my-2 border-t border-white/10" />
+            
+            {/* Mobile Customer Inquiry Button */}
+            <button
+              onClick={() => handleNavClick('/my-inquiries')}
+              className={`flex items-center space-x-2 w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${
+                location.pathname === '/my-inquiries'
+                  ? 'text-wood bg-white/10 font-semibold'
+                  : 'text-white/90 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <User className="w-5 h-5" />
+              <span>客户查询</span>
+            </button>
+            
+            {/* Mobile Admin Dashboard Button */}
+            <button
+              onClick={() => handleNavClick('/admin')}
+              className={`flex items-center space-x-2 w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${
+                location.pathname === '/admin'
+                  ? 'text-wood bg-white/10 font-semibold'
+                  : 'text-white/90 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <Shield className="w-5 h-5" />
+              <span>管理后台</span>
+            </button>
 
             {/* Mobile Language Selector */}
             <div className="pt-4 mt-4 border-t border-white/10">
