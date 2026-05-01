@@ -87,18 +87,18 @@ const AdminDashboard = () => {
     }
   }
 
-  const maskSensitiveInfo = (text: string | null, type: 'email' | 'phone'): string => {
-    if (!text) return '-'
-    if (type === 'email') {
-      const [local, domain] = text.split('@')
-      if (!domain) return '****'
-      if (local.length <= 2) return '****@' + domain
-      return local.substring(0, 2) + '****' + '@' + domain
-    } else if (type === 'phone') {
-      if (text.length <= 4) return '****'
-      return text.substring(0, 2) + '****' + text.substring(text.length - 2)
-    }
-    return '****'
+  // 管理员已认证，显示完整信息（不脱敏）
+  const displayEmail = (email: string | null): string => {
+    return email || '-'
+  }
+
+  const displayPhone = (phone: string | null): string => {
+    return phone || '-'
+  }
+
+  const openEmailClient = (email: string, subject: string = '') => {
+    const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}`
+    window.open(mailtoLink, '_blank')
   }
 
   const updateContactStatus = async (id: string, newStatus: string) => {
@@ -283,14 +283,12 @@ const AdminDashboard = () => {
                       <div className="space-y-2">
                         <div className="flex items-center text-sm text-gray-600">
                           <Mail className="w-4 h-4 mr-2" />
-                          {maskSensitiveInfo(submission.email, 'email')}
-                          <span className="text-xs text-gray-400 ml-2">(masked)</span>
+                          {displayEmail(submission.email)}
                         </div>
                         {submission.phone && (
                           <div className="flex items-center text-sm text-gray-600">
                             <Phone className="w-4 h-4 mr-2" />
-                            {maskSensitiveInfo(submission.phone, 'phone')}
-                            <span className="text-xs text-gray-400 ml-2">(masked)</span>
+                            {displayPhone(submission.phone)}
                           </div>
                         )}
                       </div>
@@ -340,12 +338,12 @@ const AdminDashboard = () => {
                             Mark Replied
                           </button>
                         )}
-                        <a
-                          href={`mailto:${submission.email}?subject=Re: Your Inquiry`}
+                        <button
+                          onClick={() => openEmailClient(submission.email, `Re: Your Inquiry - ${submission.name}`)}
                           className="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700"
                         >
                           Reply Email
-                        </a>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -472,12 +470,12 @@ const AdminDashboard = () => {
                           </button>
                         </>
                       )}
-                      <a
-                        href={`mailto:${quote.customer_email}?subject=Re: Quote Request for ${quote.product_name}`}
+                      <button
+                        onClick={() => openEmailClient(quote.customer_email, `Re: Quote Request for ${quote.product_name}`)}
                         className="px-3 py-1 bg-gray-600 text-white text-sm rounded hover:bg-gray-700"
                       >
                         Reply Email
-                      </a>
+                      </button>
                     </div>
                   </div>
                 </div>
