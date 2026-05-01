@@ -13,6 +13,7 @@ import ServicesPage from './pages/ServicesPage'
 import AboutPage from './pages/AboutPage'
 import ContactPage from './pages/ContactPage'
 import AdminDashboard from './pages/AdminDashboard'
+import MyInquiriesPage from './pages/MyInquiriesPage'
 import ChatWidget from './components/ChatWidget'
 import SalesmartlyChat from './components/SalesmartlyChat'
 import TidioChat from './components/TidioChat'
@@ -49,6 +50,7 @@ function AppContent() {
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/my-inquiries" element={<MyInquiriesPage />} />
           <Route path="/admin" element={<AdminDashboard />} />
         </Routes>
       </main>
