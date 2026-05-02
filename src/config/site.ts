@@ -1,7 +1,7 @@
 // Site configuration - easily replaceable from backend
 export const siteConfig = {
   contact: {
-    email: 'aardenx@outlook.com',
+    email: 'sardenesy@gmail.com',
     phone: '', // International calls not available yet
     address: 'addressPlaceholder', // Will be replaced by translation
     whatsapp: '+86XXXXXXXXXXX',
