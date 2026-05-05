@@ -25,7 +25,7 @@ serve(async (req) => {
 
     // Prepare email content
     const emailData = {
-      from: 'noreply@fixturerb2b.top',
+      from: 'noreply@fixr2026.com',
       to: [ADMIN_EMAIL],
       subject: `New Quote Request from ${record.customer_name}`,
       html: `

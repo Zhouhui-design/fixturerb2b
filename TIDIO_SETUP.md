@@ -22,7 +22,7 @@
 3. **填写信息**（只需要邮箱）：
    - Email：你的邮箱（推荐 Gmail、Outlook 或 QQ 邮箱）
    - Password：设置密码
-   - Website：`https://fixturerb2b.top`
+   - Website：`https://fixr2026.com`
    
 4. **验证邮箱**：
    - 查收验证邮件
@@ -96,7 +96,7 @@
 ### 设置欢迎语（推荐配置）
 
 ```
-您好！欢迎来到 fixturerb2b.top 👋
+您好！欢迎来到 fixr2026.com 👋
 
 我们提供专业的商业家具制造服务：
 ✅ OEM/ODM 代工

@@ -7,14 +7,14 @@
 **当前SSL证书信息：**
 - 类型：Let's Encrypt (DV - Domain Validated)
 - 颁发者：Let's Encrypt (E8)
-- 域名：fixturerb2b.top
+- 域名：fixr2026.com
 - 生效日期：2026年4月20日
 - 过期日期：2026年7月19日（90天有效期）
 - 状态：✅ **HTTPS已启用并正常工作**
 
 **验证结果：**
 ```bash
-$ curl -I https://fixturerb2b.top
+$ curl -I https://fixr2026.com
 HTTP/1.1 200 OK
 Server: nginx/1.24.0 (Ubuntu)
 ```
@@ -143,7 +143,7 @@ OV证书需要验证企业真实性，准备以下材料：
 
 ```bash
 # SSH登录到服务器
-ssh sardenesy@fixturerb2b.top
+ssh sardenesy@fixr2026.com
 
 # 创建SSL目录
 sudo mkdir -p /etc/nginx/ssl
@@ -151,9 +151,9 @@ cd /etc/nginx/ssl
 
 # 生成私钥和CSR
 sudo openssl req -new -newkey rsa:2048 -nodes \
-  -keyout fixturerb2b.top.key \
-  -out fixturerb2b.top.csr \
-  -subj "/C=CN/ST=YourProvince/L=YourCity/O=Your Company Name/CN=fixturerb2b.top"
+  -keyout fixr2026.com.key \
+  -out fixr2026.com.csr \
+  -subj "/C=CN/ST=YourProvince/L=YourCity/O=Your Company Name/CN=fixr2026.com"
 ```
 
 **重要提示：**
@@ -177,12 +177,12 @@ sudo openssl req -new -newkey rsa:2048 -nodes \
    - 点击 "Buy Now"
 
 3. **填写订单信息**
-   - 域名：fixturerb2b.top
+   - 域名：fixr2026.com
    - 年限：1年（建议）
    - 服务器类型：Nginx
 
 4. **上传CSR**
-   - 打开本地生成的 `fixturerb2b.top.csr` 文件
+   - 打开本地生成的 `fixr2026.com.csr` 文件
    - 复制全部内容
    - 粘贴到CSR输入框
 
@@ -212,14 +212,14 @@ CA机构会通过以下方式验证：
 
 ```bash
 # 示例：上传验证文件
-scp validation-file.html sardenesy@fixturerb2b.top:/usr/share/nginx/html/
+scp validation-file.html sardenesy@fixr2026.com:/usr/share/nginx/html/
 ```
 
 #### B. 邮箱验证
 1. CA发送验证邮件到：
-   - admin@fixturerb2b.top
-   - administrator@fixturerb2b.top
-   - webmaster@fixturerb2b.top
+   - admin@fixr2026.com
+   - administrator@fixr2026.com
+   - webmaster@fixr2026.com
 2. 点击邮件中的验证链接
 
 #### C. 电话验证
@@ -244,20 +244,20 @@ scp validation-file.html sardenesy@fixturerb2b.top:/usr/share/nginx/html/
 
 ```bash
 # 1. 上传证书到服务器
-scp fixturerb2b_top.crt sardenesy@fixturerb2b.top:/etc/nginx/ssl/
-scp intermediate.crt sardenesy@fixturerb2b.top:/etc/nginx/ssl/
+scp fixturerb2b_top.crt sardenesy@fixr2026.com:/etc/nginx/ssl/
+scp intermediate.crt sardenesy@fixr2026.com:/etc/nginx/ssl/
 
 # 2. SSH登录
-ssh sardenesy@fixturerb2b.top
+ssh sardenesy@fixr2026.com
 
 # 3. 合并证书（如果需要）
 cd /etc/nginx/ssl
-cat fixturerb2b_top.crt intermediate.crt > fixturerb2b.top.bundle.crt
+cat fixturerb2b_top.crt intermediate.crt > fixr2026.com.bundle.crt
 
 # 4. 设置权限
-sudo chmod 600 fixturerb2b.top.key
-sudo chmod 644 fixturerb2b.top.bundle.crt
-sudo chown root:root fixturerb2b.top.*
+sudo chmod 600 fixr2026.com.key
+sudo chmod 644 fixr2026.com.bundle.crt
+sudo chown root:root fixr2026.com.*
 ```
 
 ---
@@ -275,11 +275,11 @@ sudo nano /etc/nginx/sites-enabled/default
 ```nginx
 server {
     listen 443 ssl http2;
-    server_name fixturerb2b.top www.fixturerb2b.top;
+    server_name fixr2026.com www.fixr2026.com;
 
     # OV SSL Certificate
-    ssl_certificate /etc/nginx/ssl/fixturerb2b.top.bundle.crt;
-    ssl_certificate_key /etc/nginx/ssl/fixturerb2b.top.key;
+    ssl_certificate /etc/nginx/ssl/fixr2026.com.bundle.crt;
+    ssl_certificate_key /etc/nginx/ssl/fixr2026.com.key;
 
     # SSL优化配置
     ssl_protocols TLSv1.2 TLSv1.3;
@@ -303,7 +303,7 @@ server {
 # HTTP重定向到HTTPS
 server {
     listen 80;
-    server_name fixturerb2b.top www.fixturerb2b.top;
+    server_name fixr2026.com www.fixr2026.com;
     return 301 https://$server_name$request_uri;
 }
 ```
@@ -324,7 +324,7 @@ sudo systemctl reload nginx
 
 ```bash
 # 检查证书信息
-echo | openssl s_client -connect fixturerb2b.top:443 -servername fixturerb2b.top 2>/dev/null | openssl x509 -noout -dates -issuer -subject
+echo | openssl s_client -connect fixr2026.com:443 -servername fixr2026.com 2>/dev/null | openssl x509 -noout -dates -issuer -subject
 
 # 应该看到新的OV证书信息
 # issuer=... Sectigo ...
@@ -454,7 +454,7 @@ sudo crontab -e
 ### Q3: OV证书可以在多个子域名使用吗？
 
 **A:** 标准OV证书只保护一个域名。如需多域名：
-- 购买通配符证书（*.fixturerb2b.top）
+- 购买通配符证书（*.fixr2026.com）
 - 或多域名证书（SAN证书）
 
 ---

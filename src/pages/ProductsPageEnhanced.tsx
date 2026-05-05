@@ -145,8 +145,8 @@ const ProductsPage = () => {
       {/* Schema Markup */}
       <SchemaMarkup type="breadcrumb" data={{
         items: [
-          { name: 'Home', url: 'https://fixturerb2b.top/' },
-          { name: 'Products', url: 'https://fixturerb2b.top/products' }
+          { name: 'Home', url: 'https://fixr2026.com/' },
+          { name: 'Products', url: 'https://fixr2026.com/products' }
         ]
       }} />
 

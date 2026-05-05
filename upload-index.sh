@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Uploading index.html to server..."
-scp -o PreferredAuthentications=password /home/sardenesy/fixturerb2b/dist/index.html sardenesy@fixturerb2b.top:/usr/share/nginx/html/index.html
+scp -o PreferredAuthentications=password /home/sardenesy/fixturerb2b/dist/index.html sardenesy@fixr2026.com:/usr/share/nginx/html/index.html
 if [ $? -eq 0 ]; then
     echo "✅ Upload successful!"
 else

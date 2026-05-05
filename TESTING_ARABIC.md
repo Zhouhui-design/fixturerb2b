@@ -3,7 +3,7 @@
 ## Quick Test Checklist
 
 ### Step 1: Access Website
-Open: https://fixturerb2b.top
+Open: https://fixr2026.com
 
 ### Step 2: Hard Refresh Browser
 ```
@@ -124,7 +124,7 @@ Verify Arabic script renders correctly:
 ### Page Load Speed:
 ```bash
 # Test homepage load time
-curl -sL -o /dev/null -w "Time: %{time_total}s\n" https://fixturerb2b.top
+curl -sL -o /dev/null -w "Time: %{time_total}s\n" https://fixr2026.com
 
 # Expected: < 2 seconds on good connection
 ```
@@ -214,13 +214,13 @@ Look for red error messages
 
 **Step 4:** Verify deployment worked
 ```bash
-ssh root@fixturerb2b.top "ls -lh /var/www/fixturerb2b.top/assets/js/index-*.js"
+ssh root@fixr2026.com "ls -lh /var/www/fixr2026.com/assets/js/index-*.js"
 # Should show: index-Do3ueql2.js modified Apr 23 02:35
 ```
 
 **Step 5:** Check translations file on server
 ```bash
-ssh root@fixturerb2b.top "grep -c 'ar:' /var/www/fixturerb2b.top/assets/js/index-*.js"
+ssh root@fixr2026.com "grep -c 'ar:' /var/www/fixr2026.com/assets/js/index-*.js"
 # Should return: 1 (found)
 ```
 

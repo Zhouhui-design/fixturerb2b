@@ -21,7 +21,7 @@ BEGIN
   --     'Authorization', 'Bearer YOUR_RESEND_API_KEY'
   --   ),
   --   body := jsonb_build_object(
-  --     'from', 'noreply@fixturerb2b.top',
+  --     'from', 'noreply@fixr2026.com',
   --     'to', ARRAY['your-email@example.com'],
   --     'subject', 'New Quote Request from ' || NEW.customer_name,
   --     'html', '<h1>New Quote Request</h1>' ||

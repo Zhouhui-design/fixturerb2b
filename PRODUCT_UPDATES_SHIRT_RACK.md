@@ -164,7 +164,7 @@ const getImageGallery = (productId: number) => {
 ## Testing Instructions | 测试说明
 
 ### Test 1: Products Page
-Visit: **https://fixturerb2b.top/products**
+Visit: **https://fixr2026.com/products**
 
 Check the first product card (top-left):
 - [ ] Name shows "衬衣展示架" (Chinese) or "Shirt Display Rack" (English)
@@ -174,7 +174,7 @@ Check the first product card (top-left):
 - [ ] Hover over image - should show different angle
 
 ### Test 2: Product Detail Page
-Visit: **https://fixturerb2b.top/products/1**
+Visit: **https://fixr2026.com/products/1**
 
 Check the image gallery:
 - [ ] Large main image at top
@@ -204,7 +204,7 @@ Visit other product pages (/products/2, /products/3):
 
 **Deployment Time**: 2026-04-24 02:49:54 UTC  
 **Status**: ✅ SUCCESS  
-**Backup**: /var/www/fixturerb2b.top_backup_20260424_024954  
+**Backup**: /var/www/fixr2026.com_backup_20260424_024954  
 
 **Files Uploaded:**
 - JavaScript bundle: index-BEVB8O-Z.js (247KB)
@@ -229,7 +229,7 @@ Visit other product pages (/products/2, /products/3):
 If you need to revert:
 
 ```bash
-ssh root@fixturerb2b.top 'rm -rf /var/www/fixturerb2b.top && cp -r /var/www/fixturerb2b.top_backup_20260424_024954 /var/www/fixturerb2b.top && systemctl restart nginx'
+ssh root@fixr2026.com 'rm -rf /var/www/fixr2026.com && cp -r /var/www/fixr2026.com_backup_20260424_024954 /var/www/fixr2026.com && systemctl restart nginx'
 ```
 
 ---
@@ -287,7 +287,7 @@ After deployment, verify ALL items:
 ---
 
 **Status**: ✅ COMPLETE & DEPLOYED  
-**Live Site**: https://fixturerb2b.top/products  
-**Product Detail**: https://fixturerb2b.top/products/1  
+**Live Site**: https://fixr2026.com/products  
+**Product Detail**: https://fixr2026.com/products/1  
 **Images**: All 12 uploaded successfully  
 

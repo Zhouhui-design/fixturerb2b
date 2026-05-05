@@ -191,7 +191,7 @@ WHERE trigger_name = 'trigger_quote_email_notification';
 
 ### 自定义发件人邮箱
 
-如果你想使用自定义域名（如 `noreply@fixturerb2b.top`）：
+如果你想使用自定义域名（如 `noreply@fixr2026.com`）：
 
 1. 在 Resend 中添加域名
 2. 配置 DNS 记录（DKIM, SPF）

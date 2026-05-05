@@ -196,7 +196,7 @@ vercel --prod
    - 确认翻译正确
 
 5. **配置自定义域名**（可选）
-   - 在 Vercel 中添加 fixturerb2b.top
+   - 在 Vercel 中添加 fixr2026.com
    - 配置 DNS
    - 启用 HTTPS
 

@@ -32,7 +32,7 @@ https://search.google.com/search-console
 
 1. 点击左上角的 **"添加属性"** 按钮
 2. 选择 **"网址前缀"**（推荐）
-3. 输入：`https://fixturerb2b.top`
+3. 输入：`https://fixr2026.com`
 4. 点击 **"继续"**
 
 ### 1.4 验证所有权
@@ -52,7 +52,7 @@ Google会提供多种验证方法，**推荐使用HTML标签验证**：
 #### 方法B：DNS验证（更持久）
 
 1. 选择 **"域名"** 选项
-2. 输入：`fixturerb2b.top`
+2. 输入：`fixr2026.com`
 3. Google会给你一个TXT记录
 4. 在你的域名提供商处添加这个TXT记录
 5. 点击验证
@@ -80,7 +80,7 @@ https://analytics.google.com
 
 ### 2.3 创建媒体资源
 
-1. **媒体资源名称**：fixturerb2b.top
+1. **媒体资源名称**：fixr2026.com
 2. **报告时区**：选择你的时区（例如：Asia/Shanghai）
 3. **货币**：USD（美元）
 4. 点击 **"下一步"**
@@ -195,18 +195,18 @@ npm run build
 
 ```bash
 # 上传整个dist目录
-scp -r dist/* sardenesy@fixturerb2b.top:/usr/share/nginx/html/
+scp -r dist/* sardenesy@fixr2026.com:/usr/share/nginx/html/
 ```
 
 或者只上传index.html：
 
 ```bash
-scp dist/index.html sardenesy@fixturerb2b.top:/usr/share/nginx/html/
+scp dist/index.html sardenesy@fixr2026.com:/usr/share/nginx/html/
 ```
 
 ### 4.3 验证上传成功
 
-访问：https://fixturerb2b.top
+访问：https://fixr2026.com
 
 右键查看页面源代码，确认能看到：
 - ✅ `<meta name="google-site-verification" content="你的代码" />`
@@ -273,7 +273,7 @@ sitemap.xml
 ### 7.2 测试跟踪
 
 1. 打开新浏览器窗口
-2. 访问：https://fixturerb2b.top
+2. 访问：https://fixr2026.com
 3. 浏览几个页面
 4. 回到Analytics实时报告
 5. 应该看到页面浏览记录

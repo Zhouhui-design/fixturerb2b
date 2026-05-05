@@ -78,7 +78,7 @@ console.log('[i18n] Defaulting to English for global audience')
 ## How It Works Now | 现在如何工作
 
 ### First-Time Visitor:
-1. User visits https://fixturerb2b.top
+1. User visits https://fixr2026.com
 2. No saved language preference in localStorage
 3. **Site loads in English by default** 🇺🇸
 4. User sees English content immediately
@@ -119,7 +119,7 @@ Users can still switch to any of these 10 languages:
 
 ### Test 1: First-Time Visitor (Clear Cache)
 1. Open incognito/private browsing window
-2. Visit: https://fixturerb2b.top
+2. Visit: https://fixr2026.com
 3. **Expected**: Site loads in English
 4. Check: All text is in English
 5. Check: Language selector shows "EN" or current selection
@@ -195,7 +195,7 @@ The system now logs helpful messages:
 
 **Deployment Time**: 2026-04-24 02:14:29 UTC  
 **Status**: ✅ SUCCESS  
-**Backup**: /var/www/fixturerb2b.top_backup_20260424_021429  
+**Backup**: /var/www/fixr2026.com_backup_20260424_021429  
 **Files Uploaded**: 
 - index-BoQxXKbx.js (246KB) - Updated JavaScript bundle
 - All other assets unchanged
@@ -207,7 +207,7 @@ The system now logs helpful messages:
 If you need to revert this change:
 
 ```bash
-ssh root@fixturerb2b.top 'rm -rf /var/www/fixturerb2b.top && cp -r /var/www/fixturerb2b.top_backup_20260424_021429 /var/www/fixturerb2b.top && systemctl restart nginx'
+ssh root@fixr2026.com 'rm -rf /var/www/fixr2026.com && cp -r /var/www/fixr2026.com_backup_20260424_021429 /var/www/fixr2026.com && systemctl restart nginx'
 ```
 
 Or redeploy previous version from backup before this deployment.
@@ -261,7 +261,7 @@ After deployment, verify:
 ---
 
 **Status**: ✅ COMPLETE & DEPLOYED  
-**Live Site**: https://fixturerb2b.top  
+**Live Site**: https://fixr2026.com  
 **Default Language**: English (en) 🇺🇸  
 **User Choice**: Fully preserved and respected  
 

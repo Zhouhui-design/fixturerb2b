@@ -1,4 +1,4 @@
-# Nginx 运维管理手册（fixturerb2b.top）
+# Nginx 运维管理手册（fixr2026.com）
 
 ## 常用命令
 ### 状态检查
@@ -17,7 +17,7 @@ tail -f /var/log/nginx/error.log   # 实时错误日志
 
 ## 配置路径
 主配置：/etc/nginx/nginx.conf
-站点配置：/etc/nginx/sites-available/fixturerb2b.top
+站点配置：/etc/nginx/sites-available/fixr2026.com
 网站根目录：/usr/share/nginx/html
 
 ## 定期运维任务
@@ -28,7 +28,7 @@ tail -f /var/log/nginx/error.log   # 实时错误日志
 
 ## 应急命令
 # 快速重启Nginx
-ssh root@fixturerb2b.top "systemctl restart nginx"
+ssh root@fixr2026.com "systemctl restart nginx"
 
 # 快速回滚网站版本
-ssh root@fixturerb2b.top "cp -r /usr/share/nginx/html_backup_<备份时间> /usr/share/nginx/html && systemctl restart nginx"
+ssh root@fixr2026.com "cp -r /usr/share/nginx/html_backup_<备份时间> /usr/share/nginx/html && systemctl restart nginx"

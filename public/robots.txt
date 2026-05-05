@@ -4,4 +4,4 @@ Disallow: /admin
 Disallow: /api/
 Disallow: /*.json$
 
-Sitemap: https://fixturerb2b.top/sitemap.xml
+Sitemap: https://fixr2026.com/sitemap.xml

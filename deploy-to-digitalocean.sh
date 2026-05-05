@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# DigitalOcean Deployment Script for fixturerb2b.top
+# DigitalOcean Deployment Script for fixr2026.com
 # Server: 139.59.108.156
 
 set -e
@@ -93,7 +93,7 @@ echo "✓ Deployment completed successfully!"
 echo ""
 echo "Website should be available at:"
 echo "  - http://139.59.108.156"
-echo "  - http://fixturerb2b.top (after DNS propagation)"
+echo "  - http://fixr2026.com (after DNS propagation)"
 ENDSSH
 
 # Cleanup
@@ -107,6 +107,6 @@ echo ""
 echo "Next steps:"
 echo "1. Test the website at http://139.59.108.156"
 echo "2. Configure SSL: ssh root@139.59.108.156"
-echo "   Then run: certbot --nginx -d fixturerb2b.top -d www.fixturerb2b.top"
+echo "   Then run: certbot --nginx -d fixr2026.com -d www.fixr2026.com"
 echo "3. Verify DNS points to 139.59.108.156"
 echo ""

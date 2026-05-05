@@ -45,7 +45,7 @@
 npm run build
 
 # 2. 上传到服务器
-scp dist/index.html sardenesy@fixturerb2b.top:/usr/share/nginx/html/
+scp dist/index.html sardenesy@fixr2026.com:/usr/share/nginx/html/
 
 # 3. 回到Search Console点击"验证"
 ```

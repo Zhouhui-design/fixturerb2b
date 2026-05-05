@@ -21,8 +21,8 @@
 3. **填写信息**：
    - Email：你的邮箱
    - Password：设置密码
-   - Website name：`fixturerb2b.top`（这个名字随便填）
-   - Website URL：如果允许就填 `https://fixturerb2b.top`，如果不允许就填 `https://example.com`
+   - Website name：`fixr2026.com`（这个名字随便填）
+   - Website URL：如果允许就填 `https://fixr2026.com`，如果不允许就填 `https://example.com`
 
 4. **验证邮箱**：
    - 查收验证邮件

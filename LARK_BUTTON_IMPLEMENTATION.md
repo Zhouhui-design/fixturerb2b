@@ -3,9 +3,9 @@
 ## ✅ Deployment Status
 
 **Date:** 2026-04-23 02:43 UTC  
-**Website:** https://fixturerb2b.top  
+**Website:** https://fixr2026.com  
 **Status:** ✅ **LIVE AND DEPLOYED**  
-**Backup:** `/var/www/fixturerb2b.top_backup_20260423_024346`
+**Backup:** `/var/www/fixr2026.com_backup_20260423_024346`
 
 ---
 
@@ -182,7 +182,7 @@ The Lark button works seamlessly across all 10 languages:
 
 ### Step 1: Visit Website
 ```
-https://fixturerb2b.top
+https://fixr2026.com
 ```
 
 ### Step 2: Test Footer Button
@@ -456,7 +456,7 @@ After deployment, verify:
 ## 📞 Support Information
 
 ### Current Configuration:
-- **Project:** fixturerb2b.top
+- **Project:** fixr2026.com
 - **Implementation:** Scheme 1 (AppLink)
 - **Fallback:** Lark download page
 - **Placement:** Footer + Contact page
@@ -465,7 +465,7 @@ After deployment, verify:
 ### Rollback Plan:
 If issues arise:
 ```bash
-ssh root@fixturerb2b.top 'rm -rf /var/www/fixturerb2b.top && cp -r /var/www/fixturerb2b.top_backup_20260423_024346 /var/www/fixturerb2b.top && systemctl restart nginx'
+ssh root@fixr2026.com 'rm -rf /var/www/fixr2026.com && cp -r /var/www/fixr2026.com_backup_20260423_024346 /var/www/fixr2026.com && systemctl restart nginx'
 ```
 
 ---
@@ -496,6 +496,6 @@ Without your actual user ID, the button won't open the correct chat. Follow the 
 
 *Implementation Date: 2026-04-23 02:43 UTC*  
 *Version: Lark Integration v1.0*  
-*Backup: fixturerb2b.top_backup_20260423_024346*  
+*Backup: fixr2026.com_backup_20260423_024346*  
 *Method: AppLink (Scheme 1 - Recommended)*  
 *Status: READY - Awaiting User ID Configuration*

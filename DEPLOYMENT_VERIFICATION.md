@@ -8,8 +8,8 @@
 
 **Deployment Time**: 2026-04-24 00:42:47  
 **Status**: ✅ SUCCESS  
-**Site URL**: https://fixturerb2b.top  
-**Backup Created**: /var/www/fixturerb2b.top_backup_20260424_004247  
+**Site URL**: https://fixr2026.com  
+**Backup Created**: /var/www/fixr2026.com_backup_20260424_004247  
 
 ---
 
@@ -51,7 +51,7 @@
 Please test ALL items on the **LIVE SITE**:
 
 ### Test 1: Homepage Hero Section
-Visit: **https://fixturerb2b.top/**
+Visit: **https://fixr2026.com/**
 
 - [ ] "Explore Solutions" button is GONE
 - [ ] Only "Contact Expert" button visible
@@ -61,7 +61,7 @@ Visit: **https://fixturerb2b.top/**
 - [ ] Each image displays for ~6 seconds
 
 ### Test 2: Trust Banner Translation
-Visit: **https://fixturerb2b.top/**
+Visit: **https://fixr2026.com/**
 
 - [ ] Top banner shows text
 - [ ] Switch language to 中文 - banner translates
@@ -69,7 +69,7 @@ Visit: **https://fixturerb2b.top/**
 - [ ] Banner changes instantly (no reload needed)
 
 ### Test 3: Contact Page
-Visit: **https://fixturerb2b.top/contact**
+Visit: **https://fixr2026.com/contact**
 
 - [ ] Phone number is NOT displayed
 - [ ] Amber notice box appears instead
@@ -79,20 +79,20 @@ Visit: **https://fixturerb2b.top/contact**
 - [ ] Address still shows correctly
 
 ### Test 4: Cases Page
-Visit: **https://fixturerb2b.top/cases**
+Visit: **https://fixr2026.com/cases**
 
 - [ ] Title shows: "我们按客户设计师 还原的效果"
 - [ ] No subtitle text below title
 - [ ] Case cards display normally
 
 ### Test 5: Cases Section (Homepage)
-Visit: **https://fixturerb2b.top/** and scroll down
+Visit: **https://fixr2026.com/** and scroll down
 
 - [ ] "View All Cases" button is GONE
 - [ ] Only case cards visible
 
 ### Test 6: Case Detail Page
-Visit: **https://fixturerb2b.top/cases/1**
+Visit: **https://fixr2026.com/cases/1**
 
 - [ ] No text sections (all removed)
 - [ ] 8 BADGLEY MISCHKA images display in grid
@@ -108,13 +108,13 @@ Visit: **https://fixturerb2b.top/cases/1**
 
 ### Check if files are on server:
 ```bash
-ssh root@fixturerb2b.top 'ls -lh /var/www/fixturerb2b.top/images/badgley-*.jpg'
-ssh root@fixturerb2b.top 'ls -lh /var/www/fixturerb2b.top/images/pullin-*.jpg'
+ssh root@fixr2026.com 'ls -lh /var/www/fixr2026.com/images/badgley-*.jpg'
+ssh root@fixr2026.com 'ls -lh /var/www/fixr2026.com/images/pullin-*.jpg'
 ```
 
 ### Check site status:
 ```bash
-curl -I https://fixturerb2b.top
+curl -I https://fixr2026.com
 ```
 
 Should return: `HTTP/1.1 200 OK`
@@ -133,7 +133,7 @@ Sometimes browser caches old files. Try:
 If something is broken, you can rollback:
 
 ```bash
-ssh root@fixturerb2b.top 'rm -rf /var/www/fixturerb2b.top && cp -r /var/www/fixturerb2b.top_backup_20260424_004247 /var/www/fixturerb2b.top && systemctl restart nginx'
+ssh root@fixr2026.com 'rm -rf /var/www/fixr2026.com && cp -r /var/www/fixr2026.com_backup_20260424_004247 /var/www/fixr2026.com && systemctl restart nginx'
 ```
 
 ### Option 3: Redeploy
@@ -220,7 +220,7 @@ All items must be checked:
 
 ## Next Steps | 下一步
 
-1. **Open Browser**: Visit https://fixturerb2b.top
+1. **Open Browser**: Visit https://fixr2026.com
 2. **Test All Pages**: Use checklist above
 3. **Test All Languages**: Switch between 10 languages
 4. **Test on Mobile**: Verify responsive design
@@ -229,7 +229,7 @@ All items must be checked:
 ---
 
 **Deployment Status**: ✅ COMPLETE  
-**Live Site**: https://fixturerb2b.top  
+**Live Site**: https://fixr2026.com  
 **Backup Available**: Yes (can rollback if needed)  
 **Next Action**: Test on live site and report any issues
 

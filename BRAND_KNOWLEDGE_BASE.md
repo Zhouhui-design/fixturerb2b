@@ -6,7 +6,7 @@
 - 类型：One Person Company (OPC)，创始人直接运营，合法合规
 - 注册资金：10万人民币
 - 统一社会信用代码：91330102MA7YAL1L8G
-- 官网：https://fixturerb2b.top
+- 官网：https://fixr2026.com
 - 创始人：苟辉 (Gou Hui)
 - 核心业务：定制商业家具项目协调，服务零售店、品牌店、展示空间等客户
 ### 核心优势
@@ -79,11 +79,11 @@ If you’re a store owner or brand manager who’s tired of being passed around,
 > Best regards,
 > Gou Hui
 > Hangzhou Gouhui International Trade Co., Ltd.
-> https://fixturerb2b.top
+> https://fixr2026.com
 ### 客户问公司规模/背景的回复
 > Thank you for your question! Our company is a founder-led One Person Company (OPC) registered in Hangzhou, China. I am the founder, Gou Hui, and I personally handle every project from start to finish.
 > We don't have a large in-house factory, but we work with 10+ specialized commercial furniture factories that I've vetted over years of industry experience. This allows us to match each product to the best possible supplier for quality, price, and delivery time, without the overhead of a large company.
-> Our business license is fully transparent, you can download it from our website here: https://fixturerb2b.top/license.pdf and verify it on the Chinese National Credit Information System (www.gsxt.gov.cn) using our registration number 91330102MA7YAL1L8G.
+> Our business license is fully transparent, you can download it from our website here: https://fixr2026.com/license.pdf and verify it on the Chinese National Credit Information System (www.gsxt.gov.cn) using our registration number 91330102MA7YAL1L8G.
 ### 客户问售后/质量保证的回复
 > All our products go through personal quality inspection before shipping, and we offer a 90-day warranty against manufacturing defects. If any item arrives damaged or has a quality issue, we will either replace it at our cost or provide a partial refund, depending on the situation.
 > After delivery, if you have any issues, you can reach me directly at [your email], and I will respond within 24 hours on business days with a solution.

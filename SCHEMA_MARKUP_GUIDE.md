@@ -72,12 +72,12 @@
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "FixtureRB2B",
-  "url": "https://fixturerb2b.top",
-  "logo": "https://fixturerb2b.top/logo.png",
+  "url": "https://fixr2026.com",
+  "logo": "https://fixr2026.com/logo.png",
   "description": "Professional B2B store fixtures...",
   "contactPoint": {
     "@type": "ContactPoint",
-    "email": "info@fixturerb2b.top",
+    "email": "info@fixr2026.com",
     "contactType": "sales",
     "availableLanguage": ["English", "Chinese", ...]
   }
@@ -253,8 +253,8 @@ const ServicesPage = () => {
 ```tsx
 const breadcrumbData = {
   items: [
-    { name: 'Home', url: 'https://fixturerb2b.top/' },
-    { name: 'Products', url: 'https://fixturerb2b.top/products' },
+    { name: 'Home', url: 'https://fixr2026.com/' },
+    { name: 'Products', url: 'https://fixr2026.com/products' },
     { name: 'Display Fixtures', url: window.location.href }
   ]
 }

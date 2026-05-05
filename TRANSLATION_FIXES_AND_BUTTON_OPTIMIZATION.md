@@ -3,9 +3,9 @@
 ## ✅ Deployment Status
 
 **Date:** 2026-04-23 02:57 UTC  
-**Website:** https://fixturerb2b.top  
+**Website:** https://fixr2026.com  
 **Status:** ✅ **LIVE AND DEPLOYED**  
-**Backup:** `/var/www/fixturerb2b.top_backup_20260423_025717`
+**Backup:** `/var/www/fixr2026.com_backup_20260423_025717`
 
 ---
 
@@ -313,7 +313,7 @@ Repeat for each language with appropriate translations.
 ## 📞 Support Information
 
 ### Current Configuration:
-- **Project:** fixturerb2b.top
+- **Project:** fixr2026.com
 - **Languages with full translations:** EN, ZH, JA
 - **Other languages:** Fallback to English for new fields
 - **Button behavior:** Lark (AppLink), DingTalk/WeChat (Copy ID)
@@ -322,7 +322,7 @@ Repeat for each language with appropriate translations.
 ### Rollback Plan:
 If issues arise:
 ```bash
-ssh root@fixturerb2b.top 'rm -rf /var/www/fixturerb2b.top && cp -r /var/www/fixturerb2b.top_backup_20260423_025717 /var/www/fixturerb2b.top && systemctl restart nginx'
+ssh root@fixr2026.com 'rm -rf /var/www/fixr2026.com && cp -r /var/www/fixr2026.com_backup_20260423_025717 /var/www/fixr2026.com && systemctl restart nginx'
 ```
 
 ---
@@ -350,5 +350,5 @@ Without real IDs, the copy-to-clipboard feature won't be useful.
 
 *Implementation Date: 2026-04-23 02:57 UTC*  
 *Version: Translation Fixes v1.0*  
-*Backup: fixturerb2b.top_backup_20260423_025717*  
+*Backup: fixr2026.com_backup_20260423_025717*  
 *Status: LIVE - Awaiting ID Configuration*

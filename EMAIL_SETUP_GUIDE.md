@@ -79,7 +79,7 @@ supabase login
 
 #### 方法 A：在管理后台测试
 
-1. 访问 https://fixturerb2b.top/admin
+1. 访问 https://fixr2026.com/admin
 2. 输入密码登录
 3. 找到任意询盘记录
 4. 点击 **Reply Email** 按钮
@@ -172,10 +172,10 @@ curl -X POST 'https://yaumblbimxrunltqadsq.supabase.co/functions/v1/reply-to-cus
 
 1. 在 Resend Dashboard 点击 **Domains**
 2. 点击 **Add Domain**
-3. 输入 `fixturerb2b.top`
+3. 输入 `fixr2026.com`
 4. 按照提示配置 DNS 记录（SPF、DKIM、MX）
 5. 等待 DNS 生效（10分钟 - 24小时）
-6. 更新 Edge Function 的 `FROM_EMAIL` 为 `noreply@fixturerb2b.top`
+6. 更新 Edge Function 的 `FROM_EMAIL` 为 `noreply@fixr2026.com`
 
 **好处**：
 - ✅ 邮件不易进入垃圾箱

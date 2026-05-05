@@ -123,8 +123,8 @@ After local testing passes:
 
 Then test on live site:
 ```
-https://fixturerb2b.top/contact
-https://fixturerb2b.top/
+https://fixr2026.com/contact
+https://fixr2026.com/
 ```
 
 ---

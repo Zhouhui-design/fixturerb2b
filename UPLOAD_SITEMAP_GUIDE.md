@@ -16,7 +16,7 @@
 
 ```bash
 # 首次连接需要确认
-scp dist/sitemap.xml dist/robots.txt sardenesy@fixturerb2b.top:/usr/share/nginx/html/
+scp dist/sitemap.xml dist/robots.txt sardenesy@fixr2026.com:/usr/share/nginx/html/
 ```
 
 当提示 "Are you sure you want to continue connecting" 时：
@@ -29,7 +29,7 @@ scp dist/sitemap.xml dist/robots.txt sardenesy@fixturerb2b.top:/usr/share/nginx/
 
 1. 下载 FileZilla 或其他FTP客户端
 2. 连接到服务器：
-   - Host: fixturerb2b.top
+   - Host: fixr2026.com
    - Username: sardenesy
    - Password: [你的密码]
    - Port: 22 (SFTP)
@@ -44,7 +44,7 @@ scp dist/sitemap.xml dist/robots.txt sardenesy@fixturerb2b.top:/usr/share/nginx/
 
 ```bash
 # SSH登录到服务器
-ssh sardenesy@fixturerb2b.top
+ssh sardenesy@fixr2026.com
 
 # 进入网站目录
 cd /usr/share/nginx/html/
@@ -70,14 +70,14 @@ nano robots.txt
 
 1. **检查Sitemap：**
    ```
-   https://fixturerb2b.top/sitemap.xml
+   https://fixr2026.com/sitemap.xml
    ```
    
    应该看到包含9个页面的XML文件
 
 2. **检查Robots.txt：**
    ```
-   https://fixturerb2b.top/robots.txt
+   https://fixr2026.com/robots.txt
    ```
    
    应该看到正确的配置
@@ -95,7 +95,7 @@ nano robots.txt
    ```
    或者完整URL：
    ```
-   https://fixturerb2b.top/sitemap.xml
+   https://fixr2026.com/sitemap.xml
    ```
 3. 点击 **"提交"**
 
@@ -121,8 +121,8 @@ nano robots.txt
 
 **A:** 确保：
 1. 文件已正确上传到服务器
-2. 可以通过浏览器访问 `https://fixturerb2b.top/sitemap.xml`
-3. 使用的是正确的属性（https://fixturerb2b.top）
+2. 可以通过浏览器访问 `https://fixr2026.com/sitemap.xml`
+3. 使用的是正确的属性（https://fixr2026.com）
 
 ### Q: 提交后显示"无法读取"？
 

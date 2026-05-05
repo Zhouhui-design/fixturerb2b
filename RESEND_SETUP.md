@@ -37,12 +37,12 @@ https://resend.com
 ### 2.1 为什么要添加域名？
 - 使用 Gmail 直接发送可能被标记为垃圾邮件
 - 添加域名后，邮件可信度更高
-- 可以使用 `noreply@fixturerb2b.top` 作为发件地址
+- 可以使用 `noreply@fixr2026.com` 作为发件地址
 
 ### 2.2 添加域名步骤
 1. 在 Resend Dashboard 点击 "Domains"
 2. 点击 "Add Domain"
-3. 输入域名：`fixturerb2b.top`
+3. 输入域名：`fixr2026.com`
 4. Resend 会生成 DNS 记录
 
 ### 2.3 配置 DNS 记录
@@ -73,7 +73,7 @@ VITE_RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 VITE_FROM_EMAIL=sardenesy@gmail.com
 
 # 如果不配置域名，暂时使用 Gmail
-# 配置域名后，可以改为：noreply@fixturerb2b.top
+# 配置域名后，可以改为：noreply@fixr2026.com
 ```
 
 ### 3.2 替换占位符
@@ -143,7 +143,7 @@ npm run dev
 ## 步骤 6：日常使用
 
 ### 发送邮件
-1. 访问 https://fixturerb2b.top/admin
+1. 访问 https://fixr2026.com/admin
 2. 登录管理后台
 3. 点击 "Reply Email" 按钮
 4. 填写邮件内容

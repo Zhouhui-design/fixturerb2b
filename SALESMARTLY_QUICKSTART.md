@@ -6,7 +6,7 @@
 
 1. 访问：https://www.salesmartly.com
 2. 注册账号
-3. 创建项目 `fixturerb2b.top`
+3. 创建项目 `fixr2026.com`
 4. 复制 **Project ID**（在 设置 → 项目设置）
 
 ### 第 2 步：配置到项目（1 分钟）
@@ -55,7 +55,7 @@ npm run dev
 ### 1. 设置欢迎语
 
 ```
-您好！欢迎来到 fixturerb2b.top 👋
+您好！欢迎来到 fixr2026.com 👋
 
 我们提供：
 ✅ OEM/ODM 代工

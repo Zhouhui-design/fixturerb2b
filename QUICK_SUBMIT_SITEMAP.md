@@ -16,19 +16,19 @@
 
 **方法A - SCP命令：**
 ```bash
-scp dist/sitemap.xml dist/robots.txt sardenesy@fixturerb2b.top:/usr/share/nginx/html/
+scp dist/sitemap.xml dist/robots.txt sardenesy@fixr2026.com:/usr/share/nginx/html/
 # 输入服务器密码
 ```
 
 **方法B - FileZilla：**
-1. 连接：sftp://fixturerb2b.top (端口22)
+1. 连接：sftp://fixr2026.com (端口22)
 2. 用户名：sardenesy
 3. 上传 `dist/sitemap.xml` 和 `dist/robots.txt` 
 4. 远程路径：`/usr/share/nginx/html/`
 
 **方法C - SSH编辑：**
 ```bash
-ssh sardenesy@fixturerb2b.top
+ssh sardenesy@fixr2026.com
 cd /usr/share/nginx/html/
 nano sitemap.xml
 # 粘贴新内容，保存退出
@@ -40,7 +40,7 @@ nano sitemap.xml
 
 浏览器访问：
 ```
-https://fixturerb2b.top/sitemap.xml
+https://fixr2026.com/sitemap.xml
 ```
 
 ✅ 应该看到9个页面的XML
@@ -51,7 +51,7 @@ https://fixturerb2b.top/sitemap.xml
 ### 第3步：提交到Google Search Console
 
 1. 访问：https://search.google.com/search-console
-2. 选择属性：`https://fixturerb2b.top`
+2. 选择属性：`https://fixr2026.com`
 3. 左侧菜单：**索引 → 站点地图**
 4. 输入框输入：`sitemap.xml`
 5. 点击：**提交**

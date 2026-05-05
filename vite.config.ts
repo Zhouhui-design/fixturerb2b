@@ -27,6 +27,11 @@ export default defineConfig({
       },
     },
     rollupOptions: {
+      // Multi-page application setup
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+        chat: path.resolve(__dirname, 'chat.html'),
+      },
       output: {
         // Code splitting for better caching
         manualChunks: {

@@ -15,14 +15,14 @@ Fixturerb2b@Admin2026!
 
 ### 访问地址
 ```
-https://fixturerb2b.top/admin
+https://fixr2026.com/admin
 ```
 
 ---
 
 ##  登录流程
 
-1. 访问 https://fixturerb2b.top/admin
+1. 访问 https://fixr2026.com/admin
 2. 输入管理员密码
 3. 点击"登录管理后台"
 4. 验证通过后进入仪表板

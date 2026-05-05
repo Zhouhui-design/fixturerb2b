@@ -27,8 +27,8 @@ const ProductDetailPage = () => {
   const productSchemaData = {
     name: productName,
     description: productDescription,
-    image: [`https://fixturerb2b.top${images[0]}`],
-    url: `https://fixturerb2b.top/products/${id}`,
+    image: [`https://fixr2026.com${images[0]}`],
+    url: `https://fixr2026.com/products/${id}`,
     currency: 'USD',
     rating: '4.8',
     reviewCount: '120'

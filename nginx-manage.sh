@@ -1,7 +1,7 @@
 #!/bin/bash
-# fixturerb2b.top Nginx 快捷运维脚本
+# fixr2026.com Nginx 快捷运维脚本
 
-SERVER="root@fixturerb2b.top"
+SERVER="root@fixr2026.com"
 
 case "$1" in
   status)
@@ -31,8 +31,8 @@ case "$1" in
   backup)
     echo "💾 备份Nginx配置文件到本地和服务器..."
     mkdir -p backup/nginx
-    scp $SERVER:/etc/nginx/sites-available/fixturerb2b.top backup/nginx/fixturerb2b.top.$(date +%Y%m%d_%H%M%S)
-    ssh $SERVER "mkdir -p /root/backup/nginx && cp /etc/nginx/sites-available/fixturerb2b.top /root/backup/nginx/fixturerb2b.top.$(date +%Y%m%d_%H%M%S)"
+    scp $SERVER:/etc/nginx/sites-available/fixr2026.com backup/nginx/fixr2026.com.$(date +%Y%m%d_%H%M%S)
+    ssh $SERVER "mkdir -p /root/backup/nginx && cp /etc/nginx/sites-available/fixr2026.com /root/backup/nginx/fixr2026.com.$(date +%Y%m%d_%H%M%S)"
     echo "✅ 备份完成，本地路径：backup/nginx/"
     ;;
   update)
@@ -42,7 +42,7 @@ case "$1" in
     ;;
   healthcheck)
     echo "❤️ 执行网站健康检查..."
-    STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://fixturerb2b.top)
+    STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://fixr2026.com)
     if [ "$STATUS" -eq 200 ]; then
       echo "✅ 网站正常，状态码：$STATUS"
     else

@@ -4,7 +4,7 @@
 
 ### 1. Open Website
 ```
-https://fixturerb2b.top
+https://fixr2026.com
 ```
 
 ### 2. Clear Browser Cache (IMPORTANT!)
@@ -159,7 +159,7 @@ Check these render correctly:
 ## 📱 Mobile Testing
 
 ### Test on Phone:
-1. Open https://fixturerb2b.top on mobile device
+1. Open https://fixr2026.com on mobile device
 2. Switch to Spanish
 3. Verify:
    - [ ] Text readable (not too small)
@@ -336,4 +336,4 @@ Once all checks pass:
 
 *Testing Guide Created: 2026-04-23 00:27 UTC*  
 *Languages Added: Spanish (es), French (fr)*  
-*Live URL: https://fixturerb2b.top*
+*Live URL: https://fixr2026.com*

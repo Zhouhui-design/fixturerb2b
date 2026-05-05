@@ -97,7 +97,7 @@ npm run dev
 
 **推荐欢迎语**：
 ```
-您好！欢迎来到 fixturerb2b.top 👋
+您好！欢迎来到 fixr2026.com 👋
 
 我们提供专业的商业家具制造服务：
 ✅ OEM/ODM 代工

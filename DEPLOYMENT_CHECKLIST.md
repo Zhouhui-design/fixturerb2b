@@ -100,7 +100,7 @@ sudo systemctl reload nginx
 
 ### 第 6 步：验证线上环境
 
-- [ ] 访问 https://fixturerb2b.top
+- [ ] 访问 https://fixr2026.com
 - [ ] HTTPS 正常工作
 - [ ] 询价功能正常
 - [ ] 信任指标显示正常
@@ -218,7 +218,7 @@ import TrustIndicators from '../components/TrustIndicators'
 **优化方案：**
 ```bash
 # 检查 Gzip 是否启用
-curl -H "Accept-Encoding: gzip" -I https://fixturerb2b.top
+curl -H "Accept-Encoding: gzip" -I https://fixr2026.com
 
 # 应该看到
 Content-Encoding: gzip

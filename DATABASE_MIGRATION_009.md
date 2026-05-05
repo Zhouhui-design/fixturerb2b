@@ -48,13 +48,13 @@ SELECT indexname FROM pg_indexes WHERE tablename = 'contact_submissions';
 ### 功能说明：
 
 #### 1. 管理员视图 (/admin)
-- 路径：`https://fixturerb2b.top/admin`
+- 路径：`https://fixr2026.com/admin`
 - 功能：查看所有询盘记录
 - 安全：邮箱和电话自动脱敏（例如：`jo****@example.com`，`13****89`）
 - 需要：Supabase 认证用户
 
 #### 2. 客户查询 (/my-inquiries)
-- 路径：`https://fixturerb2b.top/my-inquiries`
+- 路径：`https://fixr2026.com/my-inquiries`
 - 功能：客户通过姓名+邮箱查询自己的询盘历史
 - 安全：应用层过滤，只返回匹配的記錄
 - 脱敏：邮箱和电话部分隐藏

@@ -9,7 +9,7 @@
 ### Status: COMPLETED & DEPLOYED
 
 **Problem:**
-On https://fixturerb2b.top/products/1, the image gallery showed:
+On https://fixr2026.com/products/1, the image gallery showed:
 - 1 large main image (clear)
 - 11 small thumbnails in a grid (too small to see details)
 - Users couldn't clearly see all product images
@@ -185,7 +185,7 @@ onClick={() => setCurrentImageIndex((prev) =>
 
 ## Testing Instructions | 测试说明
 
-Visit: **https://fixturerb2b.top/products/1**
+Visit: **https://fixr2026.com/products/1**
 
 ### Test 1: Main Image Display
 - [ ] First image displays large and clear
@@ -252,7 +252,7 @@ Visit: **https://fixturerb2b.top/products/1**
 
 **Deployment Time**: 2026-04-24 03:00:44 UTC  
 **Status**: ✅ SUCCESS  
-**Backup**: /var/www/fixturerb2b.top_backup_20260424_030044  
+**Backup**: /var/www/fixr2026.com_backup_20260424_030044  
 
 **Files Uploaded:**
 - JavaScript bundle (updated carousel logic)
@@ -278,7 +278,7 @@ Visit: **https://fixturerb2b.top/products/1**
 If you need to revert:
 
 ```bash
-ssh root@fixturerb2b.top 'rm -rf /var/www/fixturerb2b.top && cp -r /var/www/fixturerb2b.top_backup_20260424_030044 /var/www/fixturerb2b.top && systemctl restart nginx'
+ssh root@fixr2026.com 'rm -rf /var/www/fixr2026.com && cp -r /var/www/fixr2026.com_backup_20260424_030044 /var/www/fixr2026.com && systemctl restart nginx'
 ```
 
 ---
@@ -343,7 +343,7 @@ After deployment, verify ALL items:
 ---
 
 **Status**: ✅ COMPLETE & DEPLOYED  
-**Live Site**: https://fixturerb2b.top/products/1  
+**Live Site**: https://fixr2026.com/products/1  
 **Feature**: Interactive image carousel with equal-size display  
 **Images**: All 12 shirt rack photos now equally visible  
 

@@ -67,7 +67,7 @@ AND policyname = 'Allow public to query own submissions';
 
 ##  执行后测试
 
-1. 访问：https://fixturerb2b.top/my-inquiries
+1. 访问：https://fixr2026.com/my-inquiries
 2. 输入姓名和邮箱（使用您之前提交过的信息）
 3. 点击"查询"
 4. 应该能看到您的询盘记录

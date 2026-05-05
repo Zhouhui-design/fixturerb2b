@@ -483,4 +483,27 @@
       perspective: 1000px;
     }
   }
+
+  /* ============================================
+     SAFE AREA INSETS for iOS devices with notch
+     ============================================ */
+  .safe-area-bottom {
+    padding-bottom: max(env(safe-area-inset-bottom, 0.75rem), 0.75rem);
+  }
+
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0.75rem);
+  }
+
+  /* ============================================
+     MOBILE INPUT FIX: Prevent input cutoff on keyboard open
+     ============================================ */
+  @supports (-webkit-touch-callout: none) {
+    /* iOS Safari specific fixes */
+    textarea,
+    input[type="text"],
+    input[type="email"] {
+      font-size: 16px !important; /* Prevents zoom on iOS */
+    }
+  }
 }

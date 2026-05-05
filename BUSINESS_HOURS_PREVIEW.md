@@ -2,7 +2,7 @@
 
 ## 🌐 Live Site
 
-**URL:** https://fixturerb2b.top/contact  
+**URL:** https://fixr2026.com/contact  
 **Action:** Hard refresh your browser (Ctrl+Shift+R or Cmd+Shift+R)
 
 ---
@@ -159,7 +159,7 @@ AIアシスタントが24時間365日対応。よくある質問...
 ## 🔍 Where to Find It
 
 ### Navigation Path:
-1. Go to https://fixturerb2b.top
+1. Go to https://fixr2026.com
 2. Click "Contact" in navigation menu
 3. Scroll down to right sidebar
 4. Look below contact information cards
@@ -269,4 +269,4 @@ You'll know it's working correctly when:
 ---
 
 *Preview Guide Created: 2026-04-23 00:10 UTC*  
-*Live URL: https://fixturerb2b.top/contact*
+*Live URL: https://fixr2026.com/contact*

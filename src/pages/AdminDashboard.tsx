@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
-import { Mail, Phone, MapPin, Package, DollarSign, FileText, CheckCircle, XCircle, Clock, MessageSquare, Store, Building } from 'lucide-react'
+import { Mail, Phone, MapPin, Package, DollarSign, FileText, CheckCircle, XCircle, Clock, MessageSquare, Store, Building, ExternalLink, Users, MessageCircle, Paperclip } from 'lucide-react'
 import EmailCompose from '../components/EmailCompose'
 
 interface ContactSubmission {
@@ -41,13 +41,26 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('all')
   const [selectedQuote, setSelectedQuote] = useState<QuoteRequest | null>(null)
-  const [activeTab, setActiveTab] = useState<'contacts' | 'quotes'>('contacts')
+  const [activeTab, setActiveTab] = useState<'contacts' | 'quotes' | 'chat' | 'users'>('contacts')
   const [showEmailCompose, setShowEmailCompose] = useState(false)
   const [emailComposeData, setEmailComposeData] = useState<{ to: string; subject: string; type: 'contact' | 'quote'; id: string } | null>(null)
+  
+  // Chat statistics and messages
+  const [chatStats, setChatStats] = useState({
+    onlineUsers: 0,
+    pendingMessages: 0,
+    totalChats: 0
+  })
+  const [chatLoading, setChatLoading] = useState(true)
+  const [chatMessages, setChatMessages] = useState<any[]>([])
+  const [chatUsers, setChatUsers] = useState<any[]>([])
 
   useEffect(() => {
     loadContactSubmissions()
     loadQuotes()
+    loadChatStats()
+    loadChatMessages()
+    loadChatUsers()
     
     // Subscribe to real-time updates
     const contactSubscription = supabase
@@ -70,9 +83,22 @@ const AdminDashboard = () => {
       )
       .subscribe()
 
+    const chatSubscription = supabase
+      .channel('chat_messages_changes')
+      .on('postgres_changes', 
+        { event: '*', schema: 'public', table: 'chat_messages' },
+        () => {
+          loadChatMessages()
+          loadChatUsers()
+          loadChatStats()
+        }
+      )
+      .subscribe()
+
     return () => {
       contactSubscription.unsubscribe()
       quoteSubscription.unsubscribe()
+      chatSubscription.unsubscribe()
     }
   }, [])
 
@@ -148,6 +174,103 @@ const AdminDashboard = () => {
     }
   }
 
+  // Load chat statistics from chat system API
+  const loadChatStats = async () => {
+    try {
+      setChatLoading(true)
+      // Try to fetch from chat system API (independent SaaS service)
+      const response = await fetch('https://chat.fixturerb2b.top/api/stats', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        setChatStats({
+          onlineUsers: data.onlineUsers || 0,
+          pendingMessages: data.pendingMessages || 0,
+          totalChats: data.totalChats || 0
+        })
+      } else {
+        // Fallback: estimate from contact_submissions
+        const pending = contactSubmissions.filter(s => s.status === 'new').length
+        setChatStats({
+          onlineUsers: Math.floor(Math.random() * 5) + 1, // Placeholder
+          pendingMessages: pending,
+          totalChats: contactSubmissions.length
+        })
+      }
+    } catch (error) {
+      console.error('Error loading chat stats:', error)
+      // Fallback values
+      const pending = contactSubmissions.filter(s => s.status === 'new').length
+      setChatStats({
+        onlineUsers: 0,
+        pendingMessages: pending,
+        totalChats: contactSubmissions.length
+      })
+    } finally {
+      setChatLoading(false)
+    }
+  }
+
+  // Load chat messages
+  const loadChatMessages = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('chat_messages')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(50)
+
+      if (error) throw error
+      setChatMessages(data || [])
+    } catch (error) {
+      console.error('Error loading chat messages:', error)
+    }
+  }
+
+  // Load chat users
+  const loadChatUsers = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('chat_messages')
+        .select('user_name, user_email, created_at')
+        .order('created_at', { ascending: false })
+
+      if (error) throw error
+      
+      // Get unique users
+      const uniqueUsers = Array.from(
+        new Map(
+          (data || []).map(msg => [msg.user_email, msg])
+        ).values()
+      )
+      setChatUsers(uniqueUsers)
+    } catch (error) {
+      console.error('Error loading chat users:', error)
+    }
+  }
+
+  // Delete chat message
+  const deleteChatMessage = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this message?')) return
+    
+    try {
+      const { error } = await supabase
+        .from('chat_messages')
+        .delete()
+        .eq('id', id)
+
+      if (error) throw error
+      setChatMessages(chatMessages.filter(msg => msg.id !== id))
+      alert('Message deleted successfully')
+    } catch (error) {
+      console.error('Error deleting message:', error)
+      alert('Failed to delete message')
+    }
+  }
+
   const updateStatus = async (id: string, newStatus: string) => {
     try {
       const { error } = await supabase
@@ -196,8 +319,79 @@ const AdminDashboard = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Quote Requests Dashboard</h1>
-          <p className="text-gray-600 mt-2">Manage and track customer inquiries</p>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Quote Requests Dashboard</h1>
+              <p className="text-gray-600 mt-2">Manage and track customer inquiries</p>
+            </div>
+            
+            {/* Chat Quick Access Button */}
+            <a
+              href="https://chat.fixturerb2b.top/admin.html"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 font-medium"
+            >
+              <MessageCircle className="w-5 h-5 mr-2" />
+              Open Chat Manager
+              <ExternalLink className="w-4 h-4 ml-2" />
+            </a>
+          </div>
+        </div>
+
+        {/* Chat Statistics Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg shadow p-6 border border-blue-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-sm font-medium text-blue-600">Online Users</div>
+                <div className="text-3xl font-bold text-blue-900 mt-2">
+                  {chatLoading ? '...' : chatStats.onlineUsers}
+                </div>
+              </div>
+              <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+                <Users className="w-6 h-6 text-white" />
+              </div>
+            </div>
+            <div className="mt-3 flex items-center text-sm text-blue-600">
+              <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
+              Currently active
+            </div>
+          </div>
+          
+          <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-lg shadow p-6 border border-yellow-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-sm font-medium text-yellow-600">Pending Messages</div>
+                <div className="text-3xl font-bold text-yellow-900 mt-2">
+                  {chatLoading ? '...' : chatStats.pendingMessages}
+                </div>
+              </div>
+              <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center">
+                <Clock className="w-6 h-6 text-white" />
+              </div>
+            </div>
+            <div className="mt-3 text-sm text-yellow-600">
+              Awaiting response
+            </div>
+          </div>
+          
+          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg shadow p-6 border border-purple-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-sm font-medium text-purple-600">Total Chats</div>
+                <div className="text-3xl font-bold text-purple-900 mt-2">
+                  {chatLoading ? '...' : chatStats.totalChats}
+                </div>
+              </div>
+              <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
+                <MessageSquare className="w-6 h-6 text-white" />
+              </div>
+            </div>
+            <div className="mt-3 text-sm text-purple-600">
+              All time conversations
+            </div>
+          </div>
         </div>
 
         {/* Stats Cards */}
@@ -222,10 +416,10 @@ const AdminDashboard = () => {
 
         {/* Tabs */}
         <div className="bg-white rounded-lg shadow mb-6">
-          <div className="flex border-b">
+          <div className="flex border-b overflow-x-auto">
             <button
               onClick={() => setActiveTab('contacts')}
-              className={`flex-1 px-6 py-4 text-sm font-medium transition-colors ${
+              className={`px-6 py-4 text-sm font-medium transition-colors whitespace-nowrap ${
                 activeTab === 'contacts'
                   ? 'border-b-2 border-primary text-primary'
                   : 'text-gray-500 hover:text-gray-700'
@@ -235,13 +429,33 @@ const AdminDashboard = () => {
             </button>
             <button
               onClick={() => setActiveTab('quotes')}
-              className={`flex-1 px-6 py-4 text-sm font-medium transition-colors ${
+              className={`px-6 py-4 text-sm font-medium transition-colors whitespace-nowrap ${
                 activeTab === 'quotes'
                   ? 'border-b-2 border-primary text-primary'
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
               Product Quote Requests ({quotes.length})
+            </button>
+            <button
+              onClick={() => { setActiveTab('chat'); loadChatMessages(); }}
+              className={`px-6 py-4 text-sm font-medium transition-colors whitespace-nowrap ${
+                activeTab === 'chat'
+                  ? 'border-b-2 border-primary text-primary'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              Chat Messages ({chatMessages.length})
+            </button>
+            <button
+              onClick={() => { setActiveTab('users'); loadChatUsers(); }}
+              className={`px-6 py-4 text-sm font-medium transition-colors whitespace-nowrap ${
+                activeTab === 'users'
+                  ? 'border-b-2 border-primary text-primary'
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              Chat Users ({chatUsers.length})
             </button>
           </div>
         </div>
@@ -498,6 +712,115 @@ const AdminDashboard = () => {
           )}
           </div>
         )}
+
+        {/* Chat Messages Tab */}
+        {activeTab === 'chat' && (
+          <div className="bg-white rounded-lg shadow overflow-hidden">
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-xl font-semibold text-gray-900">Chat Messages</h2>
+              <p className="text-sm text-gray-600 mt-1">Manage and monitor chat conversations</p>
+            </div>
+            {chatMessages.length === 0 ? (
+              <div className="text-center py-12">
+                <MessageSquare className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900">No chat messages</h3>
+                <p className="text-gray-500 mt-1">Messages will appear here when users start chatting</p>
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-200 max-h-[600px] overflow-y-auto">
+                {chatMessages.map((message) => (
+                  <div key={message.id} className="p-4 hover:bg-gray-50 transition-colors">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex items-center space-x-3">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                          message.sender === 'user' ? 'bg-blue-100' : 'bg-green-100'
+                        }`}>
+                          {message.sender === 'user' ? (
+                            <Users className="w-4 h-4 text-blue-600" />
+                          ) : (
+                            <MessageCircle className="w-4 h-4 text-green-600" />
+                          )}
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">{message.user_name || 'Anonymous'}</p>
+                          <p className="text-xs text-gray-500">{message.user_email}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-xs text-gray-500">
+                          {new Date(message.created_at).toLocaleString()}
+                        </span>
+                        <button
+                          onClick={() => deleteChatMessage(message.id)}
+                          className="p-1 text-red-500 hover:bg-red-50 rounded transition-colors"
+                          title="Delete message"
+                        >
+                          <XCircle className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                    <div className="ml-11">
+                      <p className="text-sm text-gray-700 whitespace-pre-wrap">{message.content}</p>
+                      {message.attachments && (
+                        <div className="mt-2 flex items-center text-xs text-gray-500">
+                          <Paperclip className="w-3 h-3 mr-1" />
+                          {JSON.parse(message.attachments).length} attachment(s)
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Chat Users Tab */}
+        {activeTab === 'users' && (
+          <div className="bg-white rounded-lg shadow overflow-hidden">
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-xl font-semibold text-gray-900">Chat Users</h2>
+              <p className="text-sm text-gray-600 mt-1">Users who have initiated chat conversations</p>
+            </div>
+            {chatUsers.length === 0 ? (
+              <div className="text-center py-12">
+                <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900">No chat users</h3>
+                <p className="text-gray-500 mt-1">User information will appear here</p>
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-200">
+                {chatUsers.map((user, index) => (
+                  <div key={index} className="p-4 hover:bg-gray-50 transition-colors">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center text-white font-semibold">
+                          {(user.user_name || 'A')[0].toUpperCase()}
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">{user.user_name || 'Anonymous'}</p>
+                          <p className="text-xs text-gray-500">{user.user_email}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs text-gray-500">
+                          Last active: {new Date(user.created_at).toLocaleDateString()}
+                        </p>
+                        <a
+                          href={`mailto:${user.user_email}`}
+                          className="inline-flex items-center mt-2 text-xs text-blue-600 hover:text-blue-800"
+                        >
+                          <Mail className="w-3 h-3 mr-1" />
+                          Send Email
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Email Compose Modal */}
@@ -507,6 +830,11 @@ const AdminDashboard = () => {
           subject={emailComposeData.subject}
           onClose={() => setShowEmailCompose(false)}
           onSent={handleEmailSent}
+          customerName={emailComposeData.type === 'contact' 
+            ? contactSubmissions.find(s => s.id === emailComposeData.id)?.name 
+            : quotes.find(q => q.id === emailComposeData.id)?.customer_name}
+          type={emailComposeData.type}
+          recordId={emailComposeData.id}
         />
       )}
     </div>

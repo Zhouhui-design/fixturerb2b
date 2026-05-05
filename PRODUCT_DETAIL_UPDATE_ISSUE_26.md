@@ -109,7 +109,7 @@ The page now checks the product ID and displays different content:
 ## Testing Instructions | 测试说明
 
 ### Test 1: Product Detail Page (Shirt Display Rack)
-Visit: **https://fixturerb2b.top/products/1**
+Visit: **https://fixr2026.com/products/1**
 
 Check the right side (product info):
 - [ ] Title shows "衬衣展示架" (or "Shirt Display Rack" in English)
@@ -119,7 +119,7 @@ Check the right side (product info):
 - [ ] Layout is clean and minimal
 
 ### Test 2: Other Product Pages
-Visit: **https://fixturerb2b.top/products/2** or **/products/3**
+Visit: **https://fixr2026.com/products/2** or **/products/3**
 
 Check that they still show:
 - [ ] Full description text
@@ -163,7 +163,7 @@ Detailed specifications like "200kg capacity" or "easy assembly" are:
 
 **Deployment Time**: 2026-04-24 02:52:05 UTC  
 **Status**: ✅ SUCCESS  
-**Backup**: /var/www/fixturerb2b.top_backup_20260424_025205  
+**Backup**: /var/www/fixr2026.com_backup_20260424_025205  
 
 **Files Uploaded:**
 - JavaScript bundle: index-DvctLl8X.js (247KB)
@@ -189,7 +189,7 @@ Detailed specifications like "200kg capacity" or "easy assembly" are:
 If you need to revert:
 
 ```bash
-ssh root@fixturerb2b.top 'rm -rf /var/www/fixturerb2b.top && cp -r /var/www/fixturerb2b.top_backup_20260424_025205 /var/www/fixturerb2b.top && systemctl restart nginx'
+ssh root@fixr2026.com 'rm -rf /var/www/fixr2026.com && cp -r /var/www/fixr2026.com_backup_20260424_025205 /var/www/fixr2026.com && systemctl restart nginx'
 ```
 
 ---
@@ -249,7 +249,7 @@ After deployment, verify ALL items:
 ---
 
 **Status**: ✅ COMPLETE & DEPLOYED  
-**Live Site**: https://fixturerb2b.top/products/1  
+**Live Site**: https://fixr2026.com/products/1  
 **Layout**: Minimalist - Title + "可定制" + Image Gallery  
 **Next**: Test on live site and confirm  
 

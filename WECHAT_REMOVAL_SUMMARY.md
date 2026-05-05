@@ -3,9 +3,9 @@
 ## ✅ Deployment Status
 
 **Date:** 2026-04-23 13:24 UTC  
-**Website:** https://fixturerb2b.top  
+**Website:** https://fixr2026.com  
 **Status:** ✅ **LIVE AND DEPLOYED**  
-**Backup:** `/var/www/fixturerb2b.top_backup_20260423_132453`
+**Backup:** `/var/www/fixr2026.com_backup_20260423_132453`
 
 ---
 
@@ -304,7 +304,7 @@ This shows flexibility while you expand platform options.
 
 If needed (though not recommended):
 ```bash
-ssh root@fixturerb2b.top 'rm -rf /var/www/fixturerb2b.top && cp -r /var/www/fixturerb2b.top_backup_20260423_132453 /var/www/fixturerb2b.top && systemctl restart nginx'
+ssh root@fixr2026.com 'rm -rf /var/www/fixr2026.com && cp -r /var/www/fixr2026.com_backup_20260423_132453 /var/www/fixr2026.com && systemctl restart nginx'
 ```
 
 ---
@@ -356,5 +356,5 @@ ssh root@fixturerb2b.top 'rm -rf /var/www/fixturerb2b.top && cp -r /var/www/fixt
 
 *Implementation Date: 2026-04-23 13:24 UTC*  
 *Version: WeChat Removal v1.0*  
-*Backup: fixturerb2b.top_backup_20260423_132453*  
+*Backup: fixr2026.com_backup_20260423_132453*  
 *Status: LIVE - Minimal, Accessible, Ready for Expansion*

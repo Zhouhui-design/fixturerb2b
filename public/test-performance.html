@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天系统性能测试</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .test-result {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        .test-title {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        .test-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .test-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .status-good {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-slow {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .status-bad {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        .info {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 4px;
+        }
+        .info strong {
+            color: #1976D2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 聊天系统性能测试</h1>
+        
+        <div class="test-result">
+            <div class="test-title">HTML加载时间</div>
+            <div>
+                <span class="test-value" id="html-time">测试中...</span>
+                <span class="test-status" id="html-status">⏳</span>
+            </div>
+        </div>
+
+        <div class="test-result">
+            <div class="test-title">JS资源加载时间</div>
+            <div>
+                <span class="test-value" id="js-time">测试中...</span>
+                <span class="test-status" id="js-status">⏳</span>
+            </div>
+        </div>
+
+        <div class="test-result">
+            <div class="test-title">CSS资源加载时间</div>
+            <div>
+                <span class="test-value" id="css-time">测试中...</span>
+                <span class="test-status" id="css-status">⏳</span>
+            </div>
+        </div>
+
+        <div class="test-result">
+            <div class="test-title">API响应时间</div>
+            <div>
+                <span class="test-value" id="api-time">测试中...</span>
+                <span class="test-status" id="api-status">⏳</span>
+            </div>
+        </div>
+
+        <button onclick="runTests()">🔄 重新测试</button>
+
+        <div class="info">
+            <strong>💡 提示:</strong><br>
+            • 如果所有时间都 < 100ms，说明访问速度正常<br>
+            • 如果时间 > 500ms，可能是代理配置问题<br>
+            • 建议通过 SSH 端口转发直接访问以获得最佳性能
+        </div>
+    </div>
+
+    <script>
+        async function measureTime(url) {
+            const start = performance.now();
+            try {
+                await fetch(url, { method: 'HEAD', cache: 'no-cache' });
+                const end = performance.now();
+                return end - start;
+            } catch (error) {
+                return -1;
+            }
+        }
+
+        function getStatus(time) {
+            if (time < 0) return { text: '❌ 失败', class: 'status-bad' };
+            if (time < 100) return { text: '✅ 优秀', class: 'status-good' };
+            if (time < 500) return { text: '⚠️  一般', class: 'status-slow' };
+            return { text: '❌ 慢', class: 'status-bad' };
+        }
+
+        function formatTime(ms) {
+            if (ms < 0) return '失败';
+            return ms.toFixed(0) + ' ms';
+        }
+
+        async function runTests() {
+            // HTML test
+            const htmlTime = await measureTime('/chat.html?_=' + Date.now());
+            document.getElementById('html-time').textContent = formatTime(htmlTime);
+            const htmlStatus = getStatus(htmlTime);
+            document.getElementById('html-status').textContent = htmlStatus.text;
+            document.getElementById('html-status').className = 'test-status ' + htmlStatus.class;
+
+            // JS test
+            const jsTime = await measureTime('/assets/js/main-CgAglbPF.js?_=' + Date.now());
+            document.getElementById('js-time').textContent = formatTime(jsTime);
+            const jsStatus = getStatus(jsTime);
+            document.getElementById('js-status').textContent = jsStatus.text;
+            document.getElementById('js-status').className = 'test-status ' + jsStatus.class;
+
+            // CSS test
+            const cssTime = await measureTime('/assets/css/index-vdpgDid8.css?_=' + Date.now());
+            document.getElementById('css-time').textContent = formatTime(cssTime);
+            const cssStatus = getStatus(cssTime);
+            document.getElementById('css-status').textContent = cssStatus.text;
+            document.getElementById('css-status').className = 'test-status ' + cssStatus.class;
+
+            // API test
+            const apiStart = performance.now();
+            try {
+                await fetch('/api/stats/dashboard?tenantId=test', { cache: 'no-cache' });
+                const apiEnd = performance.now();
+                const apiTime = apiEnd - apiStart;
+                document.getElementById('api-time').textContent = formatTime(apiTime);
+                const apiStatus = getStatus(apiTime);
+                document.getElementById('api-status').textContent = apiStatus.text;
+                document.getElementById('api-status').className = 'test-status ' + apiStatus.class;
+            } catch (e) {
+                document.getElementById('api-time').textContent = '失败';
+                document.getElementById('api-status').textContent = '❌ 404';
+                document.getElementById('api-status').className = 'test-status status-bad';
+            }
+        }
+
+        // Auto-run on load
+        window.addEventListener('load', () => {
+            setTimeout(runTests, 500);
+        });
+    </script>
+</body>
+</html>

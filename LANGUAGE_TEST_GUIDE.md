@@ -4,7 +4,7 @@
 
 ### 1. Open Your Website
 ```
-https://fixturerb2b.top
+https://fixr2026.com
 ```
 
 ### 2. Clear Browser Cache (IMPORTANT!)

@@ -1,28 +1,73 @@
 import { useState } from 'react'
 import { X, Send, Paperclip, Bold, Italic, Link } from 'lucide-react'
 import { Button } from '../components/ui/button'
+import { supabase } from '../lib/supabase'
 
 interface EmailComposeProps {
   to: string
   subject: string
   onClose: () => void
   onSent: () => void
+  customerName?: string
+  type?: 'contact' | 'quote'
+  recordId?: string
 }
 
-const EmailCompose = ({ to, subject, onClose, onSent }: EmailComposeProps) => {
+const EmailCompose = ({ to, subject, onClose, onSent, customerName, type, recordId }: EmailComposeProps) => {
   const [body, setBody] = useState('')
   const [sending, setSending] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSend = () => {
-    // 方案B：通过 mailto 协议在页面内触发
-    const mailtoLink = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-    window.location.href = mailtoLink
+  const handleSend = async () => {
+    if (!body.trim()) return
     
-    // 标记为已发送
-    setTimeout(() => {
+    setSending(true)
+    setError('')
+    
+    try {
+      // Call Supabase Edge Function to send email
+      const { data, error: invokeError } = await supabase.functions.invoke('reply-to-customer', {
+        body: {
+          to,
+          subject,
+          body,
+          customerName: customerName || to.split('@')[0]
+        }
+      })
+
+      if (invokeError) {
+        console.error('Edge function error:', invokeError)
+        throw new Error(invokeError.message || 'Failed to send email')
+      }
+
+      if (data && !data.success) {
+        throw new Error(data.error || 'Failed to send email')
+      }
+
+      console.log('Email sent successfully:', data)
+      
+      // Update the record status to 'replied' in the database
+      if (type === 'contact' && recordId) {
+        await supabase
+          .from('contact_submissions')
+          .update({ status: 'replied' })
+          .eq('id', recordId)
+      } else if (type === 'quote' && recordId) {
+        await supabase
+          .from('quote_requests')
+          .update({ status: 'quoted' })
+          .eq('id', recordId)
+      }
+      
+      // Notify parent component
       onSent()
       onClose()
-    }, 500)
+    } catch (err) {
+      console.error('Error sending email:', err)
+      setError(err instanceof Error ? err.message : 'Failed to send email. Please try again.')
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -41,6 +86,13 @@ const EmailCompose = ({ to, subject, onClose, onSent }: EmailComposeProps) => {
 
         {/* Email Fields */}
         <div className="flex-1 overflow-y-auto p-6 space-y-4">
+          {/* Error Message */}
+          {error && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-sm text-red-700">{error}</p>
+            </div>
+          )}
+
           {/* To */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">收件人</label>
@@ -91,7 +143,7 @@ const EmailCompose = ({ to, subject, onClose, onSent }: EmailComposeProps) => {
         {/* Footer */}
         <div className="flex items-center justify-between px-6 py-4 border-t border-gray-200 bg-gray-50">
           <p className="text-sm text-gray-500">
-            点击发送后，将调用系统邮件客户端
+            邮件将通过 Resend 服务发送
           </p>
           <div className="flex items-center space-x-3">
             <Button

@@ -40,7 +40,7 @@
 ### 推荐的URL层级：
 
 ```
-fixturerb2b.top/
+fixr2026.com/
 ├── products/                    # 主产品页（已优化）
 │   ├── products/1              # Retail Display Systems
 │   ├── products/2              # Wall Display Solutions

@@ -8,7 +8,7 @@ export const siteConfig = {
     wechat: 'YourWeChatID', // TODO: Replace with your actual WeChat ID
     lark: 'YourLarkID', // TODO: Replace with your actual Lark user_id or open_id
     dingtalk: 'YourDingTalkID', // TODO: Replace with your actual DingTalk ID
-    chatSystem: 'https://chat.fixturerb2b.top', // Link to your chat-system
+    chatSystem: 'https://chat.fixr2026.com', // Link to your chat-system (independent SaaS service)
     // Lark AppLink for direct chat opening (Scheme 1 - Recommended)
     // Format: larksuite://open?user_id=[YOUR_USER_ID]&action=chat
     // Get your user_id from: Lark > Settings > Account & Security > API Access

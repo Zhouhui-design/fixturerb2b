@@ -192,8 +192,8 @@ Once local testing passes:
 ### Step 3: Test on Live Site
 Visit:
 ```
-https://fixturerb2b.top/cases
-https://fixturerb2b.top/cases/1
+https://fixr2026.com/cases
+https://fixr2026.com/cases/1
 ```
 
 Verify:
@@ -272,7 +272,7 @@ After deployment, verify ALL items:
 - [ ] Works on desktop browsers
 - [ ] No console errors
 - [ ] Page loads quickly
-- [ ] Deployed to fixturerb2b.top
+- [ ] Deployed to fixr2026.com
 - [ ] Live site tested and working
 
 ---
@@ -282,7 +282,7 @@ After deployment, verify ALL items:
 1. **Open Browser**: Visit http://localhost:8090/cases
 2. **Test Thoroughly**: Check all items in checklist above
 3. **If Everything Works**: Deploy to production
-4. **Test Live Site**: Verify on fixturerb2b.top
+4. **Test Live Site**: Verify on fixr2026.com
 5. **Report Results**: Confirm all changes working
 
 ---

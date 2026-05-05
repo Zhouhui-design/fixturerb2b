@@ -4,7 +4,7 @@
 
 ✅ **HTTPS已启用**
 - 证书类型：Let's Encrypt (DV)
-- 域名：fixturerb2b.top
+- 域名：fixr2026.com
 - 有效期：2026-04-20 至 2026-07-19
 - 状态：正常工作
 
@@ -35,8 +35,8 @@
 ### 2. 生成CSR
 ```bash
 openssl req -new -newkey rsa:2048 -nodes \
-  -keyout fixturerb2b.top.key \
-  -out fixturerb2b.top.csr
+  -keyout fixr2026.com.key \
+  -out fixr2026.com.csr
 ```
 
 ### 3. 提交申请
@@ -66,11 +66,11 @@ sudo nginx -t && sudo systemctl reload nginx
 ```nginx
 server {
     listen 443 ssl http2;
-    server_name fixturerb2b.top www.fixturerb2b.top;
+    server_name fixr2026.com www.fixr2026.com;
 
     # 证书路径
-    ssl_certificate /etc/nginx/ssl/fixturerb2b.top.bundle.crt;
-    ssl_certificate_key /etc/nginx/ssl/fixturerb2b.top.key;
+    ssl_certificate /etc/nginx/ssl/fixr2026.com.bundle.crt;
+    ssl_certificate_key /etc/nginx/ssl/fixr2026.com.key;
 
     # SSL优化
     ssl_protocols TLSv1.2 TLSv1.3;
@@ -100,7 +100,7 @@ server {
 
 ### 命令行检查：
 ```bash
-echo | openssl s_client -connect fixturerb2b.top:443 2>/dev/null | openssl x509 -noout -issuer -subject
+echo | openssl s_client -connect fixr2026.com:443 2>/dev/null | openssl x509 -noout -issuer -subject
 ```
 
 ### 在线工具：

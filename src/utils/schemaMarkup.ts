@@ -169,11 +169,11 @@ export const generateWebSiteSchema = (): string => {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'FixtureRB2B',
-    url: 'https://fixturerb2b.top',
+    url: 'https://fixr2026.com',
     description: 'Professional B2B store fixtures and display solutions for apparel retail',
     potentialAction: {
       '@type': 'SearchAction',
-      target: 'https://fixturerb2b.top/products?search={search_term_string}',
+      target: 'https://fixr2026.com/products?search={search_term_string}',
       'query-input': 'required name=search_term_string'
     }
   }
@@ -189,10 +189,10 @@ export const generateLocalBusinessSchema = (): string => {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     name: 'FixtureRB2B',
-    image: 'https://fixturerb2b.top/logo.png',
-    url: 'https://fixturerb2b.top',
+    image: 'https://fixr2026.com/logo.png',
+    url: 'https://fixr2026.com',
     telephone: '+86-XXX-XXXX-XXXX',
-    email: 'info@fixturerb2b.top',
+    email: 'info@fixr2026.com',
     address: {
       '@type': 'PostalAddress',
       addressCountry: 'CN'

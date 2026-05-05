@@ -140,7 +140,7 @@ quoteRequest?: {
 ## Testing Instructions | 测试说明
 
 ### Test 1: Open Quote Request Modal
-Visit any product page: **https://fixturerb2b.top/products/1**
+Visit any product page: **https://fixr2026.com/products/1**
 
 Click "Request Quote" button:
 - [ ] Modal opens
@@ -222,7 +222,7 @@ This allows deployment even though not all 10 languages have translations yet. L
 
 **Deployment Time**: 2026-04-24 02:57:25 UTC  
 **Status**: ✅ SUCCESS  
-**Backup**: /var/www/fixturerb2b.top_backup_20260424_025725  
+**Backup**: /var/www/fixr2026.com_backup_20260424_025725  
 
 **Files Uploaded:**
 - JavaScript bundle (updated with translation logic)
@@ -262,7 +262,7 @@ Use the English or Chinese translations as templates and translate each key.
 If you need to revert:
 
 ```bash
-ssh root@fixturerb2b.top 'rm -rf /var/www/fixturerb2b.top && cp -r /var/www/fixturerb2b.top_backup_20260424_025725 /var/www/fixturerb2b.top && systemctl restart nginx'
+ssh root@fixr2026.com 'rm -rf /var/www/fixr2026.com && cp -r /var/www/fixr2026.com_backup_20260424_025725 /var/www/fixr2026.com && systemctl restart nginx'
 ```
 
 ---
@@ -310,7 +310,7 @@ After deployment, verify ALL items:
 ---
 
 **Status**: ✅ COMPLETE & DEPLOYED  
-**Live Site**: https://fixturerb2b.top/products/1  
+**Live Site**: https://fixr2026.com/products/1  
 **Feature**: Quote request modal now supports real-time translation  
 **Languages**: 3 fully translated, 7 with English fallback  
 

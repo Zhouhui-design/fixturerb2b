@@ -69,7 +69,7 @@ serve(async (req) => {
               <p style="color: #666; margin: 0 0 10px 0;">Best regards,</p>
               <p style="color: #8b6914; font-weight: bold; margin: 0;">Fixturerb2b Team</p>
               <p style="color: #666; font-size: 12px; margin: 5px 0 0 0;">
-                📧 support@fixturerb2b.top | 🌐 <a href="https://fixturerb2b.top" style="color: #8b6914;">fixturerb2b.top</a>
+                📧 support@fixr2026.com | 🌐 <a href="https://fixr2026.com" style="color: #8b6914;">fixr2026.com</a>
               </p>
             </div>
           </div>

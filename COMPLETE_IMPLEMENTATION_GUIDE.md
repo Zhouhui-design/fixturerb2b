@@ -203,7 +203,7 @@ npm install puppeteer
 3. **配置域名和 SSL**
    ```bash
    # 使用 Let's Encrypt
-   sudo certbot --nginx -d fixturerb2b.top -d www.fixturerb2b.top
+   sudo certbot --nginx -d fixr2026.com -d www.fixr2026.com
    ```
 
 #### 方法 B：Vercel（最简单）

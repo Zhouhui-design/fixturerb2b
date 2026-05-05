@@ -4,7 +4,7 @@
 ---
 
 ### 🎯 任务编号：TASK-20260422-001
-**任务名称：** 完成fixturerb2b.top的Google Search Console和Analytics设置
+**任务名称：** 完成fixr2026.com的Google Search Console和Analytics设置
 **创建时间：** 2026-04-22 16:25
 **计划完成日期：** 2026-04-22
 **优先级：** 高
@@ -18,7 +18,7 @@
 | 3 | 获取Google Analytics Measurement ID（格式：G-XXXXXXXXXX） | 需要操作Google Analytics后台，创建账户和媒体资源获取ID | ✅ 用户已提供 | ✅ 已完成 | 用户提供ID：G-LWZXF5WGFB |
 | 4 | 更新index.html文件，替换占位符为实际验证码和ID | 使用文本替换工具，替换YOUR_VERIFICATION_CODE_HERE和3处G-XXXXXXXXXX | ✅ 可完成 | ✅ 已完成 | 已将两处G-XXXXXXXXXX替换为G-LWZXF5WGFB，验证标签保留不影响（用户已完成验证） |
 | 5 | 执行npm run build构建生产版本 | 在项目根目录执行npm run build命令 | ✅ 可完成 | ✅ 已完成 | 构建成功，生成dist/index.html包含最新GA代码 |
-| 6 | 部署更新后的index.html到线上服务器 | 执行scp命令将dist/index.html上传到fixturerb2b.top服务器的/usr/share/nginx/html/目录 | ❌ 暂时无法完成 | ⏳ 待用户提供有权限的SSH密钥 | 原因：本地id_rsa和id_ed25519两个私钥均无服务器登录权限，需要用户提供有权限的SSH私钥或者手动上传文件 |
+| 6 | 部署更新后的index.html到线上服务器 | 执行scp命令将dist/index.html上传到fixr2026.com服务器的/usr/share/nginx/html/目录 | ❌ 暂时无法完成 | ⏳ 待用户提供有权限的SSH密钥 | 原因：本地id_rsa和id_ed25519两个私钥均无服务器登录权限，需要用户提供有权限的SSH私钥或者手动上传文件 |
 | 7 | 完成Google Search Console所有权验证 | 需要回到Search Console后台点击"验证"按钮 | ❌ 暂时无法完成 | ⏳ 待用户操作 | 原因：无权限访问用户的Google账户后台 |
 | 8 | 验证Google Analytics是否生效 | 访问网站检查源代码，确认GA代码正确，或使用GA检测工具验证 | ✅ 可完成 | ⏳ 待执行 | 部署完成后执行 |
 

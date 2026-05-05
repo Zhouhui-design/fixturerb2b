@@ -14,7 +14,7 @@ The new index.html with Google Analytics has been generated at:
 
 2. **Connect to server:**
    ```
-   Host: sftp://fixturerb2b.top
+   Host: sftp://fixr2026.com
    Username: sardenesy
    Password: [your server password]
    Port: 22
@@ -35,7 +35,7 @@ The new index.html with Google Analytics has been generated at:
 
 Open terminal and run:
 ```bash
-scp /home/sardenesy/fixturerb2b/dist/index.html sardenesy@fixturerb2b.top:/usr/share/nginx/html/index.html
+scp /home/sardenesy/fixturerb2b/dist/index.html sardenesy@fixr2026.com:/usr/share/nginx/html/index.html
 ```
 
 Enter your password when prompted.
@@ -46,7 +46,7 @@ Enter your password when prompted.
 
 1. **SSH into server:**
    ```bash
-   ssh sardenesy@fixturerb2b.top
+   ssh sardenesy@fixr2026.com
    ```
 
 2. **Backup old file:**
@@ -57,7 +57,7 @@ Enter your password when prompted.
 3. **Download new file to server:**
    ```bash
    # From your local machine (new terminal)
-   scp /home/sardenesy/fixturerb2b/dist/index.html sardenesy@fixturerb2b.top:/tmp/index.html
+   scp /home/sardenesy/fixturerb2b/dist/index.html sardenesy@fixr2026.com:/tmp/index.html
    
    # Then on server (SSH session)
    sudo cp /tmp/index.html /usr/share/nginx/html/index.html
@@ -75,7 +75,7 @@ Enter your password when prompted.
 
 After uploading, verify immediately:
 
-1. **Visit your site:** https://fixturerb2b.top
+1. **Visit your site:** https://fixr2026.com
 
 2. **View page source:** (Ctrl+U in browser)
 
@@ -90,7 +90,7 @@ After uploading, verify immediately:
 
 ## 🔍 Test Google Analytics (5-10 minutes after upload)
 
-1. **Visit:** https://fixturerb2b.top (browse a few pages)
+1. **Visit:** https://fixr2026.com (browse a few pages)
 
 2. **Open GA4:** https://analytics.google.com
 

@@ -34,7 +34,7 @@
 
 **Build Status:** ✅ Production build ready  
 **Location:** `/home/sardenesy/fixturerb2b/dist/`  
-**Target:** `fixturerb2b.top` (Nginx at `/usr/share/nginx/html/`)
+**Target:** `fixr2026.com` (Nginx at `/usr/share/nginx/html/`)
 
 ---
 
@@ -43,7 +43,7 @@
 ### Method 1: FileZilla (Recommended for Manual Upload)
 
 1. **Open FileZilla**
-   - Host: `sftp://fixturerb2b.top`
+   - Host: `sftp://fixr2026.com`
    - Username: `sardenesy`
    - Password: [your server password]
    - Port: 22
@@ -58,7 +58,7 @@
    - Click "Yes" to overwrite
 
 4. **Verify:**
-   - Visit https://fixturerb2b.top
+   - Visit https://fixr2026.com
    - Ctrl+Shift+R (hard refresh)
    - Test all features
 
@@ -118,7 +118,7 @@ git push origin main
 ### Quick Rollback:
 ```bash
 # SSH to server
-ssh sardenesy@fixturerb2b.top
+ssh sardenesy@fixr2026.com
 
 # Restore from backup (if exists)
 sudo cp /usr/share/nginx/html/index.html.backup /usr/share/nginx/html/index.html

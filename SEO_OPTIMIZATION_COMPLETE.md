@@ -15,7 +15,7 @@ Disallow: /admin
 Disallow: /api/
 Disallow: /*.json$
 
-Sitemap: https://fixturerb2b.top/sitemap.xml
+Sitemap: https://fixr2026.com/sitemap.xml
 ```
 
 **作用：**
@@ -155,8 +155,8 @@ Sitemap: https://fixturerb2b.top/sitemap.xml
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "FixtureRB2B",
-  "url": "https://fixturerb2b.top",
-  "logo": "https://fixturerb2b.top/logo.png",
+  "url": "https://fixr2026.com",
+  "logo": "https://fixr2026.com/logo.png",
   "description": "Professional store fixtures manufacturer",
   "address": {
     "@type": "PostalAddress",
@@ -217,11 +217,11 @@ GROUP BY language;
 **步骤：**
 1. 访问：https://search.google.com/search-console
 2. 登录Google账户
-3. 添加属性：`https://fixturerb2b.top`
+3. 添加属性：`https://fixr2026.com`
 4. 验证所有权（推荐DNS验证）
 5. 提交sitemap：
    ```
-   https://fixturerb2b.top/sitemap.xml
+   https://fixr2026.com/sitemap.xml
    ```
 
 **监控指标：**
@@ -271,7 +271,7 @@ GROUP BY language;
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "FixtureRB2B",
-  "url": "https://fixturerb2b.top",
+  "url": "https://fixr2026.com",
   // ... 其他字段
 })}
 </script>

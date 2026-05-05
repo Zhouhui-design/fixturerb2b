@@ -23,22 +23,22 @@
 
 ```bash
 # 如果之前有SSH密钥问题，先检查连接
-ssh sardenesy@fixturerb2b.top
+ssh sardenesy@fixr2026.com
 
 # 如果能连接，退出后运行上传命令
-scp dist/sitemap.xml dist/robots.txt sardenesy@fixturerb2b.top:/usr/share/nginx/html/
+scp dist/sitemap.xml dist/robots.txt sardenesy@fixr2026.com:/usr/share/nginx/html/
 ```
 
 **如果遇到权限问题：**
 ```bash
 # 使用密码认证
-sshpass -p '你的密码' scp dist/sitemap.xml dist/robots.txt sardenesy@fixturerb2b.top:/usr/share/nginx/html/
+sshpass -p '你的密码' scp dist/sitemap.xml dist/robots.txt sardenesy@fixr2026.com:/usr/share/nginx/html/
 ```
 
 或者手动输入密码：
 ```bash
-scp dist/sitemap.xml sardenesy@fixturerb2b.top:/tmp/
-ssh sardenesy@fixturerb2b.top "sudo cp /tmp/sitemap.xml /usr/share/nginx/html/ && sudo chown www-data:www-data /usr/share/nginx/html/sitemap.xml"
+scp dist/sitemap.xml sardenesy@fixr2026.com:/tmp/
+ssh sardenesy@fixr2026.com "sudo cp /tmp/sitemap.xml /usr/share/nginx/html/ && sudo chown www-data:www-data /usr/share/nginx/html/sitemap.xml"
 ```
 
 ---
@@ -51,7 +51,7 @@ ssh sardenesy@fixturerb2b.top "sudo cp /tmp/sitemap.xml /usr/share/nginx/html/ &
    ```
 
 2. **连接到服务器**
-   - Host: `sftp://fixturerb2b.top`
+   - Host: `sftp://fixr2026.com`
    - Username: `sardenesy`
    - Password: [你的服务器密码]
    - Port: `22`
@@ -72,7 +72,7 @@ ssh sardenesy@fixturerb2b.top "sudo cp /tmp/sitemap.xml /usr/share/nginx/html/ &
 
 ```bash
 # 1. SSH登录
-ssh sardenesy@fixturerb2b.top
+ssh sardenesy@fixr2026.com
 
 # 2. 进入网站目录
 cd /usr/share/nginx/html/
@@ -107,7 +107,7 @@ exit
 
 1. **检查Sitemap：**
    ```
-   https://fixturerb2b.top/sitemap.xml
+   https://fixr2026.com/sitemap.xml
    ```
    
    ✅ 应该看到包含9个页面的XML
@@ -116,14 +116,14 @@ exit
 
 2. **检查Robots.txt：**
    ```
-   https://fixturerb2b.top/robots.txt
+   https://fixr2026.com/robots.txt
    ```
    
    ✅ 应该指向sitemap.xml
 
 3. **命令行验证：**
    ```bash
-   curl -I https://fixturerb2b.top/sitemap.xml
+   curl -I https://fixr2026.com/sitemap.xml
    ```
    
    应该看到：
@@ -148,7 +148,7 @@ https://search.google.com/search-console
 
 确保选择了正确的属性：
 ```
-https://fixturerb2b.top
+https://fixr2026.com
 ```
 
 **注意：** 如果你同时有 `http://` 和 `https://` 两个属性，选择 `https://` 的那个。
@@ -167,7 +167,7 @@ https://fixturerb2b.top
 
 **输入以下任一内容：**
 - 简单版：`sitemap.xml`
-- 完整版：`https://fixturerb2b.top/sitemap.xml`
+- 完整版：`https://fixr2026.com/sitemap.xml`
 
 点击 **"提交"** 按钮
 
@@ -224,7 +224,7 @@ https://fixturerb2b.top
 
 **解决：**
 1. 确认文件已上传到服务器
-2. 访问 `https://fixturerb2b.top/sitemap.xml` 确认可以打开
+2. 访问 `https://fixr2026.com/sitemap.xml` 确认可以打开
 3. 检查文件权限是否为644
 4. 确认使用的是正确的域名属性
 
@@ -277,7 +277,7 @@ https://fixturerb2b.top
 如果有特别重要的页面想快速索引：
 
 1. 左侧菜单：**URL检查**
-2. 输入URL：`https://fixturerb2b.top/`
+2. 输入URL：`https://fixr2026.com/`
 3. 点击 **"请求编入索引"**
 
 ### 2. 监控索引状态
@@ -340,7 +340,7 @@ https://fixturerb2b.top
 完成后，确认以下所有项：
 
 - [ ] Sitemap已上传到服务器
-- [ ] 可以通过浏览器访问 `https://fixturerb2b.top/sitemap.xml`
+- [ ] 可以通过浏览器访问 `https://fixr2026.com/sitemap.xml`
 - [ ] 文件大小约1.8K，包含9个URL
 - [ ] 已在Search Console中提交
 - [ ] 状态显示为"成功"

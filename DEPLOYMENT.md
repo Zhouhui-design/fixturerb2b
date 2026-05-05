@@ -1,4 +1,4 @@
-# DigitalOcean 部署指南 - fixturerb2b.top
+# DigitalOcean 部署指南 - fixr2026.com
 
 ## 部署前需要提供的信息
 
@@ -9,7 +9,7 @@
 - **服务器区域**: (如: New York, San Francisco, Singapore等)
 
 ### 2. 域名配置
-- 域名 `fixturerb2b.top` 已解析到服务器IP ✓
+- 域名 `fixr2026.com` 已解析到服务器IP ✓
 - 需要配置SSL证书（Let's Encrypt免费）
 
 ### 3. 后端API（如果有）
@@ -138,7 +138,7 @@ sudo apt-get update
 sudo apt-get install -y certbot python3-certbot-nginx
 
 # 获取证书
-sudo certbot --nginx -d fixturerb2b.top -d www.fixturerb2b.top
+sudo certbot --nginx -d fixr2026.com -d www.fixr2026.com
 
 # 自动续期测试
 sudo certbot renew --dry-run
@@ -160,7 +160,7 @@ VITE_SUPABASE_URL=https://your-project-id.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key-here
 
 # Backend API URL (如果有其他后端)
-VITE_API_URL=https://api.fixturerb2b.top
+VITE_API_URL=https://api.fixr2026.com
 
 # Other environment variables
 NODE_ENV=production
@@ -203,7 +203,7 @@ services:
 
 ## 部署后检查清单
 
-- [ ] 网站可以通过 http://fixturerb2b.top 访问
+- [ ] 网站可以通过 http://fixr2026.com 访问
 - [ ] HTTPS已配置并正常工作
 - [ ] 所有页面路由正常（刷新页面不会出现404）
 - [ ] 图片等资源加载正常

@@ -3,9 +3,9 @@
 ## ✅ Deployment Status
 
 **Date:** 2026-04-23 03:08 UTC  
-**Website:** https://fixturerb2b.top  
+**Website:** https://fixr2026.com  
 **Status:** ✅ **LIVE AND DEPLOYED**  
-**Backup:** `/var/www/fixturerb2b.top_backup_20260423_030850`
+**Backup:** `/var/www/fixr2026.com_backup_20260423_030850`
 
 ---
 
@@ -340,7 +340,7 @@ npm run build
 
 If issues arise:
 ```bash
-ssh root@fixturerb2b.top 'rm -rf /var/www/fixturerb2b.top && cp -r /var/www/fixturerb2b.top_backup_20260423_030850 /var/www/fixturerb2b.top && systemctl restart nginx'
+ssh root@fixr2026.com 'rm -rf /var/www/fixr2026.com && cp -r /var/www/fixr2026.com_backup_20260423_030850 /var/www/fixr2026.com && systemctl restart nginx'
 ```
 
 ---
@@ -400,5 +400,5 @@ ssh root@fixturerb2b.top 'rm -rf /var/www/fixturerb2b.top && cp -r /var/www/fixt
 
 *Implementation Date: 2026-04-23 03:08 UTC*  
 *Version: Contact Form Enhancement v1.0*  
-*Backup: fixturerb2b.top_backup_20260423_030850*  
+*Backup: fixr2026.com_backup_20260423_030850*  
 *Status: LIVE - File Storage Pending*
