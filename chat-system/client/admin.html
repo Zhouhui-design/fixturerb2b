@@ -443,8 +443,8 @@
         </div>
     </div>
 
-    <script src="/socket.io/socket.io.js?v=20260507024500"></script>
-    <script src="call-manager.js?v=20260507024500"></script>
+    <script src="/socket.io/socket.io.js?v=20260507025000"></script>
+    <script src="call-manager.js?v=20260507025000"></script>
     <script>
         class AdminDashboard {
             constructor() {
@@ -947,6 +947,30 @@
                                 <div class="file-info">
                                     <div class="file-name" style="cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">${fileName}</div>
                                     <a href="${fileUrl}" target="_blank" style="color: #667eea; text-decoration: none; cursor: pointer;"> 打开 Word 文档</a>
+                                </div>
+                            </div>
+                            <div class="message-time">${time}</div>
+                        `;
+                    } else if (fileUrl.endsWith('.xlsx') || fileUrl.endsWith('.xls') || fileType.includes('excel') || fileType.includes('spreadsheet')) {
+                        // Excel 文档 - 点击打开
+                        messageDiv.innerHTML = `
+                            <div class="file-content">
+                                <div class="file-icon" style="font-size: 48px; cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')"></div>
+                                <div class="file-info">
+                                    <div class="file-name" style="cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">${fileName}</div>
+                                    <a href="${fileUrl}" target="_blank" style="color: #667eea; text-decoration: none; cursor: pointer;"> 打开 Excel 文件</a>
+                                </div>
+                            </div>
+                            <div class="message-time">${time}</div>
+                        `;
+                    } else if (fileUrl.endsWith('.txt') || fileType === 'text/plain') {
+                        // TXT 文件 - 点击打开
+                        messageDiv.innerHTML = `
+                            <div class="file-content">
+                                <div class="file-icon" style="font-size: 48px; cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">📄</div>
+                                <div class="file-info">
+                                    <div class="file-name" style="cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">${fileName}</div>
+                                    <a href="${fileUrl}" target="_blank" style="color: #667eea; text-decoration: none; cursor: pointer;"> 查看文本文件</a>
                                 </div>
                             </div>
                             <div class="message-time">${time}</div>
