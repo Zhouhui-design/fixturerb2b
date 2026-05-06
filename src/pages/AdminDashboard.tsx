@@ -325,17 +325,29 @@ const AdminDashboard = () => {
               <p className="text-gray-600 mt-2">Manage and track customer inquiries</p>
             </div>
             
-            {/* Chat Quick Access Button */}
-            <a
-              href="https://chat.fixturerb2b.top/admin.html"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 font-medium"
-            >
-              <MessageCircle className="w-5 h-5 mr-2" />
-              Open Chat Manager
-              <ExternalLink className="w-4 h-4 ml-2" />
-            </a>
+            {/* Chat Quick Access Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3">
+              <a
+                href="https://chat.fixr2026.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg shadow-lg hover:shadow-xl hover:from-green-700 hover:to-green-800 transition-all duration-200 font-medium"
+              >
+                <MessageCircle className="w-5 h-5 mr-2" />
+                进入聊天系统
+                <ExternalLink className="w-4 h-4 ml-2" />
+              </a>
+              <a
+                href="https://chat.fixr2026.com/admin.html"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 font-medium"
+              >
+                <MessageCircle className="w-5 h-5 mr-2" />
+                聊天管理后台
+                <ExternalLink className="w-4 h-4 ml-2" />
+              </a>
+            </div>
           </div>
         </div>
 
