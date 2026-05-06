@@ -1161,13 +1161,16 @@ class ChatApp {
 
     // 麦克风录音功能
     setupVoiceRecording() {
+        console.log('[麦克风] setupVoiceRecording 被调用');
         const voiceBtn = document.getElementById('voice-message-btn');
         if (!voiceBtn) {
-            console.warn('[麦克风] 未找到 voice-message-btn 按钮');
+            console.error('[麦克风] ❌ 未找到 voice-message-btn 按钮');
             return;
         }
         
-        console.log('[麦克风] 按钮找到，绑定事件');
+        console.log('[麦克风] ✅ 按钮找到，开始绑定事件');
+        console.log('[麦克风] 按钮元素:', voiceBtn);
+        console.log('[麦克风] navigator.mediaDevices:', navigator.mediaDevices ? '可用' : '不可用');
         
         let mediaRecorder = null;
         let audioChunks = [];
@@ -1176,10 +1179,16 @@ class ChatApp {
         
         // 开始录音函数
         const startRecording = async () => {
-            if (isRecording) return;
+            console.log('[麦克风] 🎤 开始录音...');
+            if (isRecording) {
+                console.log('[麦克风] 已经在录音中，忽略');
+                return;
+            }
             
             try {
+                console.log('[麦克风] 请求麦克风权限...');
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                console.log('[麦克风] ✅ 麦克风权限已获取');
                 audioStream = stream;
                 mediaRecorder = new MediaRecorder(stream);
                 audioChunks = [];
@@ -1236,42 +1245,60 @@ class ChatApp {
                 voiceBtn.classList.add('recording');
                 voiceBtn.style.background = '#ef4444';
                 voiceBtn.style.transform = 'scale(1.1)';
+                console.log('[麦克风] ✅ 录音已开始，按钮状态已更新');
             } catch (err) {
-                console.error('Microphone error:', err);
-                alert('无法访问麦克风: ' + err.message);
+                console.error('[麦克风] ❌ 麦克风错误:', err);
+                alert('无法访问麦克风: ' + err.message + '\n\n请确保：\n1. 允许浏览器访问麦克风\n2. 使用 HTTPS 连接\n3. 检查浏览器设置');
             }
         };
         
         // 停止录音函数
         const stopRecording = () => {
-            if (!isRecording || !mediaRecorder) return;
+            console.log('[麦克风] ⏹️ 停止录音...');
+            if (!isRecording || !mediaRecorder) {
+                console.log('[麦克风] 没有在录音，忽略');
+                return;
+            }
             
             mediaRecorder.stop();
             isRecording = false;
             voiceBtn.classList.remove('recording');
             voiceBtn.style.background = '';
             voiceBtn.style.transform = '';
+            console.log('[麦克风] ✅ 录音已停止');
         };
         
         // PC端鼠标事件
-        voiceBtn.addEventListener('mousedown', startRecording);
-        voiceBtn.addEventListener('mouseup', stopRecording);
-        voiceBtn.addEventListener('mouseleave', stopRecording);
+        voiceBtn.addEventListener('mousedown', (e) => {
+            console.log('[麦克风] mousedown 事件触发');
+            startRecording();
+        });
+        voiceBtn.addEventListener('mouseup', (e) => {
+            console.log('[麦克风] mouseup 事件触发');
+            stopRecording();
+        });
+        voiceBtn.addEventListener('mouseleave', (e) => {
+            console.log('[麦克风] mouseleave 事件触发');
+            stopRecording();
+        });
         
         // 移动端触摸事件（修复）
         voiceBtn.addEventListener('touchstart', (e) => {
+            console.log('[麦克风] touchstart 事件触发');
             e.preventDefault();
             e.stopPropagation();
             startRecording();
         }, { passive: false });
         
         voiceBtn.addEventListener('touchend', (e) => {
+            console.log('[麦克风] touchend 事件触发');
             e.preventDefault();
             e.stopPropagation();
             stopRecording();
         }, { passive: false });
         
         voiceBtn.addEventListener('touchcancel', (e) => {
+            console.log('[麦克风] touchcancel 事件触发');
             e.preventDefault();
             stopRecording();
         }, { passive: false });
