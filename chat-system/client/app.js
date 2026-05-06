@@ -66,6 +66,11 @@ class ChatApp {
             }
         }, 1000);
         
+        // 初始化翻译管理器
+        this.translationManager = new TranslationManager();
+        this.translationManager.initTranslationUI();
+        this.log('翻译管理器初始化完成');
+        
         this.log('应用初始化完成');
     }
     
