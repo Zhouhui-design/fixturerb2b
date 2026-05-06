@@ -7,6 +7,36 @@ const Message = require('../models/Message');
 const router = express.Router();
 
 // 具体路由必须在参数路由之前定义
+// 获取在线用户列表（管理员使用）
+router.get('/online', async (req, res) => {
+  try {
+    const { tenantId } = req.query;
+    const currentTenant = tenantId || 'fixturerb2b';
+    
+    // 获取最近5分钟有活动的用户
+    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+    const onlineUsers = await Message.distinct('from', {
+      tenantId: currentTenant,
+      timestamp: { $gte: fiveMinutesAgo }
+    });
+    
+    // 获取用户详细信息
+    const users = await User.find({
+      _id: { $in: onlineUsers },
+      tenantId: currentTenant
+    }).select('_id username lastActiveAt');
+    
+    res.json({ 
+      success: true,
+      onlineUsers: users,
+      count: users.length
+    });
+  } catch (err) {
+    console.error('Get online users error:', err);
+    res.status(500).json({ error: 'Failed to get online users' });
+  }
+});
+
 // 获取用户对话列表（管理员使用）
 router.get('/conversations', async (req, res) => {
   try {
