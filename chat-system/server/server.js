@@ -93,7 +93,7 @@ io.on('connection', (socket) => {
   
   socket.on('send_message', async (data) => {
     try {
-      const { to, content, originalLang, translatedLang } = data;
+      const { to, content, originalLang, translatedLang, isFile, fileUrl, fileName, fileType } = data;
       
       const message = new Message({
         from: socket.userId,
@@ -112,7 +112,12 @@ io.on('connection', (socket) => {
         content: content,
         timestamp: message.timestamp,
         originalLang: message.originalLang,
-        tenantId: socket.tenantId
+        tenantId: socket.tenantId,
+        // 传递文件相关字段
+        isFile: isFile || false,
+        fileUrl: fileUrl || null,
+        fileName: fileName || null,
+        fileType: fileType || null
       });
       
       socket.emit('message_sent', { id: message._id, timestamp: message.timestamp });

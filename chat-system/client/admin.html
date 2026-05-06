@@ -443,8 +443,8 @@
         </div>
     </div>
 
-    <script src="/socket.io/socket.io.js?v=20260507023000"></script>
-    <script src="call-manager.js?v=20260507023000"></script>
+    <script src="/socket.io/socket.io.js?v=20260507024500"></script>
+    <script src="call-manager.js?v=20260507024500"></script>
     <script>
         class AdminDashboard {
             constructor() {
@@ -878,7 +878,16 @@
                     messageDiv.className = `message ${type} file-message`;
                     
                     const fileType = msg.fileType || '';
-                    const fileName = decodeURIComponent(msg.fileName || this.extractFileName(msg.content) || '文件');
+                    // 安全解码文件名，防止双重解码导致乱码
+                    let fileName = '文件';
+                    try {
+                        const rawName = msg.fileName || this.extractFileName(msg.content) || '文件';
+                        // 只解码一次，如果已经是 decoded 状态则不再解码
+                        fileName = decodeURIComponent(rawName);
+                    } catch (e) {
+                        // 如果解码失败，使用原始文件名
+                        fileName = msg.fileName || this.extractFileName(msg.content) || '文件';
+                    }
                     // 优先使用fileUrl，如果没有则从content中提取URL，最后才使用整个content
                     const fileUrl = msg.fileUrl || this.extractFileUrl(msg.content) || msg.content || '';
                     
@@ -926,6 +935,18 @@
                                 <div class="file-info">
                                     <div class="file-name" style="cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">${fileName}</div>
                                     <a href="${fileUrl}" target="_blank" style="color: #667eea; text-decoration: none; cursor: pointer;">️ 查看 PDF</a>
+                                </div>
+                            </div>
+                            <div class="message-time">${time}</div>
+                        `;
+                    } else if (fileUrl.endsWith('.docx') || fileUrl.endsWith('.doc') || fileType.includes('word')) {
+                        // Word 文档 - 点击打开
+                        messageDiv.innerHTML = `
+                            <div class="file-content">
+                                <div class="file-icon" style="font-size: 48px; cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">📝</div>
+                                <div class="file-info">
+                                    <div class="file-name" style="cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">${fileName}</div>
+                                    <a href="${fileUrl}" target="_blank" style="color: #667eea; text-decoration: none; cursor: pointer;"> 打开 Word 文档</a>
                                 </div>
                             </div>
                             <div class="message-time">${time}</div>

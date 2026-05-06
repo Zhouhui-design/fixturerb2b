@@ -70,11 +70,20 @@ router.post('/file', upload.single('file'), (req, res) => {
         
         // 处理文件名编码问题（防止中文乱码）
         let originalName = req.file.originalname;
+        
+        // 使用更安全的解码方式
         try {
-            // 尝试解码 URL 编码的文件名
-            originalName = decodeURIComponent(originalName);
+            // 检查是否已经是 UTF-8 编码
+            if (/^[\x00-\x7F]*$/.test(originalName)) {
+                // 纯 ASCII，不需要解码
+                originalName = originalName;
+            } else {
+                // 包含非 ASCII 字符，尝试解码
+                originalName = decodeURIComponent(escape(originalName));
+            }
         } catch (e) {
             // 如果解码失败，使用原始文件名
+            console.warn('Filename decode failed, using original:', originalName);
             originalName = req.file.originalname;
         }
         
