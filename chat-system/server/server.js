@@ -19,7 +19,7 @@ const userRoutes = require('./routes/user');
 const suggestionRoutes = require('./routes/suggestion');
 const uploadRoutes = require('./routes/upload');
 const statsRoutes = require('./routes/stats');
-const voiceRoutes = require('./routes/voice');
+// const voiceRoutes = require('./routes/voice'); // OpenAI Whisper - 已弃用，使用阿里云 ASR
 const voiceAliyunRoutes = require('./routes/voice-aliyun');
 const emailService = require('./services/emailService');
 
@@ -49,8 +49,8 @@ app.use('/api/user', userRoutes);
 app.use('/api/suggestions', suggestionRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/stats', statsRoutes);
-app.use('/api/voice', voiceRoutes);
-app.use('/api/voice', voiceAliyunRoutes);
+// app.use('/api/voice', voiceRoutes); // OpenAI Whisper - 已弃用
+app.use('/api/voice', voiceAliyunRoutes); // 阿里云 ASR
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 cron.schedule('0 2 * * *', async () => {
