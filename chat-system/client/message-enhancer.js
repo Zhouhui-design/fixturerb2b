@@ -410,33 +410,38 @@ class MessageEnhancer {
         }
     }
     
-    // 语音转文字（使用 Web Speech API）
+    // 语音转文字（支持实时录音和已有音频文件）
     async speechToText(messageElement) {
-        // 检查浏览器支持
-        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-            alert('您的浏览器不支持语音识别功能，请使用 Chrome 或 Edge 浏览器');
-            return;
+        const audio = messageElement.querySelector('audio');
+        
+        // 如果有音频元素，提供两种选择
+        if (audio) {
+            const choice = confirm(
+                '检测到语音消息，请选择转文字方式：\n\n' +
+                '点击【确定】转换此语音消息（使用 Whisper API）\n' +
+                '点击【取消】使用实时录音转文字'
+            );
+            
+            if (choice) {
+                // 转换已有音频文件
+                await this.transcribeExistingAudio(audio.src);
+                return;
+            }
         }
         
-        // 显示选择对话框
-        const choice = confirm(
-            '语音转文字有两种模式：\n\n' +
-            '点击【确定】使用实时录音转文字（对着麦克风说话）\n' +
-            '点击【取消】查看使用说明'
-        );
-        
-        if (choice) {
-            // 实时录音转文字
-            this.startRealtimeSpeechToText();
-        } else {
-            // 显示说明
-            this.showSTTInstructions();
-        }
+        // 实时录音转文字
+        this.startRealtimeSpeechToText();
     }
     
     // 实时语音转文字
     startRealtimeSpeechToText() {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        
+        if (!SpeechRecognition) {
+            alert('您的浏览器不支持实时语音识别，请使用 Chrome 或 Edge 浏览器');
+            return;
+        }
+        
         const recognition = new SpeechRecognition();
         
         // 配置识别参数
@@ -577,6 +582,143 @@ class MessageEnhancer {
             }
         };
         document.addEventListener('keydown', escHandler);
+    }
+    
+    // 转换已有音频文件（使用 Whisper API）
+    async transcribeExistingAudio(audioUrl) {
+        // 显示加载界面
+        const loadingOverlay = document.createElement('div');
+        loadingOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 100005;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        `;
+        
+        loadingOverlay.innerHTML = `
+            <div style="background: white; padding: 40px; border-radius: 16px; text-align: center;">
+                <div style="font-size: 48px; margin-bottom: 20px;">⏳</div>
+                <h3 style="margin-bottom: 10px; color: #333;">正在转换...</h3>
+                <p style="color: #666;">使用 AI 识别语音内容，请稍候</p>
+            </div>
+        `;
+        
+        document.body.appendChild(loadingOverlay);
+        
+        try {
+            // 下载音频文件
+            const response = await fetch(audioUrl);
+            const blob = await response.blob();
+            
+            // 创建 FormData
+            const formData = new FormData();
+            formData.append('audio', blob, 'voice-message.webm');
+            formData.append('language', 'zh'); // 默认中文
+            
+            // 调用后端 API
+            const apiResponse = await fetch('/api/voice/transcribe', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const result = await apiResponse.json();
+            
+            loadingOverlay.remove();
+            
+            if (result.success) {
+                // 显示结果
+                this.showTranscriptionResult(result.text, audioUrl);
+            } else {
+                alert('转换失败: ' + result.error);
+            }
+            
+        } catch (error) {
+            loadingOverlay.remove();
+            console.error('Transcribe error:', error);
+            alert('转换失败: ' + error.message);
+        }
+    }
+    
+    // 显示识别结果
+    showTranscriptionResult(text, audioUrl) {
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            z-index: 100006;
+            max-width: 600px;
+            width: 90%;
+        `;
+        
+        modal.innerHTML = `
+            <h3 style="margin-bottom: 20px; color: #333;">✅ 语音转文字完成</h3>
+            <div style="margin-bottom: 20px;">
+                <div style="font-size: 12px; color: #999; margin-bottom: 5px;">识别结果：</div>
+                <div style="padding: 15px; background: #f5f5f5; border-radius: 8px; word-wrap: break-word; line-height: 1.6; min-height: 80px;">${text}</div>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="copy-text-btn" style="padding: 10px 20px; border: 1px solid #ddd; background: white; border-radius: 6px; cursor: pointer;">复制文本</button>
+                <button class="use-text-btn" style="padding: 10px 20px; border: none; background: #2196f3; color: white; border-radius: 6px; cursor: pointer;">填入输入框</button>
+                <button class="close-modal-btn" style="padding: 10px 20px; border: none; background: #666; color: white; border-radius: 6px; cursor: pointer;">关闭</button>
+            </div>
+        `;
+        
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 100005;
+        `;
+        
+        // 复制按钮
+        modal.querySelector('.copy-text-btn').addEventListener('click', () => {
+            navigator.clipboard.writeText(text).then(() => {
+                this.showNotification('已复制到剪贴板');
+            });
+        });
+        
+        // 填入输入框按钮
+        modal.querySelector('.use-text-btn').addEventListener('click', () => {
+            const input = document.getElementById('message-input');
+            if (input) {
+                input.value = text;
+                input.focus();
+            }
+            modal.remove();
+            overlay.remove();
+            this.showNotification('已填入输入框');
+        });
+        
+        // 关闭按钮
+        modal.querySelector('.close-modal-btn').addEventListener('click', () => {
+            modal.remove();
+            overlay.remove();
+        });
+        
+        overlay.addEventListener('click', () => {
+            modal.remove();
+            overlay.remove();
+        });
+        
+        document.body.appendChild(overlay);
+        document.body.appendChild(modal);
     }
     
     // 显示语音转文字使用说明

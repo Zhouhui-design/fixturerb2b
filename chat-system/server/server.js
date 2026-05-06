@@ -19,6 +19,7 @@ const userRoutes = require('./routes/user');
 const suggestionRoutes = require('./routes/suggestion');
 const uploadRoutes = require('./routes/upload');
 const statsRoutes = require('./routes/stats');
+const voiceRoutes = require('./routes/voice');
 const emailService = require('./services/emailService');
 
 const { cleanupInactiveUsers } = require('./utils/cleanup');
@@ -47,6 +48,7 @@ app.use('/api/user', userRoutes);
 app.use('/api/suggestions', suggestionRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/voice', voiceRoutes);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 cron.schedule('0 2 * * *', async () => {
