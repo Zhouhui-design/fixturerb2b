@@ -1095,13 +1095,15 @@ class ChatApp {
         let mediaRecorder = null;
         let audioChunks = [];
         let isRecording = false;
+        let audioStream = null;
         
-        // 开始录音
-        voiceBtn.addEventListener('mousedown', async () => {
+        // 开始录音函数
+        const startRecording = async () => {
             if (isRecording) return;
             
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                audioStream = stream;
                 mediaRecorder = new MediaRecorder(stream);
                 audioChunks = [];
                 
@@ -1146,39 +1148,56 @@ class ChatApp {
                     }
                     
                     // 停止所有音频轨道
-                    stream.getTracks().forEach(track => track.stop());
+                    if (audioStream) {
+                        audioStream.getTracks().forEach(track => track.stop());
+                        audioStream = null;
+                    }
                 };
                 
                 mediaRecorder.start();
                 isRecording = true;
                 voiceBtn.classList.add('recording');
                 voiceBtn.style.background = '#ef4444';
+                voiceBtn.style.transform = 'scale(1.1)';
             } catch (err) {
                 console.error('Microphone error:', err);
                 alert('无法访问麦克风: ' + err.message);
             }
-        });
+        };
         
-        // 停止录音
-        voiceBtn.addEventListener('mouseup', () => {
+        // 停止录音函数
+        const stopRecording = () => {
             if (!isRecording || !mediaRecorder) return;
             
             mediaRecorder.stop();
             isRecording = false;
             voiceBtn.classList.remove('recording');
             voiceBtn.style.background = '';
-        });
+            voiceBtn.style.transform = '';
+        };
         
-        // 移动端 touch 事件
+        // PC端鼠标事件
+        voiceBtn.addEventListener('mousedown', startRecording);
+        voiceBtn.addEventListener('mouseup', stopRecording);
+        voiceBtn.addEventListener('mouseleave', stopRecording);
+        
+        // 移动端触摸事件（修复）
         voiceBtn.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            voiceBtn.dispatchEvent(new Event('mousedown'));
-        });
+            e.stopPropagation();
+            startRecording();
+        }, { passive: false });
         
         voiceBtn.addEventListener('touchend', (e) => {
             e.preventDefault();
-            voiceBtn.dispatchEvent(new Event('mouseup'));
-        });
+            e.stopPropagation();
+            stopRecording();
+        }, { passive: false });
+        
+        voiceBtn.addEventListener('touchcancel', (e) => {
+            e.preventDefault();
+            stopRecording();
+        }, { passive: false });
     }
     
     displayAudioMessage(fileData, type) {

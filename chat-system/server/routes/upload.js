@@ -68,10 +68,20 @@ router.post('/file', upload.single('file'), (req, res) => {
         
         const fileUrl = `/uploads/${req.file.path.replace('uploads/', '')}`;
         
+        // 处理文件名编码问题（防止中文乱码）
+        let originalName = req.file.originalname;
+        try {
+            // 尝试解码 URL 编码的文件名
+            originalName = decodeURIComponent(originalName);
+        } catch (e) {
+            // 如果解码失败，使用原始文件名
+            originalName = req.file.originalname;
+        }
+        
         res.json({
             success: true,
             fileUrl: fileUrl,
-            fileName: req.file.originalname,
+            fileName: originalName,
             fileType: req.file.mimetype,
             fileSize: req.file.size
         });
