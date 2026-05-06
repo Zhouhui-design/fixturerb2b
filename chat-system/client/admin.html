@@ -443,8 +443,8 @@
         </div>
     </div>
 
-    <script src="/socket.io/socket.io.js?v=20260507025000"></script>
-    <script src="call-manager.js?v=20260507025000"></script>
+    <script src="/socket.io/socket.io.js?v=20260507030000"></script>
+    <script src="call-manager.js?v=20260507030000"></script>
     <script>
         class AdminDashboard {
             constructor() {
@@ -542,22 +542,25 @@
                     const result = await response.json();
                     
                     if (result.success) {
+                        // 对文件名进行URL编码，防止中文乱码
+                        const encodedFileName = encodeURIComponent(file.name);
+                        
                         // 发送文件消息
                         this.socket.emit('send_message', {
                             to: this.currentCustomer,
-                            content: `[文件] ${file.name} ${result.fileUrl}`,
+                            content: `[文件] ${encodedFileName} ${result.fileUrl}`,
                             isFile: true,
                             fileUrl: result.fileUrl,
-                            fileName: file.name,
+                            fileName: encodedFileName,
                             fileType: file.type
                         });
                         
                         // 显示文件消息
                         this.displayMessage({
-                            content: `[文件] ${file.name} ${result.fileUrl}`,
+                            content: `[文件] ${encodedFileName} ${result.fileUrl}`,
                             isFile: true,
                             fileUrl: result.fileUrl,
-                            fileName: file.name,
+                            fileName: encodedFileName,
                             fileType: file.type,
                             timestamp: new Date()
                         }, 'sent');

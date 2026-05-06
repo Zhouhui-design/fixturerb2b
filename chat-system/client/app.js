@@ -633,9 +633,8 @@ class ChatApp {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${type} file-message`;
         
-        const isImage = fileData.fileType && fileData.fileType.startsWith('image/');
-        const isVideo = fileData.fileType && fileData.fileType.startsWith('video/');
-        const isAudio = fileData.fileType && fileData.fileType.startsWith('audio/');
+        const fileType = fileData.fileType || '';
+        const fileUrl = fileData.fileUrl || '';
         
         // 安全解码文件名
         let fileName = '文件';
@@ -645,10 +644,16 @@ class ChatApp {
             fileName = fileData.fileName || '文件';
         }
         
+        // 判断文件类型
+        const isImage = fileType.startsWith('image/') || fileUrl.endsWith('.jpg') || fileUrl.endsWith('.jpeg') || fileUrl.endsWith('.png') || fileUrl.endsWith('.gif') || fileUrl.endsWith('.webp');
+        const isVideo = fileType.startsWith('video/') || fileUrl.endsWith('.mp4') || fileUrl.endsWith('.webm') || fileUrl.endsWith('.mov') || fileUrl.endsWith('.avi');
+        const isAudio = fileType.startsWith('audio/') || fileUrl.endsWith('.webm') || fileUrl.endsWith('.mp3') || fileUrl.endsWith('.wav');
+        const isPDF = fileType === 'application/pdf' || fileUrl.endsWith('.pdf');
+        
         if (isImage) {
             messageDiv.innerHTML = `
                 <div class="file-content">
-                    <img src="${fileData.fileUrl}" alt="${fileName}" style="max-width: 200px; max-height: 200px; border-radius: 8px; cursor: pointer;" />
+                    <img src="${fileUrl}" alt="${fileName}" style="max-width: 300px; max-height: 300px; border-radius: 8px; cursor: zoom-in;" onclick="window.open('${fileUrl}', '_blank')" />
                     <div class="file-name">${fileName}</div>
                 </div>
                 <div class="message-time">${time}</div>
@@ -656,7 +661,7 @@ class ChatApp {
         } else if (isVideo) {
             messageDiv.innerHTML = `
                 <div class="file-content">
-                    <video src="${fileData.fileUrl}" controls preload="metadata" style="max-width: 100%; max-height: 300px; border-radius: 8px;"></video>
+                    <video src="${fileUrl}" controls preload="metadata" style="max-width: 300px; max-height: 300px; border-radius: 8px;"></video>
                     <div class="file-name">${fileName}</div>
                 </div>
                 <div class="message-time">${time}</div>
@@ -664,20 +669,68 @@ class ChatApp {
         } else if (isAudio) {
             messageDiv.innerHTML = `
                 <div class="file-content">
-                    <audio src="${fileData.fileUrl}" controls preload="metadata" style="width: 100%; max-width: 300px;"></audio>
+                    <audio src="${fileUrl}" controls preload="metadata" style="width: 100%; max-width: 300px;"></audio>
                     <div class="file-name">${fileName}</div>
                 </div>
                 <div class="message-time">${time}</div>
             `;
-        } else {
-            // PDF, Excel, Word 等文档
-            const fileIcon = this.getFileIcon(fileData.fileName);
+        } else if (isPDF) {
+            // PDF 预览 - 点击打开
             messageDiv.innerHTML = `
                 <div class="file-content">
-                    <div class="file-icon">${fileIcon}</div>
+                    <div class="file-icon" style="font-size: 48px; cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">📄</div>
                     <div class="file-info">
-                        <div class="file-name">${fileName}</div>
-                        <a href="${fileData.fileUrl}" target="_blank" download="${fileName}">📥 下载文件</a>
+                        <div class="file-name" style="cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">${fileName}</div>
+                        <a href="${fileUrl}" target="_blank" style="color: #667eea; text-decoration: none; cursor: pointer;"> 查看 PDF</a>
+                    </div>
+                </div>
+                <div class="message-time">${time}</div>
+            `;
+        } else if (fileUrl.endsWith('.docx') || fileUrl.endsWith('.doc') || fileType.includes('word')) {
+            // Word 文档 - 点击打开
+            messageDiv.innerHTML = `
+                <div class="file-content">
+                    <div class="file-icon" style="font-size: 48px; cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">📘</div>
+                    <div class="file-info">
+                        <div class="file-name" style="cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">${fileName}</div>
+                        <a href="${fileUrl}" target="_blank" style="color: #667eea; text-decoration: none; cursor: pointer;"> 打开 Word 文档</a>
+                    </div>
+                </div>
+                <div class="message-time">${time}</div>
+            `;
+        } else if (fileUrl.endsWith('.xlsx') || fileUrl.endsWith('.xls') || fileType.includes('excel') || fileType.includes('spreadsheet')) {
+            // Excel 文档 - 点击打开
+            messageDiv.innerHTML = `
+                <div class="file-content">
+                    <div class="file-icon" style="font-size: 48px; cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">📗</div>
+                    <div class="file-info">
+                        <div class="file-name" style="cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">${fileName}</div>
+                        <a href="${fileUrl}" target="_blank" style="color: #667eea; text-decoration: none; cursor: pointer;"> 打开 Excel 文件</a>
+                    </div>
+                </div>
+                <div class="message-time">${time}</div>
+            `;
+        } else if (fileUrl.endsWith('.txt') || fileType === 'text/plain') {
+            // TXT 文件 - 点击打开
+            messageDiv.innerHTML = `
+                <div class="file-content">
+                    <div class="file-icon" style="font-size: 48px; cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">📄</div>
+                    <div class="file-info">
+                        <div class="file-name" style="cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">${fileName}</div>
+                        <a href="${fileUrl}" target="_blank" style="color: #667eea; text-decoration: none; cursor: pointer;"> 查看文本文件</a>
+                    </div>
+                </div>
+                <div class="message-time">${time}</div>
+            `;
+        } else {
+            // 其他文件（包括压缩包）
+            const fileIcon = this.getFileIcon(fileName);
+            messageDiv.innerHTML = `
+                <div class="file-content">
+                    <div class="file-icon" style="font-size: 48px; cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">${fileIcon}</div>
+                    <div class="file-info">
+                        <div class="file-name" style="cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">${fileName}</div>
+                        <a href="${fileUrl}" target="_blank" download style="color: #667eea; text-decoration: none; cursor: pointer;">📥 下载文件</a>
                     </div>
                 </div>
                 <div class="message-time">${time}</div>
@@ -843,6 +896,7 @@ class ChatApp {
             messageDiv.innerHTML = `
                 <div class="message-bubble">${this.escapeHtml(msg.content)}</div>
                 <div class="message-time">${time}</div>
+                <div class="message-menu-btn" onclick="event.stopPropagation(); window.chatApp.showMessageMenu(event, '${msg.id || ''}', '${this.escapeHtml(msg.content)}')">⋮</div>
             `;
         }
         
@@ -989,6 +1043,175 @@ class ChatApp {
         // 如果开启翻译，启用消息翻译功能
         if (this.translationEnabled && this.translationManager) {
             this.translationManager.enableAutoTranslate();
+        }
+    }
+    
+    // 显示消息操作菜单
+    showMessageMenu(event, messageId, content) {
+        // 移除已存在的菜单
+        const existing = document.querySelector('.message-menu');
+        if (existing) existing.remove();
+        
+        const menu = document.createElement('div');
+        menu.className = 'message-menu';
+        menu.style.cssText = `
+            position: fixed;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            padding: 8px 0;
+            z-index: 10000;
+            min-width: 150px;
+        `;
+        
+        // 计算菜单位置
+        const rect = event.target.getBoundingClientRect();
+        menu.style.top = `${rect.bottom + 5}px`;
+        menu.style.left = `${rect.left - 100}px`;
+        
+        menu.innerHTML = `
+            <div class="menu-item" onclick="window.chatApp.copyMessage('${this.escapeHtml(content)}')">
+                📋 复制
+            </div>
+            <div class="menu-item" onclick="window.chatApp.translateMessage('${this.escapeHtml(content)}')">
+                🌐 翻译
+            </div>
+            ${messageId ? `<div class="menu-item delete" onclick="window.chatApp.deleteMessage('${messageId}')">
+                🗑️ 删除
+            </div>` : ''}
+        `;
+        
+        document.body.appendChild(menu);
+        
+        // 点击其他地方关闭菜单
+        setTimeout(() => {
+            document.addEventListener('click', function closeMenu() {
+                menu.remove();
+                document.removeEventListener('click', closeMenu);
+            });
+        }, 100);
+    }
+    
+    // 复制消息
+    copyMessage(content) {
+        navigator.clipboard.writeText(content).then(() => {
+            this.showToast('已复制');
+        }).catch(err => {
+            console.error('Copy failed:', err);
+            alert('复制失败');
+        });
+    }
+    
+    // 翻译消息
+    async translateMessage(content) {
+        if (!this.translationManager) {
+            alert('翻译功能未初始化');
+            return;
+        }
+        
+        // 获取目标语言（默认英语）
+        const targetLang = 'en';
+        
+        try {
+            this.showToast('翻译中...');
+            const translated = await this.translationManager.translateText(content, 'auto', targetLang);
+            
+            // 显示翻译结果
+            this.showTranslationResult(content, translated);
+        } catch (err) {
+            console.error('Translation error:', err);
+            alert('翻译失败');
+        }
+    }
+    
+    // 显示翻译结果
+    showTranslationResult(original, translated) {
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            z-index: 100001;
+            max-width: 500px;
+            width: 90%;
+        `;
+        
+        modal.innerHTML = `
+            <h3 style="margin-bottom: 20px; color: #333;">翻译结果</h3>
+            <div style="margin-bottom: 15px;">
+                <div style="font-size: 12px; color: #999; margin-bottom: 5px;">原文：</div>
+                <div style="padding: 10px; background: #f5f5f5; border-radius: 8px; word-wrap: break-word;">${original}</div>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <div style="font-size: 12px; color: #999; margin-bottom: 5px;">译文：</div>
+                <div style="padding: 10px; background: #e3f2fd; border-radius: 8px; word-wrap: break-word; color: #1976d2;">${translated}</div>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="copy-translation-btn" style="padding: 8px 16px; border: 1px solid #ddd; background: white; border-radius: 6px; cursor: pointer;">复制译文</button>
+                <button class="close-translation-btn" style="padding: 8px 16px; border: none; background: #2196f3; color: white; border-radius: 6px; cursor: pointer;">关闭</button>
+            </div>
+        `;
+        
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 100000;
+        `;
+        
+        overlay.addEventListener('click', () => {
+            modal.remove();
+            overlay.remove();
+        });
+        
+        modal.querySelector('.close-translation-btn').addEventListener('click', () => {
+            modal.remove();
+            overlay.remove();
+        });
+        
+        modal.querySelector('.copy-translation-btn').addEventListener('click', () => {
+            navigator.clipboard.writeText(translated).then(() => {
+                this.showToast('已复制译文');
+            });
+        });
+        
+        document.body.appendChild(overlay);
+        document.body.appendChild(modal);
+    }
+    
+    // 删除消息
+    async deleteMessage(messageId) {
+        if (!confirm('确定要删除这条消息吗？')) return;
+        
+        try {
+            const response = await fetch(`/api/message/${messageId}`, {
+                method: 'DELETE'
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                // 从 DOM 中移除消息
+                const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
+                if (messageElement) {
+                    messageElement.remove();
+                }
+                this.showToast('消息已删除');
+            } else {
+                throw new Error(result.error || '删除失败');
+            }
+        } catch (error) {
+            console.error('Delete message error:', error);
+            alert('删除失败: ' + error.message);
         }
     }
     
