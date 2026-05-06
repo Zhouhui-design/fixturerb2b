@@ -826,9 +826,57 @@ class ChatApp {
     
     toggleTranslation() {
         this.translationEnabled = !this.translationEnabled;
-        const btn = document.getElementById('translate-toggle-btn');
-        btn.style.background = this.translationEnabled ? '#667eea' : '';
-        btn.style.color = this.translationEnabled ? 'white' : '';
+        
+        // 更新所有翻译按钮
+        const buttons = document.querySelectorAll('#translate-toggle-btn');
+        buttons.forEach(btn => {
+            if (this.translationEnabled) {
+                btn.style.background = '#667eea';
+                btn.style.color = 'white';
+                btn.style.boxShadow = '0 0 10px rgba(102, 126, 234, 0.5)';
+            } else {
+                btn.style.background = '';
+                btn.style.color = '';
+                btn.style.boxShadow = '';
+            }
+        });
+        
+        // 显示提示
+        const message = this.translationEnabled ? '翻译功能已开启' : '翻译功能已关闭';
+        console.log(`[Translation] ${message}`);
+        
+        // 可选：显示 toast 提示
+        this.showToast(message);
+    }
+    
+    // 显示 Toast 提示
+    showToast(message) {
+        // 移除旧的 toast
+        const oldToast = document.querySelector('.toast-message');
+        if (oldToast) oldToast.remove();
+        
+        const toast = document.createElement('div');
+        toast.className = 'toast-message';
+        toast.textContent = message;
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            z-index: 10001;
+            animation: fadeIn 0.3s ease;
+        `;
+        
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.animation = 'fadeOut 0.3s ease';
+            setTimeout(() => toast.remove(), 300);
+        }, 2000);
     }
     
     showTranslationPreview(translatedText) {

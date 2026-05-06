@@ -222,17 +222,84 @@ class VoiceVideoCallManager {
     handleIncomingCall(data) {
         console.log('[VoiceCall] Handling incoming call from:', data.fromUsername);
         
-        // 显示来电通知
-        if (confirm(`来自 ${data.fromUsername} 的${data.callType === 'video' ? '视频' : '语音'}通话，是否接听？`)) {
+        // 显示自定义来电界面而不是 confirm
+        this.showIncomingCallModal(data);
+    }
+    
+    // 显示来电弹窗
+    showIncomingCallModal(data) {
+        // 检查是否已存在
+        if (document.getElementById('incoming-call-modal')) return;
+        
+        const modal = document.createElement('div');
+        modal.id = 'incoming-call-modal';
+        modal.className = 'incoming-call-modal';
+        modal.innerHTML = `
+            <div class="incoming-call-content">
+                <div class="incoming-call-header">
+                    <h3>${data.callType === 'video' ? ' 视频通话' : ' 语音通话'}来电</h3>
+                    <p>来自 ${data.fromUsername || '对方'}</p>
+                </div>
+                <div class="incoming-call-avatar">
+                    <div style="font-size: 64px;"></div>
+                </div>
+                <div class="incoming-call-controls">
+                    <button id="accept-call-btn" class="call-btn accept-btn">
+                        <span></span>
+                        <span>接听</span>
+                    </button>
+                    <button id="reject-call-btn" class="call-btn reject-btn">
+                        <span> 挂断</span>
+                        <span>拒接</span>
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // 绑定事件
+        document.getElementById('accept-call-btn').addEventListener('click', () => {
+            modal.remove();
             this.answerCall(data);
-        } else {
+        });
+        
+        document.getElementById('reject-call-btn').addEventListener('click', () => {
+            modal.remove();
             this.rejectCall(data.from);
+        });
+        
+        // 播放来电铃声
+        this.playRingtone();
+    }
+    
+    // 播放来电铃声
+    playRingtone() {
+        try {
+            const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQ==');
+            audio.loop = true;
+            audio.volume = 0.5;
+            audio.play().catch(() => {
+                console.log('[VoiceCall] 自动播放被阻止');
+            });
+            this.ringtoneAudio = audio;
+        } catch (err) {
+            console.log('[VoiceCall] 无法播放铃声');
+        }
+    }
+    
+    // 停止铃声
+    stopRingtone() {
+        if (this.ringtoneAudio) {
+            this.ringtoneAudio.pause();
+            this.ringtoneAudio = null;
         }
     }
     
     // 接听通话
     async answerCall(data) {
         try {
+            this.stopRingtone(); // 停止铃声
             this.callType = data.callType || 'video';
             this.currentCall = data.from;
             
@@ -292,8 +359,9 @@ class VoiceVideoCallManager {
     
     // 拒接通话
     rejectCall(toUserId) {
+        this.stopRingtone(); // 停止铃声
         this.socket.emit('call_rejected', { to: toUserId });
-        alert('已拒接来电');
+        // 不调用 alert，避免干扰
     }
     
     // 处理拒接
@@ -452,7 +520,9 @@ class VoiceVideoCallManager {
     
     // 结束通话
     endCall() {
-        console.log('[VoiceCall] Ending call');
+        console.log('[VoiceCall] Ending call - button clicked');
+        
+        this.stopRingtone(); // 确保停止铃声
         
         // 关闭 PeerConnection
         if (this.peerConnection) {
@@ -471,6 +541,7 @@ class VoiceVideoCallManager {
         
         // 通知对方
         if (this.currentCall) {
+            console.log('[VoiceCall] Sending end_call to:', this.currentCall);
             this.socket.emit('end_call', { to: this.currentCall });
             this.currentCall = null;
         }
@@ -481,14 +552,26 @@ class VoiceVideoCallManager {
             modal.classList.add('hidden');
         }
         
+        // 移除来电弹窗（如果存在）
+        const incomingModal = document.getElementById('incoming-call-modal');
+        if (incomingModal) {
+            incomingModal.remove();
+        }
+        
         // 重置视频容器
-        document.getElementById('local-video-container').style.display = 'none';
-        document.getElementById('remote-video-container').style.display = 'none';
-        document.getElementById('switch-camera-btn').style.display = 'none';
+        const localContainer = document.getElementById('local-video-container');
+        const remoteContainer = document.getElementById('remote-video-container');
+        const switchBtn = document.getElementById('switch-camera-btn');
+        
+        if (localContainer) localContainer.style.display = 'none';
+        if (remoteContainer) remoteContainer.style.display = 'none';
+        if (switchBtn) switchBtn.style.display = 'none';
         
         // 重置状态
         this.isCallActive = false;
         this.callType = null;
+        
+        console.log('[VoiceCall] Call ended successfully');
     }
 }
 

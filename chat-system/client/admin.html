@@ -836,17 +836,27 @@
                 const messageDiv = document.createElement('div');
                 
                 // 检查是否为文件消息
-                if (msg.isFile || msg.fileUrl || (msg.content && msg.content.includes('[文件]'))) {
+                if (msg.isFile || msg.fileUrl || msg.isAudio || (msg.content && msg.content.includes('[文件]'))) {
                     messageDiv.className = `message ${type} file-message`;
                     
                     const fileType = msg.fileType || '';
                     const fileName = msg.fileName || this.extractFileName(msg.content) || '文件';
-                    const fileUrl = msg.fileUrl || this.extractFileUrl(msg.content);
+                    const fileUrl = msg.fileUrl || msg.content || this.extractFileUrl(msg.content);
+                    const isAudio = fileType.startsWith('audio/') || fileUrl.endsWith('.webm') || msg.isAudio;
                     const isImage = fileType.startsWith('image/');
                     const isVideo = fileType.startsWith('video/');
                     const isPDF = fileType === 'application/pdf';
                     
-                    if (isImage) {
+                    if (isAudio) {
+                        // 音频播放器
+                        messageDiv.innerHTML = `
+                            <div class="file-content">
+                                <audio controls src="${fileUrl}" style="max-width: 250px;"></audio>
+                                <div class="file-name"> 语音消息</div>
+                            </div>
+                            <div class="message-time">${time}</div>
+                        `;
+                    } else if (isImage) {
                         // 图片预览 - 可点击放大
                         messageDiv.innerHTML = `
                             <div class="file-content">
