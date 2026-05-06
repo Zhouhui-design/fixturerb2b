@@ -5,92 +5,8 @@ const Message = require('../models/Message');
 
 const router = express.Router();
 
-router.get('/search', async (req, res) => {
-  try {
-    const { q, tenantId } = req.query;
-    if (!q || q.length < 2) {
-      return res.status(400).json({ error: 'Search query must be at least 2 characters' });
-    }
-    
-    // 只搜索当前租户的用户
-    const users = await User.find({
-      username: { $regex: q, $options: 'i' },
-      tenantId: tenantId || 'fixturerb2b'
-    }).select('username _id').limit(20);
-    
-    res.json({ users });
-  } catch (err) {
-    console.error('Search error:', err);
-    res.status(500).json({ error: 'Search failed' });
-  }
-});
-
-router.get('/:userId', async (req, res) => {
-  try {
-    const user = await User.findById(req.params.userId).select('username socialLinks createdAt tenantId');
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-    res.json({ user });
-  } catch (err) {
-    console.error('Get user error:', err);
-    res.status(500).json({ error: 'Failed to get user' });
-  }
-});
-
-router.put('/:userId/social-links', async (req, res) => {
-  try {
-    const { socialLinks } = req.body;
-    const user = await User.findByIdAndUpdate(
-      req.params.userId,
-      { socialLinks },
-      { new: true, runValidators: true }
-    ).select('username socialLinks');
-    
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-    
-    res.json({ user, message: 'Social links updated' });
-  } catch (err) {
-    console.error('Update social links error:', err);
-    res.status(500).json({ error: 'Failed to update social links' });
-  }
-});
-
-router.post('/remark', async (req, res) => {
-  try {
-    const { userId, targetUserId, remark } = req.body;
-    
-    if (!remark || remark.trim().length === 0) {
-      return res.status(400).json({ error: 'Remark cannot be empty' });
-    }
-    
-    const existingRemark = await Remark.findOneAndUpdate(
-      { userId, targetUserId },
-      { remark: remark.trim() },
-      { upsert: true, new: true }
-    );
-    
-    res.json({ remark: existingRemark, message: 'Remark saved' });
-  } catch (err) {
-    console.error('Save remark error:', err);
-    res.status(500).json({ error: 'Failed to save remark' });
-  }
-});
-
-router.get('/remark/:targetUserId', async (req, res) => {
-  try {
-    const { userId } = req.query;
-    const remark = await Remark.findOne({ userId, targetUserId: req.params.targetUserId });
-    
-    res.json({ remark: remark ? remark.remark : null });
-  } catch (err) {
-    console.error('Get remark error:', err);
-    res.status(500).json({ error: 'Failed to get remark' });
-  }
-});
-
+// 具体路由必须在参数路由之前定义
+// 获取用户对话列表（管理员使用）
 router.get('/conversations', async (req, res) => {
   try {
     const { userId, tenantId } = req.query;
@@ -170,8 +86,7 @@ router.get('/conversations', async (req, res) => {
   }
 });
 
-
-// Get all users for admin panel
+// 获取用户列表（管理员使用）
 router.get('/list', async (req, res) => {
   try {
     const { tenantId } = req.query;
@@ -190,8 +105,28 @@ router.get('/list', async (req, res) => {
   }
 });
 
+// 搜索用户
+router.get('/search', async (req, res) => {
+  try {
+    const { q, tenantId } = req.query;
+    if (!q || q.length < 2) {
+      return res.status(400).json({ error: 'Search query must be at least 2 characters' });
+    }
+    
+    // 只搜索当前租户的用户
+    const users = await User.find({
+      username: { $regex: q, $options: 'i' },
+      tenantId: tenantId || 'fixturerb2b'
+    }).select('username _id').limit(20);
+    
+    res.json({ users });
+  } catch (err) {
+    console.error('Search error:', err);
+    res.status(500).json({ error: 'Search failed' });
+  }
+});
 
-// Mark messages as read
+// 标记消息为已读
 router.post('/mark-read', async (req, res) => {
   try {
     const { userId, otherUserId, tenantId } = req.body;
@@ -211,6 +146,75 @@ router.post('/mark-read', async (req, res) => {
   } catch (err) {
     console.error('Mark read error:', err);
     res.status(500).json({ error: 'Failed to mark messages as read' });
+  }
+});
+
+// 保存备注
+router.post('/remark', async (req, res) => {
+  try {
+    const { userId, targetUserId, remark } = req.body;
+    
+    if (!remark || remark.trim().length === 0) {
+      return res.status(400).json({ error: 'Remark cannot be empty' });
+    }
+    
+    const existingRemark = await Remark.findOneAndUpdate(
+      { userId, targetUserId },
+      { remark: remark.trim() },
+      { upsert: true, new: true }
+    );
+    
+    res.json({ remark: existingRemark, message: 'Remark saved' });
+  } catch (err) {
+    console.error('Save remark error:', err);
+    res.status(500).json({ error: 'Failed to save remark' });
+  }
+});
+
+// 获取备注
+router.get('/remark/:targetUserId', async (req, res) => {
+  try {
+    const { userId } = req.query;
+    const remark = await Remark.findOne({ userId, targetUserId: req.params.targetUserId });
+    
+    res.json({ remark: remark ? remark.remark : null });
+  } catch (err) {
+    console.error('Get remark error:', err);
+    res.status(500).json({ error: 'Failed to get remark' });
+  }
+});
+
+// 参数路由必须放在最后
+router.get('/:userId', async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).select('username socialLinks createdAt tenantId');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json({ user });
+  } catch (err) {
+    console.error('Get user error:', err);
+    res.status(500).json({ error: 'Failed to get user' });
+  }
+});
+
+router.put('/:userId/social-links', async (req, res) => {
+  try {
+    const { socialLinks } = req.body;
+    const user = await User.findByIdAndUpdate(
+      req.params.userId,
+      { socialLinks },
+      { new: true, runValidators: true }
+    ).select('username socialLinks');
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    res.json({ user, message: 'Social links updated' });
+  } catch (err) {
+    console.error('Update social links error:', err);
+    res.status(500).json({ error: 'Failed to update social links' });
   }
 });
 
