@@ -584,7 +584,7 @@ class MessageEnhancer {
         document.addEventListener('keydown', escHandler);
     }
     
-    // 转换已有音频文件（使用 Whisper API）
+    // 转换已有音频文件（使用阿里云 ASR）
     async transcribeExistingAudio(audioUrl) {
         // 显示加载界面
         const loadingOverlay = document.createElement('div');
@@ -606,7 +606,7 @@ class MessageEnhancer {
             <div style="background: white; padding: 40px; border-radius: 16px; text-align: center;">
                 <div style="font-size: 48px; margin-bottom: 20px;">⏳</div>
                 <h3 style="margin-bottom: 10px; color: #333;">正在转换...</h3>
-                <p style="color: #666;">使用 AI 识别语音内容，请稍候</p>
+                <p style="color: #666;">使用阿里云 AI 识别语音内容，请稍候</p>
             </div>
         `;
         
@@ -620,10 +620,10 @@ class MessageEnhancer {
             // 创建 FormData
             const formData = new FormData();
             formData.append('audio', blob, 'voice-message.webm');
-            formData.append('language', 'zh'); // 默认中文
+            formData.append('language', 'zh-cn'); // 默认中文
             
-            // 调用后端 API
-            const apiResponse = await fetch('/api/voice/transcribe', {
+            // 调用后端 API（优先使用阿里云）
+            const apiResponse = await fetch('/api/voice/transcribe-aliyun', {
                 method: 'POST',
                 body: formData
             });
