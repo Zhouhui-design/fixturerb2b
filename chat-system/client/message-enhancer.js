@@ -158,6 +158,13 @@ class MessageEnhancer {
                 text: '语音转文字',
                 action: () => this.speechToText(messageElement)
             });
+            
+            // 智能翻译（语音识别+翻译）
+            menuItems.push({
+                icon: '🌐',
+                text: '智能翻译',
+                action: () => this.smartTranslateVoice(messageElement, isSent)
+            });
         }
         
         // 文字转语音（如果是文字）
@@ -946,6 +953,30 @@ class MessageEnhancer {
                 }
             }
         });
+    }
+    
+    // 智能翻译语音消息
+    async smartTranslateVoice(messageElement, isSent) {
+        const audio = messageElement.querySelector('audio');
+        if (!audio) {
+            alert('未找到音频');
+            return;
+        }
+        
+        // 检查是否有翻译管理器
+        if (!window.chatApp || !window.chatApp.translationManager) {
+            alert('翻译功能未初始化');
+            return;
+        }
+        
+        const translationManager = window.chatApp.translationManager;
+        const audioUrl = audio.src;
+        
+        // isSent=true 表示是我发送的，isSent=false 表示是对方发送的
+        const isPartnerMessage = !isSent;
+        
+        // 调用翻译管理器的方法
+        await translationManager.translateVoiceMessage(audioUrl, isPartnerMessage);
     }
 }
 

@@ -15,6 +15,9 @@ class ChatApp {
             ]
         };
         
+        // 设置全局引用
+        window.chatApp = this;
+        
         this.init();
     }
     

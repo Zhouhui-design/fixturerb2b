@@ -9,6 +9,17 @@ class TranslationManager {
         this.sourceLang = 'auto';
         this.targetLang = 'en';
         this.translationCache = new Map();
+        
+        // 语音消息翻译配置
+        this.voiceTranslationConfig = {
+            myVoiceLang: 'zh-CN',      // 本人语音语言
+            myTextLang: 'zh',           // 本人文字语言
+            partnerVoiceLang: 'en-US',  // 聊天对象语音语言
+            partnerTextLang: 'en'       // 聊天对象文字语言
+        };
+        
+        // 从 localStorage 加载配置
+        this.loadVoiceTranslationConfig();
     }
     
     // 初始化翻译界面
@@ -43,6 +54,10 @@ class TranslationManager {
                     <button class="type-btn" data-type="video">
                         <span class="icon">📹</span>
                         <span>视频翻译</span>
+                    </button>
+                    <button class="type-btn" data-type="voice-message">
+                        <span class="icon">💬</span>
+                        <span>语音消息</span>
                     </button>
                 </div>
                 
@@ -192,6 +207,84 @@ class TranslationManager {
                         </button>
                     </div>
                 </div>
+                
+                <!-- 语音消息翻译设置 -->
+                <div id="voice-message-translation-panel" class="translation-panel">
+                    <div class="voice-message-info">
+                        <div class="info-icon">ℹ️</div>
+                        <div class="info-text">
+                            <p><strong>使用说明：</strong></p>
+                            <ol>
+                                <li>配置您和聊天对象的语言偏好</li>
+                                <li>点击语音消息的“三个点”图标</li>
+                                <li>选择“转换文字”或“转换并播放”</li>
+                                <li>系统自动识别、翻译、播放</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="voice-config-section">
+                        <h4>👤 本人设置</h4>
+                        <div class="language-selector">
+                            <div class="lang-group">
+                                <label>我的语音语言：</label>
+                                <select id="my-voice-lang">
+                                    <option value="zh-CN">中文</option>
+                                    <option value="en-US">英语</option>
+                                    <option value="ja-JP">日语</option>
+                                    <option value="ko-KR">韩语</option>
+                                    <option value="fr-FR">法语</option>
+                                    <option value="de-DE">德语</option>
+                                </select>
+                            </div>
+                            
+                            <div class="lang-group">
+                                <label>我想看到的文字：</label>
+                                <select id="my-text-lang">
+                                    <option value="zh">中文</option>
+                                    <option value="en">英语</option>
+                                    <option value="ja">日语</option>
+                                    <option value="ko">韩语</option>
+                                    <option value="fr">法语</option>
+                                    <option value="de">德语</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="voice-config-section">
+                        <h4>👥 聊天对象设置</h4>
+                        <div class="language-selector">
+                            <div class="lang-group">
+                                <label>对方的语音语言：</label>
+                                <select id="partner-voice-lang">
+                                    <option value="en-US">英语</option>
+                                    <option value="zh-CN">中文</option>
+                                    <option value="ja-JP">日语</option>
+                                    <option value="ko-KR">韩语</option>
+                                    <option value="fr-FR">法语</option>
+                                    <option value="de-DE">德语</option>
+                                </select>
+                            </div>
+                            
+                            <div class="lang-group">
+                                <label>对方想看到的文字：</label>
+                                <select id="partner-text-lang">
+                                    <option value="en">英语</option>
+                                    <option value="zh">中文</option>
+                                    <option value="ja">日语</option>
+                                    <option value="ko">韩语</option>
+                                    <option value="fr">法语</option>
+                                    <option value="de">德语</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="translation-actions">
+                        <button id="save-voice-config-btn" class="success-btn">保存配置</button>
+                    </div>
+                </div>
             </div>
         `;
         
@@ -265,6 +358,15 @@ class TranslationManager {
         if (stopVoiceBtn) {
             stopVoiceBtn.addEventListener('click', () => this.stopVoiceTranslation());
         }
+        
+        // 保存语音消息翻译配置
+        const saveConfigBtn = document.getElementById('save-voice-config-btn');
+        if (saveConfigBtn) {
+            saveConfigBtn.addEventListener('click', () => this.saveVoiceMessageConfig());
+        }
+        
+        // 加载配置到表单
+        this.loadConfigToForm();
     }
     
     // 绑定翻译按钮
@@ -507,6 +609,217 @@ class TranslationManager {
             
             window.speechSynthesis.speak(utterance);
         }
+    }
+    
+    // 加载语音翻译配置
+    loadVoiceTranslationConfig() {
+        const saved = localStorage.getItem('voiceTranslationConfig');
+        if (saved) {
+            try {
+                this.voiceTranslationConfig = JSON.parse(saved);
+            } catch (e) {
+                console.error('Failed to load voice translation config:', e);
+            }
+        }
+    }
+    
+    // 保存语音翻译配置
+    saveVoiceTranslationConfig() {
+        localStorage.setItem('voiceTranslationConfig', JSON.stringify(this.voiceTranslationConfig));
+    }
+    
+    // 保存语音消息配置（从表单）
+    saveVoiceMessageConfig() {
+        const myVoiceLang = document.getElementById('my-voice-lang')?.value;
+        const myTextLang = document.getElementById('my-text-lang')?.value;
+        const partnerVoiceLang = document.getElementById('partner-voice-lang')?.value;
+        const partnerTextLang = document.getElementById('partner-text-lang')?.value;
+        
+        if (myVoiceLang && myTextLang && partnerVoiceLang && partnerTextLang) {
+            this.voiceTranslationConfig = {
+                myVoiceLang,
+                myTextLang,
+                partnerVoiceLang,
+                partnerTextLang
+            };
+            
+            this.saveVoiceTranslationConfig();
+            this.showNotification('✅ 配置已保存');
+        } else {
+            this.showNotification('❌ 请填写所有选项');
+        }
+    }
+    
+    // 加载配置到表单
+    loadConfigToForm() {
+        setTimeout(() => {
+            const myVoiceSelect = document.getElementById('my-voice-lang');
+            const myTextSelect = document.getElementById('my-text-lang');
+            const partnerVoiceSelect = document.getElementById('partner-voice-lang');
+            const partnerTextSelect = document.getElementById('partner-text-lang');
+            
+            if (myVoiceSelect) myVoiceSelect.value = this.voiceTranslationConfig.myVoiceLang;
+            if (myTextSelect) myTextSelect.value = this.voiceTranslationConfig.myTextLang;
+            if (partnerVoiceSelect) partnerVoiceSelect.value = this.voiceTranslationConfig.partnerVoiceLang;
+            if (partnerTextSelect) partnerTextSelect.value = this.voiceTranslationConfig.partnerTextLang;
+        }, 100);
+    }
+    
+    // 处理语音消息翻译（从消息菜单调用）
+    async translateVoiceMessage(audioUrl, isPartnerMessage = true) {
+        try {
+            // 显示加载提示
+            const loadingMsg = isPartnerMessage ? '正在识别对方语音...' : '正在识别您的语音...';
+            this.showNotification(loadingMsg);
+            
+            // 1. 下载音频文件
+            const response = await fetch(audioUrl);
+            const blob = await response.blob();
+            
+            // 2. 调用阿里云 ASR 进行语音识别
+            const formData = new FormData();
+            formData.append('audio', blob, 'voice-message.webm');
+            
+            const asrResponse = await fetch('/api/voice/transcribe-aliyun', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const asrResult = await asrResponse.json();
+            
+            if (!asrResult.success) {
+                throw new Error(asrResult.error || '语音识别失败');
+            }
+            
+            const originalText = asrResult.text;
+            
+            // 3. 根据配置决定如何处理
+            if (isPartnerMessage) {
+                // 对方的语音：识别 → 翻译成我的文字
+                const targetLang = this.voiceTranslationConfig.partnerTextLang;
+                const translatedText = await this.translateTextAPI(originalText, 'auto', targetLang);
+                
+                // 显示翻译结果
+                this.showTranslatedText(translatedText, originalText);
+                
+                return {
+                    originalText,
+                    translatedText,
+                    success: true
+                };
+            } else {
+                // 我的语音：识别 → 翻译成对方文字 → TTS播放
+                const targetLang = this.voiceTranslationConfig.myTextLang;
+                const translatedText = await this.translateTextAPI(originalText, 'auto', targetLang);
+                
+                // TTS 播放
+                this.speak(translatedText, this.voiceTranslationConfig.myVoiceLang);
+                
+                // 显示翻译结果
+                this.showTranslatedText(translatedText, originalText, true);
+                
+                return {
+                    originalText,
+                    translatedText,
+                    success: true
+                };
+            }
+        } catch (err) {
+            console.error('Voice message translation error:', err);
+            this.showNotification('翻译失败: ' + err.message);
+            return { success: false, error: err.message };
+        }
+    }
+    
+    // 调用翻译 API
+    async translateTextAPI(text, sourceLang, targetLang) {
+        const cacheKey = `${text}_${sourceLang}_${targetLang}`;
+        if (this.translationCache.has(cacheKey)) {
+            return this.translationCache.get(cacheKey);
+        }
+        
+        try {
+            const response = await fetch(
+                `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${sourceLang === 'auto' ? 'Autodetect' : sourceLang}|${targetLang}`
+            );
+            
+            const data = await response.json();
+            
+            if (data.responseStatus === 200) {
+                const translatedText = data.responseData.translatedText;
+                this.translationCache.set(cacheKey, translatedText);
+                return translatedText;
+            } else {
+                throw new Error('Translation API error');
+            }
+        } catch (err) {
+            console.error('Translation API error:', err);
+            return text; // 返回原文
+        }
+    }
+    
+    // 显示翻译结果
+    showTranslatedText(translatedText, originalText, withTTS = false) {
+        const container = document.createElement('div');
+        container.className = 'translation-result-popup';
+        container.innerHTML = `
+            <div class="translation-result-content">
+                <div class="result-header">
+                    <h4>🌐 翻译结果</h4>
+                    <button class="close-result-btn">×</button>
+                </div>
+                <div class="result-body">
+                    <div class="original-text">
+                        <label>原文：</label>
+                        <p>${originalText}</p>
+                    </div>
+                    <div class="translated-text">
+                        <label>译文：</label>
+                        <p>${translatedText}</p>
+                    </div>
+                    ${withTTS ? '<div class="tts-indicator">🔊 正在播放译文语音...</div>' : ''}
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(container);
+        
+        // 关闭按钮
+        const closeBtn = container.querySelector('.close-result-btn');
+        closeBtn.addEventListener('click', () => {
+            container.remove();
+        });
+        
+        // 5秒后自动关闭
+        setTimeout(() => {
+            if (container.parentNode) {
+                container.remove();
+            }
+        }, 8000);
+    }
+    
+    // 显示通知
+    showNotification(message) {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 100001;
+            animation: slideIn 0.3s ease;
+        `;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }, 2000);
     }
 }
 
