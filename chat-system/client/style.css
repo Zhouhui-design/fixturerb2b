@@ -1532,3 +1532,61 @@ body.dark-mode .theme-toggle-btn {
         font-size: 15px;
     }
 }
+
+/* ==================== 消息增强功能样式 ==================== */
+
+/* 淡入淡出动画 */
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+    10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+}
+
+/* 图片查看器 */
+.image-viewer-overlay {
+    animation: fadeIn 0.3s ease;
+}
+
+/* 消息菜单按钮悬停效果 */
+.message-menu-btn:hover {
+    background: rgba(0,0,0,0.2) !important;
+    transform: scale(1.1);
+    transition: all 0.2s ease;
+}
+
+/* 文件内容样式优化 */
+.file-content video,
+.file-content audio {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.file-content a {
+    color: #2196f3;
+    text-decoration: none;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.file-content a:hover {
+    text-decoration: underline;
+}
+
+/* 翻译模态框动画 */
+.translation-modal {
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}

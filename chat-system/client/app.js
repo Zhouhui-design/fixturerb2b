@@ -615,22 +615,42 @@ class ChatApp {
         messageDiv.className = `message ${type} file-message`;
         
         const isImage = fileData.fileType && fileData.fileType.startsWith('image/');
+        const isVideo = fileData.fileType && fileData.fileType.startsWith('video/');
+        const isAudio = fileData.fileType && fileData.fileType.startsWith('audio/');
         
         if (isImage) {
             messageDiv.innerHTML = `
                 <div class="file-content">
-                    <img src="${fileData.fileUrl}" alt="${fileData.fileName}" style="max-width: 200px; max-height: 200px; border-radius: 8px;" />
+                    <img src="${fileData.fileUrl}" alt="${fileData.fileName}" style="max-width: 200px; max-height: 200px; border-radius: 8px; cursor: pointer;" />
+                    <div class="file-name">${fileData.fileName}</div>
+                </div>
+                <div class="message-time">${time}</div>
+            `;
+        } else if (isVideo) {
+            messageDiv.innerHTML = `
+                <div class="file-content">
+                    <video src="${fileData.fileUrl}" controls preload="metadata" style="max-width: 100%; max-height: 300px; border-radius: 8px;"></video>
+                    <div class="file-name">${fileData.fileName}</div>
+                </div>
+                <div class="message-time">${time}</div>
+            `;
+        } else if (isAudio) {
+            messageDiv.innerHTML = `
+                <div class="file-content">
+                    <audio src="${fileData.fileUrl}" controls preload="metadata" style="width: 100%; max-width: 300px;"></audio>
                     <div class="file-name">${fileData.fileName}</div>
                 </div>
                 <div class="message-time">${time}</div>
             `;
         } else {
+            // PDF, Excel, Word 等文档
+            const fileIcon = this.getFileIcon(fileData.fileName);
             messageDiv.innerHTML = `
                 <div class="file-content">
-                    <div class="file-icon">📄</div>
+                    <div class="file-icon">${fileIcon}</div>
                     <div class="file-info">
                         <div class="file-name">${fileData.fileName}</div>
-                        <a href="${fileData.fileUrl}" target="_blank" download>下载文件</a>
+                        <a href="${fileData.fileUrl}" target="_blank" download="${fileData.fileName}">📥 下载文件</a>
                     </div>
                 </div>
                 <div class="message-time">${time}</div>
@@ -639,6 +659,24 @@ class ChatApp {
         
         container.appendChild(messageDiv);
         this.scrollToBottom();
+    }
+    
+    getFileIcon(fileName) {
+        const ext = fileName.split('.').pop().toLowerCase();
+        const icons = {
+            'pdf': '📕',
+            'doc': '📘',
+            'docx': '📘',
+            'xls': '📗',
+            'xlsx': '📗',
+            'ppt': '📙',
+            'pptx': '📙',
+            'txt': '📄',
+            'csv': '📊',
+            'zip': '📦',
+            'rar': '📦'
+        };
+        return icons[ext] || '📄';
     }
     
     displayMessage(msg, type, scroll = true) {

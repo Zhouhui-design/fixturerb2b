@@ -235,6 +235,7 @@
     <script src="offline-queue.js"></script>
     <script src="app.js"></script>
     <script src="enhanced-features.js"></script>
+    <script src="message-enhancer.js"></script>
     
     <!-- 初始化增强功能 -->
     <script>
@@ -245,6 +246,10 @@
                 if (window.chatApp && window.chatApp.socket) {
                     window.enhancedFeatures = new EnhancedFeatures(window.chatApp);
                     console.log('[Enhanced] Features initialized');
+                    
+                    // 初始化消息增强器
+                    window.messageEnhancer = new MessageEnhancer(window.chatApp);
+                    console.log('[MessageEnhancer] Initialized');
                 }
             }, 1000);
         });
