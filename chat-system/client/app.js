@@ -1256,7 +1256,34 @@ class ChatApp {
                     console.log('[麦克风] ✅ 录音已开始，按钮状态已更新');
                 } catch (err) {
                     console.error('[麦克风] ❌ 麦克风错误:', err);
-                    alert('无法访问麦克风: ' + err.message + '\n\n请确保：\n1. 允许浏览器访问麦克风\n2. 使用 HTTPS 连接\n3. 检查浏览器设置');
+                    
+                    // 根据不同错误类型提供更详细的提示
+                    let errorMessage = '';
+                    let solution = '';
+                    
+                    if (err.name === 'NotAllowedError' || err.message.includes('Permission denied')) {
+                        errorMessage = '麦克风权限被拒绝';
+                        solution = '解决方法：\n\n' +
+                            '1. 点击浏览器地址栏左侧的🔒图标\n' +
+                            '2. 找到"麦克风"权限\n' +
+                            '3. 将设置改为"允许"\n' +
+                            '4. 刷新页面重试\n\n' +
+                            '注意：无痕模式下可能需要先退出无痕模式设置权限';
+                    } else if (err.name === 'NotFoundError') {
+                        errorMessage = '未找到麦克风设备';
+                        solution = '请检查：\n1. 设备是否有麦克风\n2. 麦克风是否被其他应用占用\n3. 尝试使用其他浏览器';
+                    } else if (err.name === 'NotReadableError') {
+                        errorMessage = '麦克风无法访问';
+                        solution = '麦克风可能被其他应用占用，请关闭其他使用麦克风的应用后重试';
+                    } else if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+                        errorMessage = '需要使用 HTTPS 连接';
+                        solution = '麦克风功能只能在 HTTPS 或 localhost 环境下使用\n请使用 https://chat.fixr2026.com 访问';
+                    } else {
+                        errorMessage = '无法访问麦克风';
+                        solution = '请确保：\n1. 允许浏览器访问麦克风\n2. 使用 HTTPS 连接\n3. 检查浏览器设置';
+                    }
+                    
+                    alert(errorMessage + '\n\n' + solution);
                 }
             };
             
