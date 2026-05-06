@@ -1590,3 +1590,12 @@ body.dark-mode .theme-toggle-btn {
         transform: translate(-50%, -50%) scale(1);
     }
 }
+
+/* 语音转文字界面动画 */
+.stt-overlay {
+    animation: fadeIn 0.3s ease;
+}
+
+#stt-result {
+    transition: all 0.3s ease;
+}

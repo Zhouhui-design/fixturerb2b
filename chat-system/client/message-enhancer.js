@@ -412,19 +412,242 @@ class MessageEnhancer {
     
     // 语音转文字（使用 Web Speech API）
     async speechToText(messageElement) {
-        const audio = messageElement.querySelector('audio');
-        if (!audio) {
-            alert('未找到音频');
+        // 检查浏览器支持
+        if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+            alert('您的浏览器不支持语音识别功能，请使用 Chrome 或 Edge 浏览器');
             return;
         }
         
-        // 提示用户：目前浏览器不支持直接音频转文字
-        // 需要后端支持或使用第三方 API
-        this.showNotification('语音转文字功能需要后端支持，正在开发中...');
+        // 显示选择对话框
+        const choice = confirm(
+            '语音转文字有两种模式：\n\n' +
+            '点击【确定】使用实时录音转文字（对着麦克风说话）\n' +
+            '点击【取消】查看使用说明'
+        );
         
-        // TODO: 实现真正的语音转文字
-        // 方案1: 上传音频到后端，使用 Whisper API 或其他 STT 服务
-        // 方案2: 使用浏览器的 SpeechRecognition API（但需要实时录音，不能处理已有音频）
+        if (choice) {
+            // 实时录音转文字
+            this.startRealtimeSpeechToText();
+        } else {
+            // 显示说明
+            this.showSTTInstructions();
+        }
+    }
+    
+    // 实时语音转文字
+    startRealtimeSpeechToText() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        
+        // 配置识别参数
+        recognition.lang = 'zh-CN'; // 默认中文
+        recognition.continuous = true; // 持续识别
+        recognition.interimResults = true; // 显示中间结果
+        
+        let finalTranscript = '';
+        let isRecording = false;
+        
+        // 创建录音界面
+        const overlay = document.createElement('div');
+        overlay.className = 'stt-overlay';
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 100003;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        `;
+        
+        const content = document.createElement('div');
+        content.style.cssText = `
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        `;
+        
+        content.innerHTML = `
+            <div style="font-size: 48px; margin-bottom: 20px;">🎤</div>
+            <h3 style="margin-bottom: 20px; color: #333;">正在录音...</h3>
+            <p style="color: #666; margin-bottom: 20px;">请开始说话，系统会实时识别</p>
+            <div id="stt-result" style="min-height: 100px; padding: 15px; background: #f5f5f5; border-radius: 8px; text-align: left; word-wrap: break-word; margin-bottom: 20px;">
+                <span style="color: #999;">识别结果将显示在这里...</span>
+            </div>
+            <button id="stop-stt-btn" style="padding: 12px 30px; background: #ef4444; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer;">停止录音</button>
+        `;
+        
+        overlay.appendChild(content);
+        document.body.appendChild(overlay);
+        
+        const resultDiv = content.querySelector('#stt-result');
+        const stopBtn = content.querySelector('#stop-stt-btn');
+        
+        // 开始识别
+        try {
+            recognition.start();
+            isRecording = true;
+            
+            // 识别结果
+            recognition.onresult = (event) => {
+                let interimTranscript = '';
+                
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript + ' ';
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+                
+                resultDiv.innerHTML = `
+                    <div style="margin-bottom: 10px;">${finalTranscript}</div>
+                    ${interimTranscript ? `<div style="color: #999;">${interimTranscript}</div>` : ''}
+                `;
+            };
+            
+            // 识别错误
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                let errorMsg = '识别失败';
+                
+                switch(event.error) {
+                    case 'no-speech':
+                        errorMsg = '未检测到语音，请重试';
+                        break;
+                    case 'audio-capture':
+                        errorMsg = '无法访问麦克风';
+                        break;
+                    case 'not-allowed':
+                        errorMsg = '麦克风权限被拒绝';
+                        break;
+                    case 'network':
+                        errorMsg = '网络错误，请检查网络连接';
+                        break;
+                }
+                
+                resultDiv.innerHTML = `<div style="color: #ef4444;">${errorMsg}</div>`;
+            };
+            
+            // 识别结束
+            recognition.onend = () => {
+                isRecording = false;
+                if (finalTranscript.trim()) {
+                    // 自动填充到输入框
+                    const input = document.getElementById('message-input');
+                    if (input) {
+                        input.value = finalTranscript.trim();
+                        input.focus();
+                    }
+                    this.showNotification('语音识别完成，已填入输入框');
+                }
+                overlay.remove();
+            };
+            
+        } catch (err) {
+            console.error('Start recognition error:', err);
+            alert('启动语音识别失败: ' + err.message);
+            overlay.remove();
+            return;
+        }
+        
+        // 停止按钮
+        stopBtn.addEventListener('click', () => {
+            if (isRecording) {
+                recognition.stop();
+            }
+        });
+        
+        // ESC 键停止
+        const escHandler = (e) => {
+            if (e.key === 'Escape') {
+                if (isRecording) {
+                    recognition.stop();
+                }
+                overlay.remove();
+                document.removeEventListener('keydown', escHandler);
+            }
+        };
+        document.addEventListener('keydown', escHandler);
+    }
+    
+    // 显示语音转文字使用说明
+    showSTTInstructions() {
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            z-index: 100004;
+            max-width: 500px;
+            width: 90%;
+        `;
+        
+        modal.innerHTML = `
+            <h3 style="margin-bottom: 20px; color: #333;">📝 语音转文字说明</h3>
+            <div style="line-height: 1.8; color: #666; margin-bottom: 20px;">
+                <p style="margin-bottom: 15px;"><strong>当前限制：</strong></p>
+                <ul style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>浏览器原生语音识别仅支持<strong>实时录音</strong></li>
+                    <li>无法直接转换已上传的音频文件</li>
+                    <li>需要 Chrome 或 Edge 浏览器</li>
+                </ul>
+                
+                <p style="margin-bottom: 15px;"><strong>使用方法：</strong></p>
+                <ol style="margin-left: 20px; margin-bottom: 15px;">
+                    <li>点击消息菜单中的“语音转文字”</li>
+                    <li>允许浏览器访问麦克风</li>
+                    <li>对着麦克风清晰说话</li>
+                    <li>识别结果会自动填入输入框</li>
+                </ol>
+                
+                <p style="margin-bottom: 15px;"><strong>高级功能（需后端支持）：</strong></p>
+                <ul style="margin-left: 20px;">
+                    <li>转换已上传的语音消息</li>
+                    <li>更高的识别准确率</li>
+                    <li>支持更多语言</li>
+                </ul>
+            </div>
+            <button class="close-instructions-btn" style="padding: 10px 20px; border: none; background: #2196f3; color: white; border-radius: 6px; cursor: pointer; width: 100%;">我知道了</button>
+        `;
+        
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 100003;
+        `;
+        
+        const closeBtn = modal.querySelector('.close-instructions-btn');
+        closeBtn.addEventListener('click', () => {
+            modal.remove();
+            overlay.remove();
+        });
+        
+        overlay.addEventListener('click', () => {
+            modal.remove();
+            overlay.remove();
+        });
+        
+        document.body.appendChild(overlay);
+        document.body.appendChild(modal);
     }
     
     // 文字转语音
