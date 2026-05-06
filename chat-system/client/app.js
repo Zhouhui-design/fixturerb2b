@@ -182,7 +182,8 @@ class ChatApp {
         });
         
         document.getElementById('translate-toggle-btn').addEventListener('click', () => this.toggleTranslation());
-        document.getElementById('voice-message-btn').addEventListener('click', () => this.startVoiceRecording());
+        // 注意：voice-message-btn 的录音功能已在 setupVoiceRecording() 中绑定，此处不重复绑定
+        // document.getElementById('voice-message-btn').addEventListener('click', () => this.startVoiceRecording());
         document.getElementById('video-call-btn').addEventListener('click', () => this.startVideoCall());
         document.getElementById('end-call-btn').addEventListener('click', () => this.endVideoCall());
         document.getElementById('remark-btn').addEventListener('click', () => this.openRemarkModal());
@@ -828,7 +829,7 @@ class ChatApp {
         this.translationEnabled = !this.translationEnabled;
         
         // 更新所有翻译按钮
-        const buttons = document.querySelectorAll('#translate-toggle-btn');
+        const buttons = document.querySelectorAll('#translate-toggle-btn, #admin-translate-btn');
         buttons.forEach(btn => {
             if (this.translationEnabled) {
                 btn.style.background = '#667eea';
@@ -845,8 +846,13 @@ class ChatApp {
         const message = this.translationEnabled ? '翻译功能已开启' : '翻译功能已关闭';
         console.log(`[Translation] ${message}`);
         
-        // 可选：显示 toast 提示
+        // 显示 toast 提示
         this.showToast(message);
+        
+        // 如果开启翻译，启用消息翻译功能
+        if (this.translationEnabled && this.translationManager) {
+            this.translationManager.enableAutoTranslate();
+        }
     }
     
     // 显示 Toast 提示
@@ -1155,8 +1161,13 @@ class ChatApp {
 
     // 麦克风录音功能
     setupVoiceRecording() {
-        const voiceBtn = document.getElementById('voice-record-btn');
-        if (!voiceBtn) return;
+        const voiceBtn = document.getElementById('voice-message-btn');
+        if (!voiceBtn) {
+            console.warn('[麦克风] 未找到 voice-message-btn 按钮');
+            return;
+        }
+        
+        console.log('[麦克风] 按钮找到，绑定事件');
         
         let mediaRecorder = null;
         let audioChunks = [];

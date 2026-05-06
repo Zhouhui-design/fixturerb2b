@@ -443,8 +443,8 @@
         </div>
     </div>
 
-    <script src="/socket.io/socket.io.js?v=20260506212000"></script>
-    <script src="call-manager.js?v=20260506212000"></script>
+    <script src="/socket.io/socket.io.js?v=20260506230000"></script>
+    <script src="call-manager.js?v=20260506230000"></script>
     <script>
         class AdminDashboard {
             constructor() {
@@ -499,9 +499,10 @@
                         alert('请先选择一个客户');
                         return;
                     }
-                    // 使用 CallManager 发起语音通话
+                    // 设置当前聊天对象
                     if (this.callManager) {
-                        this.callManager.startCall(this.currentCustomer, 'voice');
+                        this.callManager.chatApp.currentChat = this.currentCustomer;
+                        this.callManager.startCall('voice');
                     } else {
                         alert('通话模块加载中...');
                     }
@@ -511,9 +512,10 @@
                         alert('请先选择一个客户');
                         return;
                     }
-                    // 使用 CallManager 发起视频通话
+                    // 设置当前聊天对象
                     if (this.callManager) {
-                        this.callManager.startCall(this.currentCustomer, 'video');
+                        this.callManager.chatApp.currentChat = this.currentCustomer;
+                        this.callManager.startCall('video');
                     } else {
                         alert('通话模块加载中...');
                     }
@@ -574,8 +576,16 @@
             checkExistingSession() {
                 const savedAdmin = localStorage.getItem('admin_user');
                 if (savedAdmin) {
-                    const userData = JSON.parse(savedAdmin);
-                    this.loginAsAdmin(userData);
+                    try {
+                        const userData = JSON.parse(savedAdmin);
+                        // 直接进入管理员后台，跳过登录页面
+                        document.getElementById('admin-login-screen').style.display = 'none';
+                        document.getElementById('admin-dashboard').style.display = 'block';
+                        this.loginAsAdmin(userData);
+                    } catch (e) {
+                        console.error('[Admin] Parse saved session error:', e);
+                        localStorage.removeItem('admin_user');
+                    }
                 }
             }
 
@@ -631,7 +641,13 @@
                 });
 
                 // 初始化通话管理器
-                this.callManager = new CallManager(this.socket, userData.userId);
+                // 注意：管理员后台需要创建一个简化的 ChatApp 对象来兼容 CallManager
+                const mockChatApp = {
+                    socket: this.socket,
+                    currentChat: null,
+                    currentUser: { username: userData.username, userId: userData.userId }
+                };
+                this.callManager = new VoiceVideoCallManager(mockChatApp);
 
                 this.socket.on('connect', () => {
                     console.log('[Admin] Socket connected:', this.socket.id);
@@ -879,34 +895,34 @@
                             <div class="message-time">${time}</div>
                         `;
                     } else if (isImage) {
-                        // 图片预览 - 可点击放大
+                        // 图片预览 - 点击查看大图
                         messageDiv.innerHTML = `
                             <div class="file-content">
                                 <img src="${fileUrl}" alt="${fileName}" 
-                                     style="max-width: 300px; max-height: 300px; border-radius: 8px; cursor: pointer;" 
+                                     style="max-width: 300px; max-height: 300px; border-radius: 8px; cursor: zoom-in;" 
                                      onclick="window.open('${fileUrl}', '_blank')" />
                                 <div class="file-name">${fileName}</div>
                             </div>
                             <div class="message-time">${time}</div>
                         `;
                     } else if (isVideo) {
-                        // 视频播放器
+                        // 视频播放器 - 直接播放
                         messageDiv.innerHTML = `
                             <div class="file-content">
                                 <video controls src="${fileUrl}" 
-                                       style="max-width: 300px; max-height: 300px; border-radius: 8px;"></video>
+                                       style="max-width: 300px; max-height: 300px; border-radius: 8px; cursor: pointer;"></video>
                                 <div class="file-name">${fileName}</div>
                             </div>
                             <div class="message-time">${time}</div>
                         `;
                     } else if (isPDF) {
-                        // PDF 预览
+                        // PDF 预览 - 点击打开
                         messageDiv.innerHTML = `
                             <div class="file-content">
-                                <div class="file-icon" style="font-size: 48px;">📄</div>
+                                <div class="file-icon" style="font-size: 48px; cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">📄</div>
                                 <div class="file-info">
-                                    <div class="file-name">${fileName}</div>
-                                    <a href="${fileUrl}" target="_blank" style="color: #667eea; text-decoration: none;"> 查看 PDF</a>
+                                    <div class="file-name" style="cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">${fileName}</div>
+                                    <a href="${fileUrl}" target="_blank" style="color: #667eea; text-decoration: none; cursor: pointer;">️ 查看 PDF</a>
                                 </div>
                             </div>
                             <div class="message-time">${time}</div>
