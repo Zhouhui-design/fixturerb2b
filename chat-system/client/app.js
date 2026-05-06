@@ -56,6 +56,7 @@ class ChatApp {
         this.detectTenant();
         this.checkExistingSession();
         this.initTheme();
+        this.setupClipboardPaste(); // 添加剪贴板粘贴支持
         this.log('应用初始化完成');
     }
     
@@ -1217,6 +1218,85 @@ class ChatApp {
         
         container.appendChild(messageDiv);
         container.scrollTop = container.scrollHeight;
+    }
+    
+    // 剪贴板粘贴支持（截图上传）
+    setupClipboardPaste() {
+        document.addEventListener('paste', async (event) => {
+            const items = event.clipboardData?.items;
+            if (!items) return;
+            
+            // 查找图片数据
+            for (let i = 0; i < items.length; i++) {
+                if (items[i].type.indexOf('image') !== -1) {
+                    event.preventDefault();
+                    
+                    const blob = items[i].getAsFile();
+                    if (!blob) continue;
+                    
+                    // 显示上传提示
+                    this.showNotification('正在上传截图...');
+                    
+                    try {
+                        // 上传截图
+                        const formData = new FormData();
+                        formData.append('file', blob, 'screenshot.png');
+                        
+                        const response = await fetch('/api/upload/file', {
+                            method: 'POST',
+                            body: formData
+                        });
+                        
+                        const result = await response.json();
+                        
+                        if (result.success && this.currentChat) {
+                            // 发送图片消息
+                            this.socket.emit('send_message', {
+                                to: this.currentChat,
+                                content: result.fileUrl,
+                                isImage: true,
+                                fileUrl: result.fileUrl,
+                                fileName: result.fileName || '截图',
+                                fileType: result.fileType
+                            });
+                            
+                            // 显示图片消息
+                            this.displayFileMessage(result, 'sent');
+                            this.showNotification('截图上传成功');
+                        }
+                    } catch (err) {
+                        console.error('Screenshot upload error:', err);
+                        this.showNotification('截图上传失败: ' + err.message);
+                    }
+                    
+                    break;
+                }
+            }
+        });
+    }
+    
+    // 显示通知
+    showNotification(message) {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 100000;
+            animation: slideIn 0.3s ease;
+        `;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }, 2000);
     }
 
     
