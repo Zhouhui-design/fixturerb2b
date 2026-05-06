@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const User = require('../models/User');
 const Remark = require('../models/Remark');
 const Message = require('../models/Message');
@@ -12,14 +13,17 @@ router.get('/conversations', async (req, res) => {
     const { userId, tenantId } = req.query;
     const currentTenant = tenantId || 'fixturerb2b';
     
+    // 将 userId 转换为 ObjectId
+    const userIdObj = new mongoose.Types.ObjectId(userId);
+    
     const conversations = await Message.aggregate([
       {
         $match: {
           $and: [
             {
               $or: [
-                { from: userId.toString() },
-                { to: userId.toString() }
+                { from: userIdObj },
+                { to: userIdObj }
               ]
             },
             { tenantId: currentTenant }
@@ -33,7 +37,7 @@ router.get('/conversations', async (req, res) => {
         $group: {
           _id: {
             $cond: [
-              { $eq: ['$from', userId.toString()] },
+              { $eq: ['$from', userIdObj] },
               '$to',
               '$from'
             ]
@@ -44,7 +48,7 @@ router.get('/conversations', async (req, res) => {
             $sum: {
               $cond: [
                 { $and: [
-                  { $eq: ['$to', userId.toString()] },
+                  { $eq: ['$to', userIdObj] },
                   { $eq: ['$read', false] }
                 ]},
                 1,
