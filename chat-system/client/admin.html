@@ -443,8 +443,8 @@
         </div>
     </div>
 
-    <script src="/socket.io/socket.io.js?v=20260506230000"></script>
-    <script src="call-manager.js?v=20260506230000"></script>
+    <script src="/socket.io/socket.io.js?v=20260507023000"></script>
+    <script src="call-manager.js?v=20260507023000"></script>
     <script>
         class AdminDashboard {
             constructor() {
@@ -879,11 +879,14 @@
                     
                     const fileType = msg.fileType || '';
                     const fileName = decodeURIComponent(msg.fileName || this.extractFileName(msg.content) || '文件');
-                    const fileUrl = msg.fileUrl || msg.content || this.extractFileUrl(msg.content);
-                    const isAudio = fileType.startsWith('audio/') || fileUrl.endsWith('.webm') || msg.isAudio;
-                    const isImage = fileType.startsWith('image/');
-                    const isVideo = fileType.startsWith('video/');
-                    const isPDF = fileType === 'application/pdf';
+                    // 优先使用fileUrl，如果没有则从content中提取URL，最后才使用整个content
+                    const fileUrl = msg.fileUrl || this.extractFileUrl(msg.content) || msg.content || '';
+                    
+                    // 判断文件类型：优先使用fileType，如果没有则通过URL扩展名判断
+                    const isAudio = fileType.startsWith('audio/') || fileUrl.endsWith('.webm') || fileUrl.endsWith('.mp3') || fileUrl.endsWith('.wav') || msg.isAudio;
+                    const isImage = fileType.startsWith('image/') || fileUrl.endsWith('.jpg') || fileUrl.endsWith('.jpeg') || fileUrl.endsWith('.png') || fileUrl.endsWith('.gif') || fileUrl.endsWith('.webp');
+                    const isVideo = fileType.startsWith('video/') || fileUrl.endsWith('.mp4') || fileUrl.endsWith('.webm') || fileUrl.endsWith('.mov') || fileUrl.endsWith('.avi');
+                    const isPDF = fileType === 'application/pdf' || fileUrl.endsWith('.pdf');
                     
                     if (isAudio) {
                         // 音频播放器
