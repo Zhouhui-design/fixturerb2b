@@ -443,8 +443,8 @@
         </div>
     </div>
 
-    <script src="/socket.io/socket.io.js?v=20260507031000"></script>
-    <script src="call-manager.js?v=20260507031000"></script>
+    <script src="/socket.io/socket.io.js?v=20260507032000"></script>
+    <script src="call-manager.js?v=20260507032000"></script>
     <script>
         class AdminDashboard {
             constructor() {
@@ -881,36 +881,29 @@
                     messageDiv.className = `message ${type} file-message`;
                     
                     const fileType = msg.fileType || '';
-                    // 安全解码文件名，防止双重解码导致乱码
                     let fileName = '文件';
                     try {
                         const rawName = msg.fileName || this.extractFileName(msg.content) || '文件';
-                        // 只解码一次，如果已经是 decoded 状态则不再解码
                         fileName = decodeURIComponent(rawName);
                     } catch (e) {
-                        // 如果解码失败，使用原始文件名
                         fileName = msg.fileName || this.extractFileName(msg.content) || '文件';
                     }
-                    // 优先使用fileUrl，如果没有则从content中提取URL，最后才使用整个content
                     const fileUrl = msg.fileUrl || this.extractFileUrl(msg.content) || msg.content || '';
                     
-                    // 判断文件类型：优先使用fileType，如果没有则通过URL扩展名判断
                     const isAudio = fileType.startsWith('audio/') || fileUrl.endsWith('.webm') || fileUrl.endsWith('.mp3') || fileUrl.endsWith('.wav') || msg.isAudio;
                     const isImage = fileType.startsWith('image/') || fileUrl.endsWith('.jpg') || fileUrl.endsWith('.jpeg') || fileUrl.endsWith('.png') || fileUrl.endsWith('.gif') || fileUrl.endsWith('.webp');
                     const isVideo = fileType.startsWith('video/') || fileUrl.endsWith('.mp4') || fileUrl.endsWith('.webm') || fileUrl.endsWith('.mov') || fileUrl.endsWith('.avi');
                     const isPDF = fileType === 'application/pdf' || fileUrl.endsWith('.pdf');
                     
                     if (isAudio) {
-                        // 音频播放器
                         messageDiv.innerHTML = `
                             <div class="file-content">
                                 <audio controls src="${fileUrl}" style="max-width: 250px;"></audio>
-                                <div class="file-name"> 语音消息</div>
+                                <div class="file-name">🎤 语音消息</div>
                             </div>
                             <div class="message-time">${time}</div>
                         `;
                     } else if (isImage) {
-                        // 图片预览 - 点击查看大图
                         messageDiv.innerHTML = `
                             <div class="file-content">
                                 <img src="${fileUrl}" alt="${fileName}" 
@@ -921,7 +914,6 @@
                             <div class="message-time">${time}</div>
                         `;
                     } else if (isVideo) {
-                        // 视频播放器 - 直接播放
                         messageDiv.innerHTML = `
                             <div class="file-content">
                                 <video controls src="${fileUrl}" 
@@ -931,70 +923,94 @@
                             <div class="message-time">${time}</div>
                         `;
                     } else if (isPDF) {
-                        // PDF 预览 - 点击打开
                         messageDiv.innerHTML = `
                             <div class="file-content">
                                 <div class="file-icon" style="font-size: 48px; cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">📄</div>
                                 <div class="file-info">
                                     <div class="file-name" style="cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">${fileName}</div>
-                                    <a href="${fileUrl}" target="_blank" style="color: #667eea; text-decoration: none; cursor: pointer;">️ 查看 PDF</a>
+                                    <a href="${fileUrl}" target="_blank" style="color: #667eea;">📖 查看 PDF</a>
                                 </div>
                             </div>
                             <div class="message-time">${time}</div>
                         `;
                     } else if (fileUrl.endsWith('.docx') || fileUrl.endsWith('.doc') || fileType.includes('word')) {
-                        // Word 文档 - 点击打开
                         messageDiv.innerHTML = `
                             <div class="file-content">
                                 <div class="file-icon" style="font-size: 48px; cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">📝</div>
                                 <div class="file-info">
                                     <div class="file-name" style="cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">${fileName}</div>
-                                    <a href="${fileUrl}" target="_blank" style="color: #667eea; text-decoration: none; cursor: pointer;"> 打开 Word 文档</a>
+                                    <a href="${fileUrl}" target="_blank" style="color: #667eea;">📖 打开 Word 文档</a>
                                 </div>
                             </div>
                             <div class="message-time">${time}</div>
                         `;
                     } else if (fileUrl.endsWith('.xlsx') || fileUrl.endsWith('.xls') || fileType.includes('excel') || fileType.includes('spreadsheet')) {
-                        // Excel 文档 - 点击打开
                         messageDiv.innerHTML = `
                             <div class="file-content">
                                 <div class="file-icon" style="font-size: 48px; cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')"></div>
                                 <div class="file-info">
                                     <div class="file-name" style="cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">${fileName}</div>
-                                    <a href="${fileUrl}" target="_blank" style="color: #667eea; text-decoration: none; cursor: pointer;"> 打开 Excel 文件</a>
+                                    <a href="${fileUrl}" target="_blank" style="color: #667eea;">📖 打开 Excel 文件</a>
                                 </div>
                             </div>
                             <div class="message-time">${time}</div>
                         `;
                     } else if (fileUrl.endsWith('.txt') || fileType === 'text/plain') {
-                        // TXT 文件 - 点击打开
                         messageDiv.innerHTML = `
                             <div class="file-content">
                                 <div class="file-icon" style="font-size: 48px; cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">📄</div>
                                 <div class="file-info">
                                     <div class="file-name" style="cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">${fileName}</div>
-                                    <a href="${fileUrl}" target="_blank" style="color: #667eea; text-decoration: none; cursor: pointer;"> 查看文本文件</a>
+                                    <a href="${fileUrl}" target="_blank" style="color: #667eea;">📖 查看文本文件</a>
                                 </div>
                             </div>
                             <div class="message-time">${time}</div>
                         `;
                     } else {
-                        // 其他文件
                         messageDiv.innerHTML = `
                             <div class="file-content">
-                                <div class="file-icon">📄</div>
+                                <div class="file-icon">📎</div>
                                 <div class="file-info">
                                     <div class="file-name">${fileName}</div>
-                                    <a href="${fileUrl}" target="_blank" download style="color: #667eea; text-decoration: none; cursor: pointer;">📥 下载文件</a>
+                                    <a href="${fileUrl}" target="_blank" download style="color: #667eea;"> 下载文件</a>
                                 </div>
                             </div>
                             <div class="message-time">${time}</div>
                         `;
                     }
+                    
+                    let speakerName = '';
+                    if (type === 'sent') {
+                        speakerName = '管理员';
+                    } else if (msg.fromUsername) {
+                        speakerName = msg.fromUsername;
+                    } else if (this.currentCustomer) {
+                        speakerName = this.currentCustomer;
+                    } else {
+                        speakerName = '客户';
+                    }
+                    
+                    const speakerDiv = document.createElement('div');
+                    speakerDiv.className = 'message-sender';
+                    speakerDiv.textContent = speakerName;
+                    messageDiv.insertBefore(speakerDiv, messageDiv.firstChild);
                 } else {
                     messageDiv.className = `message ${type}`;
+                    
+                    let speakerName = '';
+                    if (type === 'sent') {
+                        speakerName = '管理员';
+                    } else if (msg.fromUsername) {
+                        speakerName = msg.fromUsername;
+                    } else if (this.currentCustomer) {
+                        speakerName = this.currentCustomer;
+                    } else {
+                        speakerName = '客户';
+                    }
+                    
                     messageDiv.innerHTML = `
-                        <div>${this.escapeHtml(msg.content)}</div>
+                        <div class="message-sender">${this.escapeHtml(speakerName)}</div>
+                        <div class="message-bubble">${this.escapeHtml(msg.content)}</div>
                         <div class="message-time">${time}</div>
                     `;
                 }
