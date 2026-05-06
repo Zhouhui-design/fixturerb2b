@@ -443,7 +443,8 @@
         </div>
     </div>
 
-    <script src="/socket.io/socket.io.js?v=20260506193958"></script>
+    <script src="/socket.io/socket.io.js?v=20260506212000"></script>
+    <script src="call-manager.js?v=20260506212000"></script>
     <script>
         class AdminDashboard {
             constructor() {
@@ -494,10 +495,28 @@
                 
                 // 语音/视频通话按钮
                 document.getElementById('admin-voice-call-btn')?.addEventListener('click', () => {
-                    alert('语音通话功能开发中...');
+                    if (!this.currentCustomer) {
+                        alert('请先选择一个客户');
+                        return;
+                    }
+                    // 使用 CallManager 发起语音通话
+                    if (this.callManager) {
+                        this.callManager.startCall(this.currentCustomer, 'voice');
+                    } else {
+                        alert('通话模块加载中...');
+                    }
                 });
                 document.getElementById('admin-video-call-btn')?.addEventListener('click', () => {
-                    alert('视频通话功能开发中...');
+                    if (!this.currentCustomer) {
+                        alert('请先选择一个客户');
+                        return;
+                    }
+                    // 使用 CallManager 发起视频通话
+                    if (this.callManager) {
+                        this.callManager.startCall(this.currentCustomer, 'video');
+                    } else {
+                        alert('通话模块加载中...');
+                    }
                 });
                 document.getElementById('admin-translate-btn')?.addEventListener('click', () => {
                     alert('翻译功能开发中...');
@@ -610,6 +629,9 @@
                 this.socket = io({
                     auth: { token: userData.token, tenantId: 'fixturerb2b' }
                 });
+
+                // 初始化通话管理器
+                this.callManager = new CallManager(this.socket, userData.userId);
 
                 this.socket.on('connect', () => {
                     console.log('[Admin] Socket connected:', this.socket.id);
@@ -840,7 +862,7 @@
                     messageDiv.className = `message ${type} file-message`;
                     
                     const fileType = msg.fileType || '';
-                    const fileName = msg.fileName || this.extractFileName(msg.content) || '文件';
+                    const fileName = decodeURIComponent(msg.fileName || this.extractFileName(msg.content) || '文件');
                     const fileUrl = msg.fileUrl || msg.content || this.extractFileUrl(msg.content);
                     const isAudio = fileType.startsWith('audio/') || fileUrl.endsWith('.webm') || msg.isAudio;
                     const isImage = fileType.startsWith('image/');
@@ -896,7 +918,7 @@
                                 <div class="file-icon">📄</div>
                                 <div class="file-info">
                                     <div class="file-name">${fileName}</div>
-                                    <a href="${fileUrl}" target="_blank" download style="color: #667eea; text-decoration: none;">📥 下载文件</a>
+                                    <a href="${fileUrl}" target="_blank" download style="color: #667eea; text-decoration: none; cursor: pointer;">📥 下载文件</a>
                                 </div>
                             </div>
                             <div class="message-time">${time}</div>
