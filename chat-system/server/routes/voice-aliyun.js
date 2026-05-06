@@ -49,7 +49,7 @@ function generateSignature(appKey, token, timestamp) {
 }
 
 /**
- * 语音转文字 API（使用阿里云智能语音交互）
+ * 语音转文字 API（使用阿里云智能语音交互 - 录音文件识别）
  * POST /api/voice/transcribe-aliyun
  * 
  * 请求参数:
@@ -89,36 +89,67 @@ router.post('/transcribe-aliyun', upload.single('audio'), async (req, res) => {
 
         const language = req.body.language || 'zh-cn';
 
-        // 读取音频文件为 Buffer
-        const audioBuffer = fs.readFileSync(req.file.path);
-        
-        // 调用阿里云 REST API
-        // 注意：这里使用的是阿里云智能语音交互的 REST API
-        // 对于实时性要求不高的场景，REST API 更简单稳定
-        
-        const url = `https://nls-gateway.cn-shanghai.aliyuncs.com/stream/v1/asr`;
-        
-        // 构建请求
-        const formData = new FormData();
-        formData.append('appkey', appKey);
-        formData.append('format', 'wav'); // 阿里云支持 wav, pcm, opus 等
-        formData.append('sample_rate', '16000');
-        formData.append('enable_words', 'false');
-        formData.append('audio', audioBuffer, {
-            filename: req.file.filename,
-            contentType: req.file.mimetype
+        // 第一步：获取 Token
+        const tokenUrl = 'https://nls-meta.cn-shanghai.aliyuncs.com/';
+        const tokenParams = new URLSearchParams({
+            Action: 'CreateToken',
+            Version: '2019-02-28',
+            Format: 'JSON',
+            RegionId: 'cn-shanghai',
+            AccessKeyId: accessKeyId,
+            SignatureMethod: 'HMAC-SHA1',
+            Timestamp: new Date().toISOString(),
+            SignatureVersion: '1.0',
+            SignatureNonce: Date.now().toString()
         });
 
-        // 发送请求到阿里云
-        const response = await fetch(url, {
+        // 生成签名
+        const stringToSign = `POST&%2F&${encodeURIComponent(tokenParams.toString())}`;
+        const signature = crypto
+            .createHmac('sha1', accessKeySecret + '&')
+            .update(stringToSign)
+            .digest('base64');
+
+        tokenParams.append('Signature', signature);
+
+        // 获取 Token
+        const tokenResponse = await fetch(`${tokenUrl}?${tokenParams.toString()}`, {
+            method: 'POST'
+        });
+
+        const tokenData = await tokenResponse.json();
+        
+        if (!tokenData.Token || !tokenData.Token.Id) {
+            throw new Error('获取 Token 失败: ' + JSON.stringify(tokenData));
+        }
+
+        const token = tokenData.Token.Id;
+        console.log(`[Aliyun ASR] Token obtained successfully`);
+
+        // 第二步：上传音频文件到 OSS 或直接调用识别 API
+        // 这里使用简化的方式：直接将音频文件转为 base64 后调用 REST API
+        const audioBuffer = fs.readFileSync(req.file.path);
+        const audioBase64 = audioBuffer.toString('base64');
+
+        // 调用阿里云录音文件识别 REST API
+        const asrUrl = 'https://nls-gateway.cn-shanghai.aliyuncs.com/stream/v1/asr';
+        
+        const asrResponse = await fetch(asrUrl, {
             method: 'POST',
             headers: {
-                'X-NLS-Token': accessKeySecret // 简化认证方式
+                'Content-Type': 'application/json',
+                'X-NLS-Token': token
             },
-            body: formData
+            body: JSON.stringify({
+                appkey: appKey,
+                format: 'wav',
+                sample_rate: 16000,
+                enable_words: false,
+                audio: audioBase64
+            })
         });
 
-        const result = await response.json();
+        const result = await asrResponse.json();
 
         // 删除临时文件
         fs.unlink(req.file.path, (err) => {
@@ -155,6 +186,8 @@ router.post('/transcribe-aliyun', upload.single('audio'), async (req, res) => {
             errorMessage = 'AppKey 无效，请检查配置';
         } else if (error.message.includes('quota')) {
             errorMessage = '免费额度已用完';
+        } else if (error.message.includes('Token')) {
+            errorMessage = 'Token 获取失败，请检查 AccessKey';
         } else {
             errorMessage = error.message || '未知错误';
         }
