@@ -64,6 +64,207 @@ body {
     }
 }
 
+/* ==================== 通话界面样式 ==================== */
+.call-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.call-modal.hidden {
+    display: none;
+}
+
+.call-modal-content {
+    width: 100%;
+    max-width: 800px;
+    height: 100%;
+    max-height: 600px;
+    background: #1a1a1a;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.call-header {
+    padding: 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.call-header h3 {
+    color: white;
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.call-status {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+}
+
+.call-videos {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+    padding: 20px;
+    position: relative;
+}
+
+.video-container {
+    flex: 1;
+    position: relative;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-label {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.call-avatar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.avatar-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 20px rgba(102, 126, 234, 0);
+    }
+}
+
+.avatar-name {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.call-controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.call-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 80px;
+}
+
+.call-btn span:first-child {
+    font-size: 24px;
+}
+
+.call-btn span:last-child {
+    color: white;
+    font-size: 12px;
+}
+
+.mute-btn {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.mute-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.end-call-btn {
+    background: #ef4444;
+}
+
+.end-call-btn:hover {
+    background: #dc2626;
+    transform: scale(1.05);
+}
+
+.switch-btn {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.switch-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .call-modal-content {
+        max-height: 100vh;
+        border-radius: 0;
+    }
+    
+    .call-videos {
+        flex-direction: column;
+    }
+    
+    .avatar-circle {
+        width: 100px;
+        height: 100px;
+        font-size: 50px;
+    }
+    
+    .call-controls {
+        padding: 20px;
+        gap: 15px;
+    }
+    
+    .call-btn {
+        padding: 12px 20px;
+        min-width: 70px;
+    }
+}
+
 /* 登录卡片容器 */
 .auth-container {
     background: rgba(255, 255, 255, 0.98);

@@ -174,20 +174,32 @@ io.on('connection', (socket) => {
   });
   
   socket.on('video_call', (data) => {
-    const { to, signal } = data;
-    io.to(`user_${to}`).emit('incoming_call', {
+    const { to, signal, callType, fromUsername } = data;
+    console.log(`[Server] Video call from ${socket.userId} to ${to}, type: ${callType}`);
+    io.to(`user_${to}`).emit('video_call', {
       from: socket.userId,
-      fromUsername: socket.user.username,
+      fromUsername: fromUsername || socket.user?.username || '用户',
       signal,
+      callType: callType || 'video',
       tenantId: socket.tenantId
     });
   });
   
   socket.on('answer_call', (data) => {
-    const { to, signal } = data;
-    io.to(`user_${to}`).emit('call_answered', {
+    const { to, signal, callType } = data;
+    console.log(`[Server] Call answered by ${socket.userId} to ${to}`);
+    io.to(`user_${to}`).emit('answer_call', {
       from: socket.userId,
-      signal
+      signal,
+      callType
+    });
+  });
+  
+  socket.on('call_rejected', (data) => {
+    const { to } = data;
+    console.log(`[Server] Call rejected by ${socket.userId} to ${to}`);
+    io.to(`user_${to}`).emit('call_rejected', {
+      from: socket.userId
     });
   });
   
@@ -201,7 +213,8 @@ io.on('connection', (socket) => {
   
   socket.on('end_call', (data) => {
     const { to } = data;
-    io.to(`user_${to}`).emit('call_ended', {
+    console.log(`[Server] Call ended by ${socket.userId} to ${to}`);
+    io.to(`user_${to}`).emit('end_call', {
       from: socket.userId
     });
   });

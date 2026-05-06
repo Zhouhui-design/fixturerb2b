@@ -57,6 +57,15 @@ class ChatApp {
         this.checkExistingSession();
         this.initTheme();
         this.setupClipboardPaste(); // 添加剪贴板粘贴支持
+        
+        // 初始化通话管理器（延迟初始化，等待 socket 连接）
+        setTimeout(() => {
+            if (this.socket) {
+                this.callManager = new VoiceVideoCallManager(this);
+                this.log('通话管理器初始化完成');
+            }
+        }, 1000);
+        
         this.log('应用初始化完成');
     }
     
