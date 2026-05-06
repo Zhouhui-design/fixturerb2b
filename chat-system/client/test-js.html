@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript 测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>JavaScript 功能测试</h1>
+    
+    <div id="results"></div>
+    
+    <h2>测试按钮</h2>
+    <button onclick="testAPI()">测试 API 连接</button>
+    <button onclick="testLocalStorage()">测试 LocalStorage</button>
+    <button onclick="clearCache()">清除所有缓存</button>
+    
+    <script>
+        const results = document.getElementById('results');
+        
+        function addResult(message, isSuccess) {
+            const div = document.createElement('div');
+            div.className = `test-result ${isSuccess ? 'success' : 'error'}`;
+            div.textContent = message;
+            results.appendChild(div);
+        }
+        
+        // 测试 1: JavaScript 是否执行
+        addResult('✅ JavaScript 正在运行', true);
+        
+        // 测试 2: 检查 ES6 特性
+        try {
+            const testArrow = () => true;
+            const testTemplate = `test`;
+            const testDestructuring = (({a}) => a)({a: 1});
+            addResult('✅ ES6 特性支持正常', true);
+        } catch (e) {
+            addResult('❌ ES6 特性不支持: ' + e.message, false);
+        }
+        
+        // 测试 3: DOM 操作
+        try {
+            const test = document.createElement('div');
+            test.textContent = 'test';
+            addResult('✅ DOM 操作正常', true);
+        } catch (e) {
+            addResult('❌ DOM 操作失败: ' + e.message, false);
+        }
+        
+        // 测试 API 连接
+        function testAPI() {
+            addResult('正在测试 API 连接...', true);
+            fetch('/api/auth/admin?tenantId=fixturerb2b')
+                .then(response => {
+                    addResult(`API 响应状态: ${response.status}`, response.ok);
+                    return response.json();
+                })
+                .then(data => {
+                    addResult(`API 返回数据: ${JSON.stringify(data)}`, true);
+                })
+                .catch(error => {
+                    addResult(`API 连接失败: ${error.message}`, false);
+                });
+        }
+        
+        // 测试 LocalStorage
+        function testLocalStorage() {
+            try {
+                localStorage.setItem('test', 'value');
+                const value = localStorage.getItem('test');
+                localStorage.removeItem('test');
+                addResult(`LocalStorage 测试: ${value === 'value' ? '通过' : '失败'}`, value === 'value');
+            } catch (e) {
+                addResult(`LocalStorage 失败: ${e.message}`, false);
+            }
+        }
+        
+        // 清除所有缓存
+        function clearCache() {
+            if ('caches' in window) {
+                caches.keys().then(names => {
+                    names.forEach(name => {
+                        caches.delete(name);
+                        addResult(`已删除缓存: ${name}`, true);
+                    });
+                });
+            }
+            
+            // 清除 LocalStorage
+            localStorage.clear();
+            addResult('已清除 LocalStorage', true);
+            
+            // 清除 Service Worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(registrations => {
+                    registrations.forEach(reg => {
+                        reg.unregister();
+                        addResult('已注销 Service Worker', true);
+                    });
+                });
+            }
+            
+            addResult('请刷新页面以查看效果', true);
+        }
+    </script>
+</body>
+</html>

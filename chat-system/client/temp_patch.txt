@@ -1,0 +1,15 @@
+    setupSocketListeners() {
+        this.socket.on('receive_message', (data) => {
+            // 播放新消息提示音
+            if (typeof notificationSound !== 'undefined') {
+                notificationSound.init();
+                notificationSound.playNewMessage();
+            }
+            
+            if (this.currentChat === data.from) {
+                this.displayMessage(data, 'received');
+                this.markMessageAsRead(data.id);
+            } else {
+                this.loadConversations();
+            }
+        });

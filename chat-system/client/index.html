@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixturerb2b 在线客服</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="mobile-fix.css">
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div id="auth-screen" class="screen active">
+            <div class="auth-container">
+                <h1>Fixturerb2b 在线客服</h1>
+                
+                <div class="auth-header-buttons">
+                    <button id="register-btn" class="auth-nav-btn">注册</button>
+                    <button id="login-nav-btn" class="auth-nav-btn active">快捷登录</button>
+                </div>
+                
+                <div id="login-form">
+                    <input type="text" id="username-input" placeholder="请输入您的称呼（无长度限制，不能重复）" />
+                    <button id="login-btn">进入聊天</button>
+                    <p class="info-text">温馨提示：管理员正忙，请问您可否留下邮箱，管理员看到信息马上给你回复邮件。或者注册此聊天软件，管理员可以通过聊天软件给你回复。</p>
+                </div>
+                
+                <div id="register-form" class="hidden">
+                    <input type="text" id="reg-username" placeholder="设置用户名" />
+                    <input type="email" id="reg-email" placeholder="邮箱（选填，用于接收通知）" />
+                    <input type="password" id="reg-password" placeholder="设置密码" />
+                    <input type="password" id="reg-password-confirm" placeholder="确认密码" />
+                    <button id="register-submit-btn">注册</button>
+                    <p class="info-text">✨ 注册后聊天记录保存1年，支持查询历史消息。1年无登录自动注销（注销前1个月邮件通知）</p>
+                    <p class="back-to-login" id="back-to-login">返回快捷登录</p>
+                </div>
+                
+                <div id="auth-error" class="error-message"></div>
+                
+                <!-- 调试信息面板 -->
+                <div id="debug-panel">
+                    <h4>🔧 调试信息</h4>
+                    <div id="debug-content"></div>
+                    <button id="clear-debug-btn">清除日志</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="chat-screen" class="screen">
+            <div class="sidebar">
+                <div class="user-profile">
+                    <h3 id="current-username"></h3>
+                    <button id="logout-btn">退出</button>
+                </div>
+                
+                <div class="search-section">
+                    <input type="text" id="search-user-input" placeholder="搜索用户..." />
+                    <div id="search-results" class="search-results"></div>
+                </div>
+                
+                <div class="conversations-section">
+                    <h4>对话列表</h4>
+                    <div id="conversations-list" class="conversations-list"></div>
+                </div>
+                
+                <div class="sidebar-actions">
+                    <button id="social-links-btn">我的社交账号</button>
+                    <button id="suggestions-btn">建议反馈</button>
+                </div>
+            </div>
+
+            <div class="chat-area">
+                <div id="no-chat-selected" class="no-chat-selected">
+                    <p>选择一个用户开始聊天</p>
+                </div>
+                
+                <div id="chat-container" class="chat-container hidden">
+                    <div class="chat-header">
+                        <h3 id="chat-with-username"></h3>
+                        <div class="chat-actions">
+                            <button id="remark-btn" title="添加备注"></button>
+                            <button id="video-call-btn" title="视频通话">📹</button>
+                            <button id="voice-message-btn" title="语音消息">🎤</button>
+                            <button id="translate-toggle-btn" title="切换翻译">🌐</button>
+                        </div>
+                    </div>
+                    
+                    <div id="messages-container" class="messages-container"></div>
+                    
+                    <div class="message-input-area">
+                        <div id="translation-preview" class="translation-preview hidden"></div>
+                        
+                        <!-- 主输入行 -->
+                        <div class="input-controls">
+                            <button id="voice-record-btn" title="语音消息" class="input-icon-btn">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                                </svg>
+                            </button>
+                            <textarea id="message-input" placeholder="输入消息..." rows="1"></textarea>
+                            <button id="send-message-btn">发送</button>
+                        </div>
+                        
+                        <!-- 扩展功能栏 -->
+                        <div class="input-extended-controls">
+                            <button id="upload-file-btn" title="上传文件" class="input-icon-btn">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                                </svg>
+                                <span class="icon-label">文件</span>
+                            </button>
+                            <button id="upload-photo-btn" title="相册" class="input-icon-btn">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <polyline points="21 15 16 10 5 21"></polyline>
+                                </svg>
+                                <span class="icon-label">相册</span>
+                            </button>
+                            <button id="upload-camera-btn" title="拍摄" class="input-icon-btn">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                    <circle cx="12" cy="13" r="4"></circle>
+                                </svg>
+                                <span class="icon-label">拍摄</span>
+                            </button>
+                            <button id="voice-call-btn" title="语音通话" class="input-icon-btn">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                                <span class="icon-label">语音通话</span>
+                            </button>
+                            <button id="video-call-btn" title="视频通话" class="input-icon-btn">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                                    <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                                </svg>
+                                <span class="icon-label">视频通话</span>
+                            </button>
+                            <button id="translate-toggle-btn" title="实时翻译" class="input-icon-btn">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                </svg>
+                                <span class="icon-label">翻译</span>
+                            </button>
+                        </div>
+                        
+                        <input type="file" id="file-input" style="display: none;" accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx,.csv" />
+                        <input type="file" id="photo-input" style="display: none;" accept="image/*,video/*" multiple />
+                        <input type="file" id="camera-input" style="display: none;" accept="image/*,video/*" capture="environment" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="video-call-modal" class="modal hidden">
+            <div class="modal-content video-call-content">
+                <div class="video-call-header">
+                    <h3>视频通话</h3>
+                    <div class="call-control-buttons">
+                        <button id="answer-call-btn" class="answer-call-btn" style="display: none;">接听</button>
+                        <button id="reject-call-btn" class="reject-call-btn" style="display: none;">拒接</button>
+                        <button id="end-call-btn" class="end-call-btn">挂断</button>
+                    </div>
+                </div>
+                <div class="video-container">
+                    <video id="local-video" autoplay muted></video>
+                    <video id="remote-video" autoplay></video>
+                </div>
+            </div>
+        </div>
+
+        <div id="social-links-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3>我的社交账号</h3>
+                <div class="social-links-form">
+                    <input type="text" id="tiktok-input" placeholder="TikTok 用户名" />
+                    <input type="text" id="wechat-input" placeholder="微信号" />
+                    <input type="text" id="lark-input" placeholder="Lark 用户名" />
+                    <input type="text" id="facebook-input" placeholder="Facebook 主页" />
+                    <input type="text" id="whatsapp-input" placeholder="WhatsApp 号码" />
+                    <input type="text" id="telegram-input" placeholder="Telegram 用户名" />
+                    <button id="save-social-links-btn">保存</button>
+                </div>
+                <button class="close-modal-btn">关闭</button>
+            </div>
+        </div>
+
+        <div id="suggestions-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3>建议与反馈</h3>
+                <div class="suggestion-form">
+                    <textarea id="suggestion-input" placeholder="分享您的建议..." rows="4"></textarea>
+                    <button id="submit-suggestion-btn">提交建议</button>
+                </div>
+                <div id="suggestions-list" class="suggestions-list"></div>
+                <button class="close-modal-btn">关闭</button>
+            </div>
+        </div>
+
+        <div id="remark-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3>添加备注</h3>
+                <input type="text" id="remark-input" placeholder="添加关于该用户的备注（最多100个字符）" maxlength="100" />
+                <button id="save-remark-btn">保存备注</button>
+                <button class="close-modal-btn">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 夜间模式切换按钮 -->
+    <button id="theme-toggle-btn" class="theme-toggle-btn" title="切换夜间模式">🌙</button>
+
+    <!-- PWA 安装提示 -->
+    <div id="pwa-install-prompt" class="pwa-install-prompt" style="display: none;">
+        <div class="prompt-content">
+            <span class="prompt-text">📱 添加到主屏幕，获得更好的体验</span>
+            <button id="pwa-install-btn" class="install-btn">安装</button>
+            <button id="pwa-dismiss-btn" class="dismiss-btn">✕</button>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="notification-sound.js"></script>
+    <script src="offline-queue.js"></script>
+    <script src="app.js"></script>
+    <script src="enhanced-features.js"></script>
+    
+    <!-- 初始化增强功能 -->
+    <script>
+        // 在 ChatApp 初始化后初始化增强功能
+        window.addEventListener('DOMContentLoaded', () => {
+            // 等待 socket 连接后初始化
+            setTimeout(() => {
+                if (window.chatApp && window.chatApp.socket) {
+                    window.enhancedFeatures = new EnhancedFeatures(window.chatApp);
+                    console.log('[Enhanced] Features initialized');
+                }
+            }, 1000);
+        });
+    </script>
+    
+    <!-- Service Worker 注册 -->
+    <script>
+        // 页面级调试日志函数 - 必须在最前面定义
+        function addDebugLog(message) {
+            const debugContent = document.getElementById('debug-content');
+            if (debugContent) {
+                const timestamp = new Date().toLocaleTimeString();
+                const logEntry = document.createElement('div');
+                logEntry.style.cssText = 'margin-bottom: 4px; padding: 2px 0; border-bottom: 1px solid #eee;';
+                logEntry.textContent = `[${timestamp}] ${message}`;
+                debugContent.appendChild(logEntry);
+                
+                // 显示调试面板
+                const debugPanel = document.getElementById('debug-panel');
+                if (debugPanel) debugPanel.style.display = 'block';
+                
+                // 自动滚动到底部
+                debugContent.scrollTop = debugContent.scrollHeight;
+            }
+        }
+        
+        // 页面加载完成后添加初始调试信息
+        window.addEventListener('DOMContentLoaded', () => {
+            addDebugLog('页面加载完成');
+            addDebugLog(`当前 URL: ${window.location.href}`);
+            addDebugLog(`缓存版本: fixturerb2b-chat-v5-button-fix`);
+            
+            // 检查是否有保存的用户信息
+            const savedUser = localStorage.getItem('chat_user');
+            if (savedUser) {
+                try {
+                    const userData = JSON.parse(savedUser);
+                    addDebugLog(`发现保存的用户: ${userData.username} (isAdmin: ${userData.isAdmin || false})`);
+                } catch (e) {
+                    addDebugLog('localStorage 中的用户数据格式错误');
+                }
+            } else {
+                addDebugLog('没有保存的用户信息');
+            }
+        });
+        
+        // 注册 Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('[PWA] SW registered:', registration.scope);
+                        addDebugLog(`[SW] 注册成功: ${registration.scope}`);
+                        
+                        // 检查更新
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            console.log('[PWA] New SW installing...');
+                            addDebugLog('[SW] 发现新版本，正在安装...');
+                            
+                            newWorker.addEventListener('statechange', () => {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // 有新版本可用
+                                    addDebugLog('[SW] 新版本已安装，准备刷新');
+                                    showUpdateNotification();
+                                }
+                            });
+                        });
+                    })
+                    .catch(error => {
+                        console.error('[PWA] SW registration failed:', error);
+                        addDebugLog(`[SW] 注册失败: ${error.message}`);
+                    });
+            });
+        } else {
+            addDebugLog('[SW] 当前浏览器不支持 Service Worker');
+        }
+        
+        // PWA 安装提示
+        let deferredPrompt;
+        const installPrompt = document.getElementById('pwa-install-prompt');
+        const installBtn = document.getElementById('pwa-install-btn');
+        const dismissBtn = document.getElementById('pwa-dismiss-btn');
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // 显示安装提示（延迟3秒）
+            setTimeout(() => {
+                if (!localStorage.getItem('pwa_dismissed')) {
+                    installPrompt.style.display = 'block';
+                }
+            }, 3000);
+        });
+        
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log('[PWA] User choice:', outcome);
+                deferredPrompt = null;
+                installPrompt.style.display = 'none';
+            }
+        });
+        
+        dismissBtn.addEventListener('click', () => {
+            installPrompt.style.display = 'none';
+            localStorage.setItem('pwa_dismissed', 'true');
+        });
+        
+        // 激活新版本 Service Worker
+        function activateNewWorker(worker) {
+            console.log('[PWA] Activating new SW...');
+            worker.postMessage({ action: 'skipWaiting' });
+            worker.addEventListener('statechange', () => {
+                if (worker.state === 'activated') {
+                    console.log('[PWA] New SW activated, reloading...');
+                    window.location.reload();
+                }
+            });
+        }
+
+        // 显示更新通知
+        function showUpdateNotification() {
+            if (confirm('有新版本可用，是否刷新？')) {
+                window.location.reload();
+            }
+        }
+        
+        // 检测离线状态
+        window.addEventListener('online', () => {
+            showOnlineStatus(true);
+        });
+        
+        window.addEventListener('offline', () => {
+            showOnlineStatus(false);
+        });
+        
+        function showOnlineStatus(isOnline) {
+            let statusDiv = document.getElementById('connection-status');
+            if (!statusDiv) {
+                statusDiv = document.createElement('div');
+                statusDiv.id = 'connection-status';
+                statusDiv.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; padding: 8px; text-align: center; font-size: 12px; z-index: 10000; transition: all 0.3s;';
+                document.body.insertBefore(statusDiv, document.body.firstChild);
+            }
+            
+            if (isOnline) {
+                statusDiv.style.background = '#10b981';
+                statusDiv.textContent = '✅ 已连接';
+                setTimeout(() => {
+                    statusDiv.style.opacity = '0';
+                    setTimeout(() => statusDiv.remove(), 300);
+                }, 2000);
+            } else {
+                statusDiv.style.background = '#ef4444';
+                statusDiv.textContent = '❌ 离线模式 - 消息将在恢复连接后发送';
+                statusDiv.style.opacity = '1';
+            }
+        }
+    </script>
+</body>
+</html>
