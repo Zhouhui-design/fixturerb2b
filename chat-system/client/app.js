@@ -805,9 +805,10 @@ class ChatApp {
                 messageDiv.innerHTML = `
                     <div class="file-content">
                         <audio controls src="${fileUrl}" style="max-width: 250px;"></audio>
-                        <div class="file-name"> 语音消息</div>
+                        <div class="file-name">语音消息</div>
                     </div>
                     <div class="message-time">${time}</div>
+                    <div class="message-menu-btn" onclick="event.stopPropagation(); window.chatApp.showAudioMessageMenu(event, '${msg.id || ''}', '${fileUrl}')">⋮</div>
                 `;
             } else if (isImage) {
                 // 图片预览 - 点击查看大图
@@ -1217,6 +1218,100 @@ class ChatApp {
         
         document.body.appendChild(overlay);
         document.body.appendChild(modal);
+    }
+    
+    // 显示音频消息菜单（包含翻译选项）
+    showAudioMessageMenu(event, messageId, audioUrl) {
+        // 移除已存在的菜单
+        const existing = document.querySelector('.message-menu');
+        if (existing) existing.remove();
+        
+        const menu = document.createElement('div');
+        menu.className = 'message-menu';
+        menu.style.cssText = `
+            position: fixed;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            padding: 8px 0;
+            z-index: 10000;
+            min-width: 200px;
+        `;
+        
+        // 计算菜单位置
+        const rect = event.target.getBoundingClientRect();
+        menu.style.top = `${rect.bottom + 5}px`;
+        menu.style.left = `${rect.left - 150}px`;
+        
+        menu.innerHTML = `
+            <div class="menu-item" onclick="window.chatApp.translateAudioToSource('${messageId}', '${audioUrl}')">
+                🌐 翻译成对方的文字
+            </div>
+            <div class="menu-item" onclick="window.chatApp.translateAudioToMyLanguage('${messageId}', '${audioUrl}')">
+                🌐 翻译成我的文字
+            </div>
+            ${messageId ? `<div class="menu-item delete" onclick="window.chatApp.deleteMessage('${messageId}')">
+                ️ 删除
+            </div>` : ''}
+        `;
+        
+        document.body.appendChild(menu);
+        
+        // 点击其他地方关闭菜单
+        setTimeout(() => {
+            document.addEventListener('click', function closeMenu() {
+                menu.remove();
+                document.removeEventListener('click', closeMenu);
+            });
+        }, 100);
+    }
+    
+    // 翻译音频为对方的文字（语音转文字）
+    async translateAudioToSource(messageId, audioUrl) {
+        this.showToast('正在识别语音...');
+        
+        try {
+            const response = await fetch('/api/translate/audio-to-text', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ audioUrl, targetLang: 'source' })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                this.showTranslationResult('语音消息', result.text);
+            } else {
+                this.showToast('语音识别失败：' + (result.error || '未知错误'));
+            }
+        } catch (error) {
+            console.error('语音识别错误:', error);
+            this.showToast('语音识别失败，请稍后重试');
+        }
+    }
+    
+    // 翻译音频为我的文字（语音转文字 -> 翻译成我的语言）
+    async translateAudioToMyLanguage(messageId, audioUrl) {
+        this.showToast('正在识别并翻译语音...');
+        
+        try {
+            const response = await fetch('/api/translate/audio-to-text', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ audioUrl, targetLang: 'my' })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                this.showTranslationResult('语音消息（已翻译）', result.translatedText);
+            } else {
+                this.showToast('语音翻译失败：' + (result.error || '未知错误'));
+            }
+        } catch (error) {
+            console.error('语音翻译错误:', error);
+            this.showToast('语音翻译失败，请稍后重试');
+        }
     }
     
     // 删除消息

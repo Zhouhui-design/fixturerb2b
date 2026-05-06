@@ -443,8 +443,8 @@
         </div>
     </div>
 
-    <script src="/socket.io/socket.io.js?v=20260507032000"></script>
-    <script src="call-manager.js?v=20260507032000"></script>
+    <script src="/socket.io/socket.io.js?v=20260507033000"></script>
+    <script src="call-manager.js?v=20260507033000"></script>
     <script>
         class AdminDashboard {
             constructor() {
@@ -899,9 +899,10 @@
                         messageDiv.innerHTML = `
                             <div class="file-content">
                                 <audio controls src="${fileUrl}" style="max-width: 250px;"></audio>
-                                <div class="file-name">🎤 语音消息</div>
+                                <div class="file-name">语音消息</div>
                             </div>
                             <div class="message-time">${time}</div>
+                            <div class="message-menu-btn" onclick="event.stopPropagation(); window.adminDashboard.showAudioMessageMenu(event, '${msg.id || ''}', '${fileUrl}')">⋮</div>
                         `;
                     } else if (isImage) {
                         messageDiv.innerHTML = `
@@ -1049,6 +1050,206 @@
 
             markMessageAsRead(messageId) {
                 console.log('Message marked as read:', messageId);
+            }
+            
+            // 显示音频消息菜单（包含翻译选项）
+            showAudioMessageMenu(event, messageId, audioUrl) {
+                const existing = document.querySelector('.message-menu');
+                if (existing) existing.remove();
+                
+                const menu = document.createElement('div');
+                menu.className = 'message-menu';
+                menu.style.cssText = `
+                    position: fixed;
+                    background: white;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    padding: 8px 0;
+                    z-index: 10000;
+                    min-width: 200px;
+                `;
+                
+                const rect = event.target.getBoundingClientRect();
+                menu.style.top = `${rect.bottom + 5}px`;
+                menu.style.left = `${rect.left - 150}px`;
+                
+                menu.innerHTML = `
+                    <div class="menu-item" onclick="window.adminDashboard.translateAudioToSource('${messageId}', '${audioUrl}')">
+                         翻译成对方的文字
+                    </div>
+                    <div class="menu-item" onclick="window.adminDashboard.translateAudioToMyLanguage('${messageId}', '${audioUrl}')">
+                        🌐 翻译成我的文字
+                    </div>
+                    ${messageId ? `<div class="menu-item delete" onclick="window.adminDashboard.deleteMessage('${messageId}')">
+                        ️ 删除
+                    </div>` : ''}
+                `;
+                
+                document.body.appendChild(menu);
+                
+                setTimeout(() => {
+                    document.addEventListener('click', function closeMenu() {
+                        menu.remove();
+                        document.removeEventListener('click', closeMenu);
+                    });
+                }, 100);
+            }
+            
+            // 翻译音频为对方的文字（语音转文字）
+            async translateAudioToSource(messageId, audioUrl) {
+                this.showToast('正在识别语音...');
+                
+                try {
+                    const response = await fetch('/api/translate/audio-to-text', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ audioUrl, targetLang: 'source' })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        this.showTranslationResult('语音消息', result.text);
+                    } else {
+                        this.showToast('语音识别失败：' + (result.error || '未知错误'));
+                    }
+                } catch (error) {
+                    console.error('语音识别错误:', error);
+                    this.showToast('语音识别失败，请稍后重试');
+                }
+            }
+            
+            // 翻译音频为我的文字（语音转文字 -> 翻译成我的语言）
+            async translateAudioToMyLanguage(messageId, audioUrl) {
+                this.showToast('正在识别并翻译语音...');
+                
+                try {
+                    const response = await fetch('/api/translate/audio-to-text', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ audioUrl, targetLang: 'my' })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        this.showTranslationResult('语音消息（已翻译）', result.translatedText);
+                    } else {
+                        this.showToast('语音翻译失败：' + (result.error || '未知错误'));
+                    }
+                } catch (error) {
+                    console.error('语音翻译错误:', error);
+                    this.showToast('语音翻译失败，请稍后重试');
+                }
+            }
+            
+            // 显示翻译结果
+            showTranslationResult(title, text) {
+                const modal = document.createElement('div');
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: white;
+                    padding: 24px;
+                    border-radius: 12px;
+                    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+                    z-index: 100001;
+                    max-width: 500px;
+                    width: 90%;
+                `;
+                
+                modal.innerHTML = `
+                    <h3 style="margin-bottom: 20px; color: #333;">${title}</h3>
+                    <div style="margin-bottom: 20px;">
+                        <div style="font-size: 12px; color: #999; margin-bottom: 5px;">译文：</div>
+                        <div style="padding: 10px; background: #e3f2fd; border-radius: 8px; word-wrap: break-word; color: #1976d2;">${text}</div>
+                    </div>
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button class="copy-translation-btn" style="padding: 8px 16px; border: 1px solid #ddd; background: white; border-radius: 6px; cursor: pointer;">复制译文</button>
+                        <button class="close-translation-btn" style="padding: 8px 16px; border: none; background: #2196f3; color: white; border-radius: 6px; cursor: pointer;">关闭</button>
+                    </div>
+                `;
+                
+                const overlay = document.createElement('div');
+                overlay.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0,0,0,0.5);
+                    z-index: 100000;
+                `;
+                
+                overlay.addEventListener('click', () => {
+                    modal.remove();
+                    overlay.remove();
+                });
+                
+                modal.querySelector('.close-translation-btn').addEventListener('click', () => {
+                    modal.remove();
+                    overlay.remove();
+                });
+                
+                modal.querySelector('.copy-translation-btn').addEventListener('click', () => {
+                    navigator.clipboard.writeText(text).then(() => {
+                        this.showToast('已复制译文');
+                    });
+                });
+                
+                document.body.appendChild(overlay);
+                document.body.appendChild(modal);
+            }
+            
+            // 删除消息
+            async deleteMessage(messageId) {
+                if (!confirm('确定要删除这条消息吗？')) return;
+                
+                try {
+                    const response = await fetch(`/api/message/${messageId}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        this.showToast('消息已删除');
+                        // 重新加载消息
+                        if (this.currentCustomer) {
+                            this.loadMessages(this.currentCustomer);
+                        }
+                    } else {
+                        this.showToast('删除失败：' + (result.error || '未知错误'));
+                    }
+                } catch (error) {
+                    console.error('删除消息错误:', error);
+                    this.showToast('删除失败，请稍后重试');
+                }
+            }
+            
+            // 显示提示消息
+            showToast(message) {
+                const toast = document.createElement('div');
+                toast.textContent = message;
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(0, 0, 0, 0.8);
+                    color: white;
+                    padding: 12px 24px;
+                    border-radius: 8px;
+                    z-index: 100002;
+                    font-size: 14px;
+                `;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.remove();
+                }, 3000);
             }
         }
 
