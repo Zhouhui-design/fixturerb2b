@@ -1293,6 +1293,23 @@ body {
     margin-top: 5px;
 }
 
+.message-sender {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #667eea;
+}
+
+.message.sent .message-sender {
+    text-align: right;
+    color: #667eea;
+}
+
+.message.received .message-sender {
+    text-align: left;
+    color: #764ba2;
+}
+
 .message-menu-btn {
     display: inline-block;
     cursor: pointer;

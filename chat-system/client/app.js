@@ -882,7 +882,7 @@ class ChatApp {
                 // 其他文件
                 messageDiv.innerHTML = `
                     <div class="file-content">
-                        <div class="file-icon">📄</div>
+                        <div class="file-icon"></div>
                         <div class="file-info">
                             <div class="file-name">${fileName}</div>
                             <a href="${fileUrl}" target="_blank" download style="color: #667eea; text-decoration: none; cursor: pointer;">📥 下载文件</a>
@@ -891,9 +891,40 @@ class ChatApp {
                     <div class="message-time">${time}</div>
                 `;
             }
+            
+            // 为文件消息添加说话人称呼
+            let speakerName = '';
+            if (type === 'sent') {
+                speakerName = '我';
+            } else if (msg.fromUsername) {
+                speakerName = msg.fromUsername;
+            } else if (this.currentChatUser) {
+                speakerName = this.currentChatUser.username || '对方';
+            } else {
+                speakerName = '对方';
+            }
+            
+            const speakerDiv = document.createElement('div');
+            speakerDiv.className = 'message-sender';
+            speakerDiv.textContent = speakerName;
+            messageDiv.insertBefore(speakerDiv, messageDiv.firstChild);
         } else {
             messageDiv.className = `message ${type}`;
+            
+            // 获取说话人称呼
+            let speakerName = '';
+            if (type === 'sent') {
+                speakerName = '我';
+            } else if (msg.fromUsername) {
+                speakerName = msg.fromUsername;
+            } else if (this.currentChatUser) {
+                speakerName = this.currentChatUser.username || '对方';
+            } else {
+                speakerName = '对方';
+            }
+            
             messageDiv.innerHTML = `
+                <div class="message-sender">${this.escapeHtml(speakerName)}</div>
                 <div class="message-bubble">${this.escapeHtml(msg.content)}</div>
                 <div class="message-time">${time}</div>
                 <div class="message-menu-btn" onclick="event.stopPropagation(); window.chatApp.showMessageMenu(event, '${msg.id || ''}', '${this.escapeHtml(msg.content)}')">⋮</div>
