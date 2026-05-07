@@ -820,6 +820,7 @@ class ChatApp {
                         <div class="file-name">${fileName}</div>
                     </div>
                     <div class="message-time">${time}</div>
+                    <div class="message-menu-btn" onclick="event.stopPropagation(); window.chatApp.showFileMessageMenu(event, '${msg.id || ''}', '${fileName}')">⋮</div>
                 `;
             } else if (isVideo) {
                 // 视频播放器 - 直接播放
@@ -830,6 +831,7 @@ class ChatApp {
                         <div class="file-name">${fileName}</div>
                     </div>
                     <div class="message-time">${time}</div>
+                    <div class="message-menu-btn" onclick="event.stopPropagation(); window.chatApp.showFileMessageMenu(event, '${msg.id || ''}', '${fileName}')">⋮</div>
                 `;
             } else if (isPDF) {
                 // PDF 预览 - 点击打开
@@ -842,6 +844,7 @@ class ChatApp {
                         </div>
                     </div>
                     <div class="message-time">${time}</div>
+                    <div class="message-menu-btn" onclick="event.stopPropagation(); window.chatApp.showFileMessageMenu(event, '${msg.id || ''}', '${fileName}')">⋮</div>
                 `;
             } else if (fileUrl.endsWith('.docx') || fileUrl.endsWith('.doc') || fileType.includes('word')) {
                 // Word 文档 - 点击打开
@@ -854,18 +857,20 @@ class ChatApp {
                         </div>
                     </div>
                     <div class="message-time">${time}</div>
+                    <div class="message-menu-btn" onclick="event.stopPropagation(); window.chatApp.showFileMessageMenu(event, '${msg.id || ''}', '${fileName}')"></div>
                 `;
             } else if (fileUrl.endsWith('.xlsx') || fileUrl.endsWith('.xls') || fileType.includes('excel') || fileType.includes('spreadsheet')) {
                 // Excel 文档 - 点击打开
                 messageDiv.innerHTML = `
                     <div class="file-content">
-                        <div class="file-icon" style="font-size: 48px; cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">📗</div>
+                        <div class="file-icon" style="font-size: 48px; cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')"></div>
                         <div class="file-info">
                             <div class="file-name" style="cursor: pointer;" onclick="window.open('${fileUrl}', '_blank')">${fileName}</div>
                             <a href="${fileUrl}" target="_blank" style="color: #667eea; text-decoration: none; cursor: pointer;"> 打开 Excel 文件</a>
                         </div>
                     </div>
                     <div class="message-time">${time}</div>
+                    <div class="message-menu-btn" onclick="event.stopPropagation(); window.chatApp.showFileMessageMenu(event, '${msg.id || ''}', '${fileName}')">⋮</div>
                 `;
             } else if (fileUrl.endsWith('.txt') || fileType === 'text/plain') {
                 // TXT 文件 - 点击打开
@@ -878,6 +883,7 @@ class ChatApp {
                         </div>
                     </div>
                     <div class="message-time">${time}</div>
+                    <div class="message-menu-btn" onclick="event.stopPropagation(); window.chatApp.showFileMessageMenu(event, '${msg.id || ''}', '${fileName}')"></div>
                 `;
             } else {
                 // 其他文件
@@ -890,6 +896,7 @@ class ChatApp {
                         </div>
                     </div>
                     <div class="message-time">${time}</div>
+                    <div class="message-menu-btn" onclick="event.stopPropagation(); window.chatApp.showFileMessageMenu(event, '${msg.id || ''}', '${fileName}')"></div>
                 `;
             }
             
@@ -1258,6 +1265,46 @@ class ChatApp {
         document.body.appendChild(menu);
         
         // 点击其他地方关闭菜单
+        setTimeout(() => {
+            document.addEventListener('click', function closeMenu() {
+                menu.remove();
+                document.removeEventListener('click', closeMenu);
+            });
+        }, 100);
+    }
+    
+    // 显示文件消息菜单
+    showFileMessageMenu(event, messageId, fileName) {
+        const existing = document.querySelector('.message-menu');
+        if (existing) existing.remove();
+        
+        const menu = document.createElement('div');
+        menu.className = 'message-menu';
+        menu.style.cssText = `
+            position: fixed;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            padding: 8px 0;
+            z-index: 10000;
+            min-width: 150px;
+        `;
+        
+        const rect = event.target.getBoundingClientRect();
+        menu.style.top = `${rect.bottom + 5}px`;
+        menu.style.left = `${rect.left - 100}px`;
+        
+        menu.innerHTML = `
+            <div class="menu-item" onclick="window.chatApp.copyMessage('${this.escapeHtml(fileName)}')">
+                 复制文件名
+            </div>
+            ${messageId ? `<div class="menu-item delete" onclick="window.chatApp.deleteMessage('${messageId}')">
+                🗑️ 删除
+            </div>` : ''}
+        `;
+        
+        document.body.appendChild(menu);
+        
         setTimeout(() => {
             document.addEventListener('click', function closeMenu() {
                 menu.remove();
